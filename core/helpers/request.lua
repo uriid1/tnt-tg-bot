@@ -9,7 +9,7 @@
 
 local json = require 'json'
 local http = require 'http.client'
-local mp_encode = require 'libs.multipart-post'
+local mp_encode = require 'libs.lua-multipart-post.multipart-post'
 
 local function init(bot, max_connections)
     local Error = require 'core.middlewares.Error'(bot)

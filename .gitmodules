@@ -1,0 +1,3 @@
+[submodule "libs/lua-multipart-post"]
+	path = libs/lua-multipart-post
+	url = https://github.com/uriid1/lua-multipart-post
