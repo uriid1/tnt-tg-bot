@@ -27,9 +27,6 @@
     <pre><code class="language-python">pre-formatted fixed-width code block written in the Python programming language</code></pre>
 ]]
 
--- Main
-local M = {}
-
 local html_escape_map = {
   ["<"] = "&lt;",
   [">"] = "&gt;",
@@ -39,65 +36,74 @@ local html_escape_map = {
 }
 
 -- Format
-function M.format(text)
-    -- Debug
-    if not text then
-        return ""
-    end
-
+function format(text)
+    text = tostring(text)
     return string.gsub(text, "[<>&\"']", html_escape_map)
 end
 
 -- Bold
-function M.bold(text)
-    return "<b>"..text.."</b>"
+function bold(text)
+    return "<b>"..format(text).."</b>"
 end
 
 -- Italic
-function M.italic(text)
-    return "<i>"..text.."</i>"
+function italic(text)
+    return "<i>"..format(text).."</i>"
 end
 
 -- Monospace
-function M.monospaced(text)
-    return "<code>"..text.."</code>"
+function monospaced(text)
+    return "<code>"..format(text).."</code>"
 end
 
-M.mono = M.monospaced
+-- M.mono = M.monospaced
 
 -- Strike
-function M.strike(text)
-    return "<strike>"..text.."</strike>"
+function strike(text)
+    return "<strike>"..format(text).."</strike>"
 end
 
 -- Underline
-function M.underline(text)
-    return "<u>"..text.."</u>"
+function underline(text)
+    return "<u>"..format(text).."</u>"
 end
 
 -- Code
-function M.code(lang, code)
+function code(lang, code)
     return ('<pre language="%s">%s</pre>'):format(lang, code)
 end
 
 -- URL
-function M.url(url, link_name)
-    return ('<a href="%s">%s</a>'):format(url, M.format(link_name))
+function url(url, link_name)
+    return ('<a href="%s">%s</a>'):format(url, format(link_name))
 end
 
 -- User URL
-function M.user_url(id, link_name)
-    return ('<a href="tg://user?id=%s">%s</a>'):format(id, M.format(link_name))
+function user_url(id, link_name)
+    return ('<a href="tg://user?id=%s">%s</a>'):format(id, format(link_name))
 end
 
 -- Message URL
-function M.message_url(username, id, link_name)
-    return ('<a href="https://t.me/%s/%s">%s</a>'):format(username, id, M.format(link_name))
+function message_url(username, id, link_name)
+    return ('<a href="https://t.me/%s/%s">%s</a>'):format(username, id, format(link_name))
 end
 
 -- Spoiler
-function M.spoiler(text)
-    return M.format(("<tg-spoiler>%s</tg-spoiler>"):format(text))
+function spoiler(text)
+    return ("<tg-spoiler>%s</tg-spoiler>"):format(format(text))
 end
 
-return M
+return {
+    format = format;
+    bold = bold;
+    italic = italic;
+    monospaced = monospaced;
+    mono = monospaced;
+    strike = strike;
+    underline = underline;
+    code = code;
+    url = url;
+    user_url = user_url;
+    message_url = message_url;
+    spoiler = spoiler;
+}

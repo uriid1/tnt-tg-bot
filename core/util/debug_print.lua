@@ -30,25 +30,23 @@ local function init(bot)
                     local result, info = v:match("^%[(.+)%](.+)")
                     if result and info then
                         if result == 'true' then
-                            io.stdout:write('['..c.try(result)..']', info)
+                            log.info('[%s] %s', c.try(result), info)
                         else
-                            io.stdout:write('['..c.err(result)..']', info)
+                            log.info('[%s] %s', c.err(result), info)
                         end
                     end
                 elseif type(v) == 'number' then
-                    io.stdout:write(c.val(v))
+                    log.info(c.val(v))
                 else
-                    io.stdout:write(v)
+                    log.info(v)
                 end
             end
 
             if i < n then
-                io.stdout:write('\t')
+                log.info('\t')
             end
         end
 
-        io.stdout:write('\n')
-        io.stdout:flush()
         ::continue::
     end
 end

@@ -10,21 +10,20 @@
 -- Init
 local bot = {
     -- Consts
-    token      = "";
-    admin_id   = 0;
+    token = "";
+    admin_id = 0;
     parse_mode = "HTML";
 
-    -- Param
+    -- Parama
     debug = false;
 
     -- Stats of RPS
-    avg_rps = 0;
     max_rps = 0;
+    avg_rps = 0;
 
     -- Commands table
     cmd = {}
 }
-
 
 -- Set the bot token
 function bot:setToken(token)
@@ -32,15 +31,12 @@ function bot:setToken(token)
     return bot
 end
 
-
 -------------------------
 -- Power Functions
 -------------------------
 -- Debug print
 local dprint = require('core.util.debug_print')(bot)
---
-local make_request = require('core.helpers.make_request')(bot)
---
+local request = require('core.helpers.request')(bot)
 bot.event = require('core.models.events')
 -- Anonymous function
 local f = function() end
@@ -57,9 +53,12 @@ local json = require 'json'
 local fio = require 'fio'
 local log = require 'log'
 
+local processMessage = require 'core.models.processMessage' 
+
 local http = require 'http.client'
 local client = http.new({max_connections = 100})
 
+local stats = require('core.classes.stats'):new():append('rps')
 
 --------------------------------------
 -- WEBHOOK
@@ -74,9 +73,9 @@ local client = http.new({max_connections = 100})
 -------------------------
 -- This function allows you to execute any method
 function bot:call(method, options)
-    return make_request {
-        method   = method,
-        options  = options,
+    return request {
+        method = method;
+        options = options;
     }
 end
 
@@ -182,63 +181,57 @@ bot.inlineKeyboardMarkup = bot.inlineKeyboardInit
 
 
 -- InlineKeyboardButton
-function bot:inlineKeyboardButton(keyboard, options, row)
+function bot:inlineKeyboardButton(keyboard, opts)
     -- Add to line
-    if not keyboard["inline_keyboard"][row] then
-        table.insert(keyboard["inline_keyboard"], { options })
+    if not keyboard["inline_keyboard"][opts.row] then
+        table.insert(keyboard["inline_keyboard"], { opts })
         return
     end
 
     -- Add to row
-    table.insert(keyboard["inline_keyboard"][row or 1], options)
+    table.insert(keyboard["inline_keyboard"][opts.row or 1], opts)
 end
 
 -- Add inline URL button
-function bot:inlineUrlButton(keyboard, text, url, row)
+function bot:inlineUrlButton(keyboard, opts)
+    local text = opts.text
+    local url = opts.url
+    local row = opts.row
+
+    local button = {
+        url  = url;
+        text = text;
+    }
+
     -- Add to line
     if not keyboard["inline_keyboard"][row] then
-        table.insert(keyboard["inline_keyboard"],
-            {
-                {
-                    url  = url;
-                    text = text;
-                }
-            }
-        )
+        table.insert(keyboard["inline_keyboard"], {button})
         return
     end
 
     -- Add to row
-    table.insert(keyboard["inline_keyboard"][row or 1],
-        {
-            url  = url;
-            text = text;
-        }
-    )
+    table.insert(keyboard["inline_keyboard"][row or 1], button)
 end
 
 -- Add inline callback button
-function bot:inlineCallbackButton(keyboard, text, callback, row)
+function bot:inlineCallbackButton(keyboard, opts)
+    local text = opts.text
+    local callback = opts.callback
+    local row = opts.row
+
+    local button = {
+        callback_data = callback;
+        text = text;
+    }
+
     -- Add to line
     if not keyboard["inline_keyboard"][row] then
-        table.insert(keyboard["inline_keyboard"],
-            {
-                {
-                    callback_data  = callback;
-                    text           = text;
-                }
-            }
-        )
+        table.insert(keyboard["inline_keyboard"], {button})
         return
     end
 
     -- Add to row
-    table.insert(keyboard["inline_keyboard"][row or 1],
-        {
-            callback_data  = callback;
-            text           = text;
-        }
-    )
+    table.insert(keyboard["inline_keyboard"][row or 1], button)
 end
 
 
@@ -246,16 +239,16 @@ end
 -- Reply Reyboard Markup
 -------------------------
 -- https://core.telegram.org/bots/api#replykeyboardmarkup
-function bot:replyKeyboardInit(options)
+function bot:replyKeyboardInit(opts)
     local res = {
         keyboard = {}
     }
 
-    if not options then
+    if not opts then
         return res
     end
 
-    for k,v in pairs(options) do
+    for k,v in pairs(opts) do
         res[k] = v
     end
 
@@ -266,15 +259,17 @@ bot.replyKeyboardMarkup = bot.replyKeyboardInit
 
 
 -- https://core.telegram.org/bots/api#keyboardbutton
-function bot:keyboardButton(keyboard, options, row)
+function bot:keyboardButton(keyboard, opts)
+    local row = opts.row
+
     -- Add to line
     if not keyboard["keyboard"][row] then
-        table.insert(keyboard["keyboard"], { options })
+        table.insert(keyboard["keyboard"], { opts })
         return
     end
 
     -- Add to row
-    table.insert(keyboard["keyboard"][row or 1], options)
+    table.insert(keyboard["keyboard"][row or 1], opts)
 end
 
 -- retun object
@@ -304,20 +299,31 @@ end
 -------------------------
 -- COMMAND HANDLER
 -------------------------
-function bot:callCommand(user_command, text, user_id, message)
-    if not bot["cmd"][user_command] then
+function bot.Command(message)
+    local command = message:getArguments({count=1})[1]
+    if not bot["cmd"][command] then
         return
     end
 
-    bot["cmd"][user_command](user_id, text, message)
+    bot["cmd"][command](message)
+end
+
+function bot.CallbackCommand(callbackQuery)
+    local command = callbackQuery:getArguments({count=1})[1]
+    if not bot["cmd"][command] then
+        return
+    end
+
+    bot["cmd"][command](callbackQuery)
 end
 
 
 -------------------------------
 -- EVENT HANDLER
 -------------------------------
-local call_event = function(event, message)
-    return event(message)
+local call_event = function(event, data)
+    local data = processMessage(data)
+    return event(data)
 end
 
 
@@ -328,7 +334,7 @@ end
 local entity_parse = {}
 
 entity_parse["bot_command"] = function(message)
-    bot:callCommand(message.text:split(" ", 1)[1], message.text, message.from.id, message)
+    call_event(bot.event.onGetEntityBotCommand, message)
     return true
 end
 
@@ -367,15 +373,15 @@ entity_parse["code"] = function(message)
     return false
 end
 
-entity_parse["bold"]          = entity_parse["code"]
-entity_parse["italic"]        = entity_parse["code"]
-entity_parse["underline"]     = entity_parse["code"]
+entity_parse["bold"] = entity_parse["code"]
+entity_parse["italic"] = entity_parse["code"]
+entity_parse["underline"] = entity_parse["code"]
 entity_parse["strikethrough"] = entity_parse["code"]
 entity_parse["strikethrough"] = entity_parse["code"]
-entity_parse["spoiler"]       = entity_parse["code"]
-entity_parse["pre"]           = entity_parse["code"]
-entity_parse["text_link"]     = entity_parse["url"]
-entity_parse["text_mention"]  = entity_parse["url"]
+entity_parse["spoiler"] = entity_parse["code"]
+entity_parse["pre"] = entity_parse["code"]
+entity_parse["text_link"] = entity_parse["url"]
+entity_parse["text_mention"] = entity_parse["url"]
 
 --
 local parse_query = function(result)
@@ -394,61 +400,57 @@ local parse_query = function(result)
     -------------------
     -- Update Call Event
     -------------------
-    if not (result.message) then
-        -- https://core.telegram.org/bots/api#message
-        if result.edited_message then
-            return call_event(bot.event.onEditedMessage, result.edited_message)
+    -- https://core.telegram.org/bots/api#message
+    if result.edited_message then
+        return call_event(bot.event.onEditedMessage, result)
 
-        -- https://core.telegram.org/bots/api#message
-        elseif result.channel_post then
-            return call_event(bot.event.onChannelPost, result.channel_post)
+    -- https://core.telegram.org/bots/api#message
+    elseif result.channel_post then
+        return call_event(bot.event.onChannelPost, result)
 
-        -- https://core.telegram.org/bots/api#message
-        elseif result.edited_channel_post then
-            return call_event(bot.event.onEditedChannelPost, result.edited_channel_post)
+    -- https://core.telegram.org/bots/api#message
+    elseif result.edited_channel_post then
+        return call_event(bot.event.onEditedChannelPost, result)
 
-        -- https://core.telegram.org/bots/api#inlinequery
-        elseif result.inline_query then
-            return call_event(bot.event.onInlineQuery, result.inline_query)
+    -- https://core.telegram.org/bots/api#inlinequery
+    elseif result.inline_query then
+        return call_event(bot.event.onInlineQuery, result)
 
-        -- https://core.telegram.org/bots/api#choseninlineresult
-        elseif result.chosen_inline_result then
-            return call_event(bot.event.onChosenInlineResult, result.chosen_inline_result)
+    -- https://core.telegram.org/bots/api#choseninlineresult
+    elseif result.chosen_inline_result then
+        return call_event(bot.event.onChosenInlineResult, result)
 
-        -- https://core.telegram.org/bots/api#callbackquery
-        elseif result.callback_query then
-            return call_event(bot.event.onCallbackQuery, result.callback_query)
+    -- https://core.telegram.org/bots/api#callbackquery
+    elseif result.callback_query then
+        return call_event(bot.event.onCallbackQuery, result)
 
-        -- https://core.telegram.org/bots/api#shippingquery
-        elseif result.shipping_query then
-            return call_event(bot.event.ShippingQuery, result.shipping_query)
+    -- https://core.telegram.org/bots/api#shippingquery
+    elseif result.shipping_query then
+        return call_event(bot.event.ShippingQuery, result)
 
-        -- https://core.telegram.org/bots/api#precheckoutquery
-        elseif result.pre_checkout_query then
-            return call_event(bot.event.PreCheckoutQuery, result.pre_checkout_query)
+    -- https://core.telegram.org/bots/api#precheckoutquery
+    elseif result.pre_checkout_query then
+        return call_event(bot.event.PreCheckoutQuery, result)
 
-        -- https://core.telegram.org/bots/api#poll
-        elseif result.poll then
-            return call_event(bot.event.onPoll, result.poll)
+    -- https://core.telegram.org/bots/api#poll
+    elseif result.poll then
+        return call_event(bot.event.onPoll, result)
 
-        -- https://core.telegram.org/bots/api#pollanswer
-        elseif result.poll_answer then
-            return call_event(bot.event.onPollAnswer, result.poll_answer)
+    -- https://core.telegram.org/bots/api#pollanswer
+    elseif result.poll_answer then
+        return call_event(bot.event.onPollAnswer, result)
 
-        -- https://core.telegram.org/bots/api#chatmemberupdated
-        elseif result.my_chat_member then
-            return call_event(bot.event.onMyChatMember, result.my_chat_member)
+    -- https://core.telegram.org/bots/api#chatmemberupdated
+    elseif result.my_chat_member then
+        return call_event(bot.event.onMyChatMember, result)
 
-        -- https://core.telegram.org/bots/api#chatmemberupdated
-        elseif result.chat_member then
-            return call_event(bot.event.onChatMember, result.chat_member)
+    -- https://core.telegram.org/bots/api#chatmemberupdated
+    elseif result.chat_member then
+        return call_event(bot.event.onChatMember, result)
 
-        -- https://core.telegram.org/bots/api#chatjoinrequest
-        elseif result.chat_join_request then
-            return call_event(bot.event.onChatJoinRequest, result.chat_join_request)
-        end
-
-        return call_event(bot.event.onUnknownUpdate, result)
+    -- https://core.telegram.org/bots/api#chatjoinrequest
+    elseif result.chat_join_request then
+        return call_event(bot.event.onChatJoinRequest, result)
     end
 
     ----------------------
@@ -456,150 +458,150 @@ local parse_query = function(result)
     -- https://core.telegram.org/bots/api#message
     ----------------------
     -- Get msg (useful when debugging)
-    call_event(bot.event.onGetMessage, result.message)
+    call_event(bot.event.onGetMessage, result)
 
     -- Sender Chat
     -- https://core.telegram.org/bots/api#chat
     if result.message.sender_chat then
-        return call_event(bot.event.onSenderChat, result.message)
+        return call_event(bot.event.onSenderChat, result)
     end
 
     -- Forward
     -- https://core.telegram.org/bots/api#user
     if result.message.forward_from then
-        return call_event(bot.event.onForwardFrom, result.message)
+        return call_event(bot.event.onForwardFrom, result)
 
     -- https://core.telegram.org/bots/api#chat
     elseif result.message.forward_from_chat then
-        return call_event(bot.event.onForwardFromChat, result.message)
+        return call_event(bot.event.onForwardFromChat, result)
     end
 
     -- Via bot
     -- https://core.telegram.org/bots/api#user
     if result.message.via_bot then
-        return call_event(bot.event.onViaBot, result.message)
+        return call_event(bot.event.onViaBot, result)
     end
 
     -- Chat
     -- https://core.telegram.org/bots/api#message
     if result.message.left_chat_member then
-        return call_event(bot.event.onLeftChatMember, result.message)
+        return call_event(bot.event.onLeftChatMember, result)
 
     elseif result.message.new_chat_member then
-        return call_event(bot.event.onNewChatMember, result.message)
+        return call_event(bot.event.onNewChatMember, result)
 
     elseif result.message.new_chat_title then
-        return call_event(bot.event.onNewChatTitle, result.message)
+        return call_event(bot.event.onNewChatTitle, result)
 
     elseif result.message.new_chat_photo then
-        return call_event(bot.event.onNewChatPhoto, result.message)
+        return call_event(bot.event.onNewChatPhoto, result)
 
     elseif result.message.delete_chat_photo then
-        return call_event(bot.event.onDeleteChatPhoto, result.message)
+        return call_event(bot.event.onDeleteChatPhoto, result)
 
     elseif result.message.group_chat_created then
-        return call_event(bot.event.onGroupChatCreated, result.message)
+        return call_event(bot.event.onGroupChatCreated, result)
 
     elseif result.message.supergroup_chat_created then
-        return call_event(bot.event.onSupergroupChatCreated, result.message)
+        return call_event(bot.event.onSupergroupChatCreated, result)
 
     elseif result.message.channel_chat_created then
-        return call_event(bot.event.onChannelChatCreated, result.message)
+        return call_event(bot.event.onChannelChatCreated, result)
 
     elseif result.message.migrate_to_chat_id then
-        return call_event(bot.event.onMigrateToChatId, result.message)
+        return call_event(bot.event.onMigrateToChatId, result)
 
     elseif result.message.migrate_from_chat_id then
-        return call_event(bot.event.onMigrateFromChatId, result.message)
+        return call_event(bot.event.onMigrateFromChatId, result)
 
     end
 
     -- Payment
     -- https://core.telegram.org/bots/api#invoice
     if result.message.invoice then
-        return call_event(bot.event.onInvoice, result.message)
+        return call_event(bot.event.onInvoice, result)
 
     -- https://core.telegram.org/bots/api#successfulpayment
     elseif result.message.successful_payment then
-        return call_event(bot.event.onSuccessfulPayment, result.message)
+        return call_event(bot.event.onSuccessfulPayment, result)
     end
 
     -- Passport
     -- https://core.telegram.org/bots/api#passportdata
     if result.message.passport_data then
-        return call_event(bot.event.onPassportData, result.message)
+        return call_event(bot.event.onPassportData, result)
     end
 
     -- Video Chat
     -- https://core.telegram.org/bots/api#videochatscheduled
     if result.message.video_chat_scheduled then
-        return call_event(bot.event.onVideoChatScheduled, result.message)
+        return call_event(bot.event.onVideoChatScheduled, result)
 
     -- https://core.telegram.org/bots/api#videochatstarted
     elseif result.message.video_chat_started then
-       return call_event(bot.event.onVideoChatStarted, result.message)
+       return call_event(bot.event.onVideoChatStarted, result)
 
     -- https://core.telegram.org/bots/api#videochatended
     elseif result.message.video_chat_ended then
-        return call_event(bot.event.onVideoChatEnded, result.message)
+        return call_event(bot.event.onVideoChatEnded, result)
 
     -- https://core.telegram.org/bots/api#videochatparticipantsinvited
     elseif result.message.video_chat_participants_invited then
-        return call_event(bot.event.onVideoChatParticipantsInvited, result.message)
+        return call_event(bot.event.onVideoChatParticipantsInvited, result)
     end
 
     -- Media
     -- https://core.telegram.org/bots/api#photosize
     if result.message.photo then
-        return call_event(bot.event.onGetPhoto, result.message)
+        return call_event(bot.event.onGetPhoto, result)
 
     -- -- https://core.telegram.org/bots/api#video
     elseif result.message.video then
-        return call_event(bot.event.onGetVideo, result.message)
+        return call_event(bot.event.onGetVideo, result)
 
     -- https://core.telegram.org/bots/api#animation
     elseif result.message.animation then
-        return call_event(bot.event.onGetAnimation, result.message)
+        return call_event(bot.event.onGetAnimation, result)
 
     -- https://core.telegram.org/bots/api#document
     elseif result.message.document then
-        return call_event(bot.event.onGetDocument, result.message)
+        return call_event(bot.event.onGetDocument, result)
 
     -- https://core.telegram.org/bots/api#location
     elseif result.message.location then
-        return call_event(bot.event.onGetLocation, result.message)
+        return call_event(bot.event.onGetLocation, result)
 
     -- https://core.telegram.org/bots/api#poll
     elseif result.message.poll then
-        return call_event(bot.event.onGetPoll, result.message)
+        return call_event(bot.event.onGetPoll, result)
 
     -- https://core.telegram.org/bots/api#audio
     elseif result.message.audio then
-        return call_event(bot.event.onGetAudio, result.message)
+        return call_event(bot.event.onGetAudio, result)
 
     -- https://core.telegram.org/bots/api#contact
     elseif result.message.contact then
-        return call_event(bot.event.onGetContact, result.message)
+        return call_event(bot.event.onGetContact, result)
 
     -- https://core.telegram.org/bots/api#dice
     elseif result.message.dice then
-        return call_event(bot.event.onGetDice, result.message)
+        return call_event(bot.event.onGetDice, result)
 
     -- https://core.telegram.org/bots/api#game
     elseif result.message.game then
-        return call_event(bot.event.onGetGame, result.message)
+        return call_event(bot.event.onGetGame, result)
 
     -- https://core.telegram.org/bots/api#videonote
     elseif result.message.video_note then
-        return call_event(bot.event.onGetVideoNote, result.message)
+        return call_event(bot.event.onGetVideoNote, result)
 
     -- https://core.telegram.org/bots/api#voice
     elseif result.message.voice then
-        return call_event(bot.event.onGetVoice, result.message)
+        return call_event(bot.event.onGetVoice, result)
 
     -- https://core.telegram.org/bots/api#sticker
     elseif result.message.sticker then
-        return call_event(bot.event.onGetSticker, result.message)
+        return call_event(bot.event.onGetSticker, result)
     end
 
     -- Entities
@@ -613,9 +615,10 @@ local parse_query = function(result)
         -- For entities
         for i = 1, #result.message.entities do
             dprint({type = result.message.entities[i].type, text = result.message.text})
+            
             -- Check entity exists
             if entity_parse[result.message.entities[i].type] then
-                if entity_parse[result.message.entities[i].type](result.message) then
+                if entity_parse[result.message.entities[i].type](result) then
                     return
                 end
             end
@@ -625,8 +628,10 @@ local parse_query = function(result)
 
     -- Text
     if result.message.text then
-        return call_event(bot.event.onGetMessageText, result.message)
+        return call_event(bot.event.onGetMessageText, result)
     end
+
+    return call_event(bot.event.onUnknownUpdate, result)
 end
 
 
@@ -679,29 +684,31 @@ function bot:startWebHook(options, callback)
         path = '';
         template = '200';
     }, function(req)
-        -- Parse 
-        local body = req:json()
+        -- Manage RPS
+        --
+        rps_in_sec = rps_in_sec + 1
 
-        if body then
-            -- Manage RPS
-            --
-            rps_in_sec = rps_in_sec + 1
+        if os.time() - time > 1 then
+            time = os.time()
 
-            if os.time() - time >= 1 then
-                time = os.time()
-
-                if bot.max_rps < rps_in_sec then
-                    bot.max_rps = rps_in_sec
-                end
-
-                rps_in_sec = 0
+            if bot.max_rps < rps_in_sec then
+                bot.max_rps = rps_in_sec
             end
 
-            --
-            fiber.create(function()
-                parse_query(body)
-            end)
+            -- In metrics
+            stats:set('rps', rps_in_sec)
+
+            rps_in_sec = 0
         end
+
+        --
+        fiber.create(function()
+            local result = req:json()
+
+            parse_query(result)
+
+            bot.avg_rps = stats:get('rps')
+        end)
     end)
 
     -- 
@@ -750,10 +757,7 @@ getUpdates = function(first_start, offset, timeout, token)
     if type(body) == 'table' then
         if body.ok then
             for i = 1, #body.result do
-                -- Parse
                 parse_query(body.result[i])
-
-                -- Inc offset
                 offset = body.result[i].update_id + 1
             end
         end

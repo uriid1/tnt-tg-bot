@@ -26,6 +26,9 @@ local event = {
     ["onGetMessageText"] = f;
     ["onInlineQuery"] = f;
 
+    -- CallBack
+    ["onCallbackQuery"] = f;
+
     -- Chat
     ["onSenderChat"] = f;
     ["onNewChatTitle"] = f;
@@ -72,6 +75,7 @@ local event = {
     ["onGetGame"] = f;
     ["onGetVideoNote"] = f;
     ["onGetSticker"] = f;
+    ["onGetVoice"] = f;
 
     -- Entities
     ["onGetEntityMention"] = f;
@@ -81,16 +85,14 @@ local event = {
     ["onGetEntityEmail"] = f;
     ["onGetEntityPhone"] = f;
     ["onGetEntityFormattedText"] = f;
-    ["onGetVoice"] = f;
+    ["onGetEntityBotCommand"] = f;
 
     -- Error Handling
     ["onCommandErrorHandle"] = f;
     ["onEventErrorHandle"] = f;
 
     -- Request error hl
-    ["onRequestErrUnauthorized"] = f;
-    ["onRequestErrTooManyRequests"] = f;
-    ["onRequestErrMigrateToChat"] = f;
+    ["onRequestErr"] = f;
 
     -- Other
     ["onInformSpammer"] = f;
