@@ -1,4 +1,4 @@
--- Определение класса
+-- Class definition
 --
 local message = {}
 

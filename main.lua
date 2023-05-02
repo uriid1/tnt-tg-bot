@@ -1,10 +1,12 @@
--- Simple bot
 --
-
+-- Simple bot
+-- Commands:
+-- /start
+-- /inline
+--
 -- Init bot core
-local conf = require 'libs.ini'.loadParse("parameters.ini")
-local bot = require 'core.bot'
-            :setToken(conf.token)
+local conf = require 'libs.lua-ini.ini'.loadParse("parameters.ini")
+local bot = require 'core.bot':setToken(conf.token)
 bot.debug = true
 
 -- Load all libs/extensions
@@ -14,11 +16,10 @@ local dec = require 'extensions.html-decoration'
 
 -- Command /start Example
 bot.cmd["/start"] = function(message)
-    -- Получение аргументов команды
+    -- Get command arguments
     local args = message:getArguments({count = 3})
 
-    -- Получение информации о боте
-    --
+    -- Get bot information
     local data = bot:call('getMe')
 
     if not data.ok then
@@ -26,7 +27,7 @@ bot.cmd["/start"] = function(message)
         return
     end
 
-    -- Создание текстовой информации о боте
+    -- Creating textual information about the bot
     --
     local infoText = dec.bold('Bot Info:\n')
 
@@ -37,7 +38,7 @@ bot.cmd["/start"] = function(message)
         infoText = infoText .. paramName .. ': ' .. value .. '\n'
     end
 
-    -- Отправка результата
+    -- Send text message
     bot:call('sendMessage', {
         parse_mode = 'HTML';
         text = infoText;
@@ -48,14 +49,14 @@ end
 -- Command /inline Example
 bot.cmd["/inline"] = function(callback)
     local keyboard = bot:inlineKeyboardInit()
-    bot:inlineCallbackButton(keyboard, {text = 'Кнопка 1', callback = '/cb_button_1', row = 1})
-    bot:inlineCallbackButton(keyboard, {text = 'Кнопка 2', callback = '/cb_button_2', row = 2})
-    bot:inlineCallbackButton(keyboard, {text = 'Кнопка 2', callback = '/cb_button_2', row = 3})
+    bot:inlineCallbackButton(keyboard, {text = 'Button 1', callback = '/cb_button_1', row = 1})
+    bot:inlineCallbackButton(keyboard, {text = 'Button 2', callback = '/cb_button_2', row = 2})
+    bot:inlineCallbackButton(keyboard, {text = 'Button 2', callback = '/cb_button_2', row = 3})
 
-    -- Отправка результата
+    -- Send callback buttons
     bot:call('sendMessage', {
         parse_mode = 'HTML';
-        text = 'Кнопки!';
+        text = 'Buttons!';
         chat_id = callback:getChatId();
         reply_markup = json.encode(keyboard);
     })
@@ -64,7 +65,7 @@ end
 bot.cmd["/cb_button_1"] = function(callback)
     bot:call('sendMessage', {
         parse_mode = 'HTML';
-        text = 'Вы нажали кнопку 1';
+        text = 'You press button 1';
         chat_id = callback:getChatId();
     })
 end
@@ -72,7 +73,7 @@ end
 bot.cmd["/cb_button_2"] = function(callback)
     bot:call('sendMessage', {
         parse_mode = 'HTML';
-        text = 'Вы нажали кнопку 2';
+        text = 'You press button 2';
         chat_id = callback:getChatId();
     })
 end
@@ -80,7 +81,7 @@ end
 bot.cmd["/cb_button_3"] = function(callback)
     bot:call('sendMessage', {
         parse_mode = 'HTML';
-        text = 'Вы нажали кнопку 3';
+        text = 'You press button 3';
         chat_id = callback:getChatId();
     })
 end
@@ -93,11 +94,9 @@ end
 
 -- Get callback
 bot.event.onCallbackQuery = function(callbackQuery)
-    -- log.error(callbackQuery)
     -- Call callback
     bot.CallbackCommand(callbackQuery)
 end
-
 
 -- Event Example
 bot.event.onGetMessageText = function(message)
@@ -108,7 +107,6 @@ bot.event.onGetMessageText = function(message)
         chat_id = message:getChatId();
     })
 end
-
 
 -- Run bot
 -- Enable long polling

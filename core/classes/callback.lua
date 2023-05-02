@@ -1,4 +1,4 @@
--- Определение класса
+-- Class definition
 --
 local callback = {}
 
@@ -17,6 +17,12 @@ end
 function callback:getUpdateId()
     if self.update_id then
         return self.update_id
+    end
+end
+
+function callback:getQueryId()
+    if self.callback_query.id then
+        return self.callback_query.id
     end
 end
 
@@ -58,7 +64,7 @@ end
 
 function callback:getUserReply()
     if self.message and self.message.reply_to_message then
-        return self.message.reply_to_message
+        return self.message.reply_to_message.from
     end
 end
 
