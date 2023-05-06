@@ -21,7 +21,7 @@ function callback:getUpdateId()
 end
 
 function callback:getQueryId()
-    if self.callback_query.id then
+    if self.callback_query then
         return self.callback_query.id
     end
 end
@@ -44,6 +44,12 @@ function callback:getChatId()
     end
 end
 
+function callback:getChatType()
+    if self.message and self.message.chat then
+        return self.message.chat.type
+    end
+end
+
 function callback:getMessageId()
     if self.message and self.message.message_id then
         return self.message.message_id
@@ -57,6 +63,12 @@ function callback:getText()
 end
 
 function callback:getUserFrom()
+    if self.callback_query and self.callback_query.from then
+        return self.callback_query.from
+    end
+end
+
+function callback:getUserMessageFrom()
     if self.message and self.message.from then
         return self.message.from
     end
@@ -65,6 +77,14 @@ end
 function callback:getUserReply()
     if self.message and self.message.reply_to_message then
         return self.message.reply_to_message.from
+    end
+end
+
+function callback:isSameUser()
+    if self.callback_query and self.callback_query.from and
+        self.message and self.message.reply_to_message
+    then
+        return self.callback_query.from.id == self.message.reply_to_message.from.id
     end
 end
 

@@ -11,18 +11,18 @@ local function init(bot)
     local error_enum = require 'core.models.error_enum'
     local dprint = require 'core.util.debug_print' (bot)
 
-    return function(result)
+    return function(data)
         -- Debug
-        dprint({error = result})
+        dprint('[Error] error_code: %d description: %s', data.error_code, data.description)
 
         -- Handling error code
         for err_name, error_code in pairs(error_enum) do
-            if result.error_code == error_code then
-                return bot.event.onRequestErr(result, err_name, error_code)
+            if data.error_code == error_code then
+                return bot.event.onRequestErr(data, err_name, error_code)
             end
         end
         
-        return bot.event.onRequestErr(result, nil, result.error_code)
+        return bot.event.onRequestErr(data, nil, data.error_code)
     end
 end
 

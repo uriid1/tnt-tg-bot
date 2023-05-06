@@ -1,16 +1,18 @@
---
 -- Simple bot
 -- Commands:
 -- /start
 -- /inline
 --
+
 -- Init bot core
 local conf = require 'libs.lua-ini.ini'.loadParse("parameters.ini")
-local bot = require 'core.bot':setToken(conf.token)
-bot.debug = true
+local bot = require 'core.bot'
+:setOptions({
+    token = os.getenv('BOT_TOKEN');
+    debug = true;
+})
 
 -- Load all libs/extensions
-local json = require 'json'
 local log = require 'log'
 local dec = require 'extensions.html-decoration'
 
@@ -40,9 +42,9 @@ bot.cmd["/start"] = function(message)
 
     -- Send text message
     bot:call('sendMessage', {
-        parse_mode = 'HTML';
         text = infoText;
         chat_id = message:getChatId();
+        parse_mode = 'HTML';
     })
 end
 
@@ -55,12 +57,21 @@ bot.cmd["/inline"] = function(callback)
 
     -- Send callback buttons
     bot:call('sendMessage', {
-        parse_mode = 'HTML';
         text = 'Buttons!';
+        parse_mode = 'HTML';
         chat_id = callback:getChatId();
-        reply_markup = json.encode(keyboard);
+        reply_markup = keyboard:toJson();
     })
 end
+
+-- Command /send_photo Example
+-- bot.cmd["/send_photo"] = function(message)
+--     bot:call('sendPhoto', {
+--         photo = bot.Photo('image.png');
+--         caption = 'Omg! It\'s photo';
+--         chat_id = message:getChatId();
+--     })
+-- end
 
 bot.cmd["/cb_button_1"] = function(callback)
     bot:call('sendMessage', {
@@ -110,16 +121,13 @@ end
 
 -- Run bot
 -- Enable long polling
-bot:startLongPolling {
-    token = bot.token
-}
+bot:startLongPolling()
 
 -- bot:startWebHook({
---     token = conf.token;
---     host = conf.host;
---     port = conf.port;
---     url = conf.url;
---     certificate = conf.certificate;
+--     host = os.getenv('BOT_HOST');
+--     port = os.getenv('BOT_PORT');
+--     url = os.getenv('BOT_URL');
+--     certificate = os.getenv('BOT_CERTIFICATE');
 --     drop_pending_updates = true;
 --     allowed_updates = '["message", "my_chat_member", "callback_query"]'
 -- })

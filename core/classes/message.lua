@@ -37,6 +37,12 @@ function message:getChatId()
     end
 end
 
+function message:getChatType()
+    if self.message and self.message.chat then
+        return self.message.chat.type
+    end
+end
+
 function message:getMessageId()
     if self.message and self.message.message_id then
         return self.message.message_id

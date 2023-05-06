@@ -21,26 +21,33 @@ local bot = {
     max_rps = 0;
     avg_rps = 0;
 
+    -- Enents
+    event = require 'core.models.events';
+
+    -- Middlewares
+    Photo = require 'core.middlewares.Photo';
+
     -- Commands table
-    cmd = {}
+    cmd = {};
 }
 
 -- Set the bot token
-function bot:setToken(token)
-    self.token = token
-    return bot
+function bot:setOptions(options)
+    for k,v in pairs(options) do
+        self[k] = v
+    end
+    return self
 end
 
 -------------------------
 -- Power Functions
 -------------------------
 -- Debug print
-local dprint = require('core.util.debug_print')(bot)
-local request = require('core.helpers.request')(bot)
-bot.event = require('core.models.events')
+local dprint = require 'core.util.debug_print' (bot)
+local request = require 'core.helpers.request' (bot)
+
 -- Anonymous function
 local f = function() end
-
 
 -------------------------
 -- Libs
@@ -60,17 +67,14 @@ local client = http.new({max_connections = 100})
 
 local stats = require('core.classes.stats'):new():append('rps')
 
---------------------------------------
--- WEBHOOK
---------------------------------------
+-- Webhook
 -- https://core.telegram.org/bots/api#getwebhookinfo
 -- https://core.telegram.org/bots/api#setwebhook
 -- https://core.telegram.org/bots/api#deletewebhook
 
 
--------------------------
 -- Available methods
--------------------------
+--
 -- This function allows you to execute any method
 function bot:call(method, options)
     return request {
@@ -138,9 +142,7 @@ end
 -- https://core.telegram.org/bots/api#setmydefaultadministratorrights
 -- https://core.telegram.org/bots/api#getmydefaultadministratorrights
 
--------------------------
 -- Updating messages
--------------------------
 -- https://core.telegram.org/bots/api#editmessagetext
 -- https://core.telegram.org/bots/api#editmessagecaption
 -- https://core.telegram.org/bots/api#editmessagemedia
@@ -148,9 +150,7 @@ end
 -- https://core.telegram.org/bots/api#stoppoll
 -- https://core.telegram.org/bots/api#deletemessage
 
--------------------------
 -- Stickers
--------------------------
 -- https://core.telegram.org/bots/api#sendsticker
 -- https://core.telegram.org/bots/api#getstickerSet
 -- https://core.telegram.org/bots/api#uploadstickerfile
@@ -160,25 +160,32 @@ end
 -- https://core.telegram.org/bots/api#deletestickerfromSet
 -- https://core.telegram.org/bots/api#setstickersetthumb
 
--------------------------
 -- Inline mode
--------------------------
 -- https://core.telegram.org/bots/api#answerinlinequery
 -- https://core.telegram.org/bots/api#answerwebappquery
 
 
--------------------------
--- Inline Keyboard Markup
--------------------------
+-- Inline Keyboard
+--
 -- Inline init
 function bot:inlineKeyboardInit()
-    return {
+    local keyboard = {}
+    keyboard.__index = keyboard
+
+    local obj = {
         inline_keyboard = {}
     }
+
+    setmetatable(obj, keyboard)
+
+    function keyboard:toJson()
+        return json.encode(self)
+    end
+
+    return obj
 end
 
 bot.inlineKeyboardMarkup = bot.inlineKeyboardInit
-
 
 -- InlineKeyboardButton
 function bot:inlineKeyboardButton(keyboard, opts)
@@ -235,28 +242,33 @@ function bot:inlineCallbackButton(keyboard, opts)
 end
 
 
--------------------------
--- Reply Reyboard Markup
--------------------------
+-- Reply Reyboard
+--
 -- https://core.telegram.org/bots/api#replykeyboardmarkup
 function bot:replyKeyboardInit(opts)
-    local res = {
+    local keyboard = {}
+    keyboard.__index = keyboard
+
+    local obj = {
         keyboard = {}
     }
 
-    if not opts then
-        return res
+    setmetatable(obj, keyboard)
+
+    function keyboard:toJson()
+        if opts then
+            for k,v in pairs(opts) do
+                self[k] = v
+            end
+        end
+
+        return json.encode(self)
     end
 
-    for k,v in pairs(opts) do
-        res[k] = v
-    end
-
-    return res
+    return obj
 end
 
 bot.replyKeyboardMarkup = bot.replyKeyboardInit
-
 
 -- https://core.telegram.org/bots/api#keyboardbutton
 function bot:keyboardButton(keyboard, opts)
@@ -272,7 +284,6 @@ function bot:keyboardButton(keyboard, opts)
     table.insert(keyboard["keyboard"][row or 1], opts)
 end
 
--- retun object
 -- https://core.telegram.org/bots/api#replykeyboardremove
 function bot:ReplyKeyboardRemove()
     return json.encode {
@@ -280,25 +291,18 @@ function bot:ReplyKeyboardRemove()
     }
 end
 
--------------------------
 -- Payments
--------------------------
 -- https://core.telegram.org/bots/api#sendinvoice
 -- https://core.telegram.org/bots/api#answershippingquery
 -- https://core.telegram.org/bots/api#answerprecheckoutquery
 
-
--------------------------
 -- Games
--------------------------
 -- https://core.telegram.org/bots/api#sendgame
 -- https://core.telegram.org/bots/api#setGameScore
 -- https://core.telegram.org/bots/api#getGameHighScores
 
 
--------------------------
--- COMMAND HANDLER
--------------------------
+-- Command handler
 function bot.Command(message)
     local command = message:getArguments({count=1})[1]
     if not bot["cmd"][command] then
@@ -308,6 +312,7 @@ function bot.Command(message)
     bot["cmd"][command](message)
 end
 
+-- Callback handler
 function bot.CallbackCommand(callbackQuery)
     local command = callbackQuery:getArguments({count=1})[1]
     if not bot["cmd"][command] then
@@ -317,19 +322,14 @@ function bot.CallbackCommand(callbackQuery)
     bot["cmd"][command](callbackQuery)
 end
 
-
--------------------------------
--- EVENT HANDLER
--------------------------------
+-- Event handler
 local call_event = function(event, data)
     local data = processMessage(data)
     return event(data)
 end
 
 
--------------------------
--- PARSE
--------------------------
+-- Entity parse
 --
 local entity_parse = {}
 
@@ -387,13 +387,13 @@ entity_parse["text_mention"] = entity_parse["url"]
 local parse_query = function(result)
     -- Empty result
     if not result then
-        dprint("[error] Empty result")
+        dprint("[Error] Empty result")
         return
     end
 
     -- Not table
     if not table.isTable(result) then
-        dprint("[error] Result is not a table", result)
+        dprint("[Error] Result is not a table", result)
         return
     end
 
@@ -453,10 +453,9 @@ local parse_query = function(result)
         return call_event(bot.event.onChatJoinRequest, result)
     end
 
-    ----------------------
     -- Message Call Event
     -- https://core.telegram.org/bots/api#message
-    ----------------------
+    --
     -- Get msg (useful when debugging)
     call_event(bot.event.onGetMessage, result)
 
@@ -555,7 +554,7 @@ local parse_query = function(result)
     if result.message.photo then
         return call_event(bot.event.onGetPhoto, result)
 
-    -- -- https://core.telegram.org/bots/api#video
+    -- https://core.telegram.org/bots/api#video
     elseif result.message.video then
         return call_event(bot.event.onGetVideo, result)
 
@@ -614,7 +613,7 @@ local parse_query = function(result)
 
         -- For entities
         for i = 1, #result.message.entities do
-            dprint({type = result.message.entities[i].type, text = result.message.text})
+            dprint(("[%s] %s"):format(result.message.entities[i].type, result.message.text))
             
             -- Check entity exists
             if entity_parse[result.message.entities[i].type] then
@@ -635,44 +634,39 @@ local parse_query = function(result)
 end
 
 
---------------------------------------
--- SEND CERTIFICATE AND SET WEBHOOK
---------------------------------------
--- Curl example
--- curl -F "url=https://94.250.255.165/bot" -F "certificate=@/etc/nginx/ssl/PUBLIC.pem" https://api.telegram.org/5510257622:AAGXr15ISS4pOaMPVFETroCte2XSOOX-vJs/setwebhook
-
-local send_certificate = function(param)
-    -- Current test
-    assert(type(param) == "table", "[error] In function send_certificate argument 'param' is not table.")
-    assert(type(param.url) == "string", "[error] In function send_certificate argument 'param.url' is not string.")
-    assert(type(param.certificate) == "string", "[error] In function send_certificate argument 'param.certificate' is not string.")
-    assert(type(param.token) == "string", "[error] In function send_certificate argument 'param.token' is not string.")
+-- Send cert
+--
+local send_certificate = function(options)
+    if type(options) ~= 'table' or
+        type(options.url) ~= "string" or
+        type(options.certificate) ~= "string"
+    then
+        dprint("[Error] Invalid options to start a webhook")
+        return
+    end
 
     -- Certificate
     local cert_data
-    if param.certificate ~= "non-self-signed" or param.certificate ~= false then
-        local cert = fio.open(param.certificate, "O_RDONLY")
+    if options.certificate ~= "non-self-signed" or options.certificate ~= false then
+        local cert = fio.open(options.certificate, "O_RDONLY")
         cert_data = {
-            filename = param.certificate:match("[^/]*.$");
+            filename = options.certificate:match("[^/]*.$");
             data = cert:read();
         }
         cert:close()
     end
 
-    -- Set WH
+    -- Set webhook
     return bot:call('setWebhook', {
-        url = param.url;
+        url = options.url;
         certificate = cert_data;
-        drop_pending_updates = param.drop_pending_updates or false;
-        allowed_updates = param.allowed_updates or nil
+        drop_pending_updates = options.drop_pending_updates or false;
+        allowed_updates = options.allowed_updates or nil
     })
 end
 
-
--------------------------
--- START WEBHOOK
--------------------------
-function bot:startWebHook(options, callback)
+-- Start webhook 
+function bot:startWebHook(options)
     -- For calc RPS
     local rps_in_sec = 0
     local time = os.time()
@@ -680,8 +674,8 @@ function bot:startWebHook(options, callback)
     local http_server = require 'http.server'
     local httpd = http_server.new(options.host, options.port)
     httpd:route({
+        path = options.path or '';
         method = 'POST';
-        path = '';
         template = '200';
     }, function(req)
         -- Manage RPS
@@ -725,17 +719,10 @@ function bot:startWebHook(options, callback)
             os.exit()
         end
     end
-
-    -- cb
-    if callback then
-        callback()
-    end
 end
 
-
--------------------------
--- START LONG POLLING
--------------------------
+-- Start long polling
+--
 local getUpdates
 getUpdates = function(first_start, offset, timeout, token)
     local res = client:request('GET', 'https://api.telegram.org'..string.format("/bot%s/getUpdates?offset=%d&timeout=%d", token, offset, timeout))
@@ -745,8 +732,8 @@ getUpdates = function(first_start, offset, timeout, token)
     if not first_start then
         if type(body) == 'table' then
             if not body.ok then
-                dprint(("[%s] error_code: %s | description: %s")
-                :format(tostring(body.ok), body.error_code, body.description))
+                dprint(("[Error] error_code: %s | description: %s")
+                :format(body.error_code, body.description))
                 return
             end
 
@@ -770,25 +757,25 @@ getUpdates = function(first_start, offset, timeout, token)
     return getUpdates(true, offset, timeout, token)
 end
 
-function bot:startLongPolling(options, callback)
-    -- Current test
-    assert(type(options) == "table", "[error] In function startLongPolling argument 'param' is not table.")
-    assert(type(options.token) == "string", "[error] In function startLongPolling argument 'param.token' is not string.")
+function bot:startLongPolling(options)
+    if options and type(options) ~= 'table' then
+        dprint("[Error] Invalid options to start a long polling")
+        return
+    end
 
-    -- Options
-    local offset = options.offset or -1
-    local polling_timeout = options.timeout or 60
+    -- Set options
+    local offset = -1
+    local polling_timeout = 60
 
-    --
+    if options then
+        offset = options.offset or -1
+        polling_timeout = options.timeout or 60
+    end
+
     dprint("[true] Gettin Updates")
 
     -- Start long polling
-    getUpdates(false, offset, polling_timeout, options.token)
-
-    -- cb
-    if callback then
-        callback()
-    end
+    getUpdates(false, offset, polling_timeout, self.token)
 end
 
 return bot

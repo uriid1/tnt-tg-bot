@@ -8,9 +8,10 @@
 --]]
 
 -- Class definition
+--
 local stats = {}
-
 stats.__index = stats
+
 function stats:new()
     return setmetatable({}, self)
 end

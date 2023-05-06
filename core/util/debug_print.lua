@@ -17,37 +17,46 @@ local function init(bot)
             return
         end
 
-        local n = select('#', ...)
-        for i = 1, n do
-            local v = select(i, ...)
-            local arg_type = type(v)
+        local args = select('#', ...)
 
-            if arg_type == 'table' then
-                log.info(v)
-                goto continue
-            else
-                if type(v) == 'string' then
-                    local result, info = v:match("^%[(.+)%](.+)")
-                    if result and info then
-                        if result == 'true' then
-                            log.info('[%s] %s', c.try(result), info)
-                        else
-                            log.info('[%s] %s', c.err(result), info)
-                        end
-                    end
-                elseif type(v) == 'number' then
-                    log.info(c.val(v))
+        if args == 0 then
+            return
+        end
+
+        local firstArg = select(1, ...)
+        local firstArgType = type(firstArg)
+
+        if firstArgType == 'table' then
+            log.info(firstArg)
+        elseif firstArgType == 'string' then
+            local result, info = firstArg:match("^%[(.+)%](.+)")
+
+            local fmtResult
+            local fmtInfo
+
+            if result and info then
+                if result == 'true' then
+                    fmtResult = c.try(result)
+                    fmtInfo = info
+                elseif result == 'frue' or string.lower(result) == 'error' then
+                    fmtResult = c.err(result)
+                    fmtInfo = info
                 else
-                    log.info(v)
+                    fmtResult = c.val(result)
+                    fmtInfo = info
                 end
             end
 
-            if i < n then
-                log.info('\t')
+            if args == 1 then
+                log.info('[%s] %s', fmtResult, fmtInfo)
+            else
+                log.info(string.format('[%s] %s', fmtResult, info), unpack{select(2, ...)})
             end
+        elseif firstArg == 'number' then
+            log.info(c.val(firstArg))
+        else
+            log.info(firstArg)
         end
-
-        ::continue::
     end
 end
 
