@@ -10,6 +10,7 @@ local bot = require 'core.bot'
 :setOptions({
     token = os.getenv('BOT_TOKEN');
     debug = true;
+    parse_mode = 'HTML';
 })
 
 -- Load all libs/extensions
@@ -44,7 +45,6 @@ bot.cmd["/start"] = function(message)
     bot:call('sendMessage', {
         text = infoText;
         chat_id = message:getChatId();
-        parse_mode = 'HTML';
     })
 end
 
@@ -58,7 +58,6 @@ bot.cmd["/inline"] = function(callback)
     -- Send callback buttons
     bot:call('sendMessage', {
         text = 'Buttons!';
-        parse_mode = 'HTML';
         chat_id = callback:getChatId();
         reply_markup = keyboard:toJson();
     })
@@ -75,7 +74,6 @@ end
 
 bot.cmd["/cb_button_1"] = function(callback)
     bot:call('sendMessage', {
-        parse_mode = 'HTML';
         text = 'You press button 1';
         chat_id = callback:getChatId();
     })
@@ -83,7 +81,6 @@ end
 
 bot.cmd["/cb_button_2"] = function(callback)
     bot:call('sendMessage', {
-        parse_mode = 'HTML';
         text = 'You press button 2';
         chat_id = callback:getChatId();
     })
@@ -91,7 +88,6 @@ end
 
 bot.cmd["/cb_button_3"] = function(callback)
     bot:call('sendMessage', {
-        parse_mode = 'HTML';
         text = 'You press button 3';
         chat_id = callback:getChatId();
     })

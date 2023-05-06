@@ -21,6 +21,13 @@ local function init(bot, max_connections)
         local boundary
 
         if params.options then
+            -- Set parse mode
+            if params.options.text or
+                params.options.caption
+            then
+                params.options.parse_mode = bot.parse_mode
+            end
+
             -- Make multipart-data
             body, boundary = mp_encode(params.options)
 
