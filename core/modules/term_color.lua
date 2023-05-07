@@ -25,8 +25,8 @@ local function decorator(color)
 end
 
 return {
-    val  = decorator("38;5;221");
+    val = decorator("38;5;221");
     warn = decorator("0;91");
-    try  = decorator("0;94");
-    err  = decorator("1;91");
+    try = decorator("0;94");
+    err = decorator("1;91");
 }

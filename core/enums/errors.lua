@@ -7,15 +7,17 @@
     ####--------------------------------####
 --]]
 
-local function decorator(color) 
-    return function(str)
-        return ('\27[%sm%s\27[0m'):format(color, str)
-    end
-end
+-- https://core.telegram.org/api/errors
+local errors = {
+    SEE_OTHER = 303;
+    BAD_REQUEST = 400;
+    UNAUTHORIZED = 401;
+    FORBIDDEN = 403;
+    NOT_FOUND = 404;
+    NOT_ACCEPTABLE = 406;
+    FLOOD = 420;
+    TOO_MANY_REQUESTS = 429;
+    INTERNAL = 500;
+}
 
-return {
-    val  = decorator("38;5;221");
-    warn = decorator("0;91");
-    try  = decorator("0;94");
-    err  = decorator("1;91");
-} 
+return errors

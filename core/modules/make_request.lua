@@ -25,7 +25,7 @@ local function init(bot, max_connections)
             if params.options.text or
                 params.options.caption
             then
-                params.options.parse_mode = bot.parse_mode
+                params.options.parse_mode = params.options.parse_mode or bot.parse_mode
             end
 
             -- Make multipart-data
@@ -40,7 +40,7 @@ local function init(bot, max_connections)
         end
 
         -- Request
-        local url = 'https://api.telegram.org'..string.format("/bot%s/%s", bot.token, params.method)
+        local url = 'https://api.telegram.org/bot'..bot.token..'/'..params.method
         local data = client:request('POST', url, body, opts)
 
         -- Decode json

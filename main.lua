@@ -5,7 +5,6 @@
 --
 
 -- Init bot core
-local conf = require 'libs.lua-ini.ini'.loadParse("parameters.ini")
 local bot = require 'core.bot'
 :setOptions({
     token = os.getenv('BOT_TOKEN');
@@ -66,7 +65,7 @@ end
 -- Command /send_photo Example
 -- bot.cmd["/send_photo"] = function(message)
 --     bot:call('sendPhoto', {
---         photo = bot.Photo('image.png');
+--         photo = bot.inputFile('image.png');
 --         caption = 'Omg! It\'s photo';
 --         chat_id = message:getChatId();
 --     })
@@ -93,10 +92,14 @@ bot.cmd["/cb_button_3"] = function(callback)
     })
 end
 
--- Get commands
-bot.event.onGetEntityBotCommand = function(message)
+-- Get Entities
+bot.event.onGetEntities = function(message)
+    local entities = message:getEntities()
+
     -- Call command
-    bot.Command(message)
+    if entities[1] and entities[1].type == 'bot_command' then
+        bot.Command(message)
+    end
 end
 
 -- Get callback

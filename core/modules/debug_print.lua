@@ -8,7 +8,7 @@
 --]]
 
 local log = require 'log'
-local c = require 'core.util.term_color'
+local c = require 'core.modules.term_color'
 
 -- Debug Pretty Print
 local function init(bot)

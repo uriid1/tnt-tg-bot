@@ -1,10 +1,10 @@
 --[[
-   ####--------------------------------####
-   #--# Author:   by uriid1            #--#
-   #--# License:  GNU GPLv3            #--#
-   #--# Telegram: @main_moderator      #--#
-   #--# E-mail:   appdurov@gmail.com   #--#
-   ####--------------------------------####
+    ####--------------------------------####
+    #--# Author:   by uriid1            #--#
+    #--# License:  GNU GPLv3            #--#
+    #--# Telegram: @main_moderator      #--#
+    #--# E-mail:   appdurov@gmail.com   #--#
+    ####--------------------------------####
 --]]
 
 local function set_hours(date, h, m, s)

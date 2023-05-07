@@ -8,12 +8,12 @@
 --]]
 
 local function init(bot)
-    local error_enum = require 'core.models.error_enum'
-    local dprint = require 'core.util.debug_print' (bot)
+    local error_enum = require 'core.enums.errors'
+    local dprint = require 'core.modules.debug_print' (bot)
 
     return function(data)
         -- Debug
-        dprint('[Error] error_code: %d description: %s', data.error_code, data.description)
+        dprint('[Error] error_code: %d | description: %s', data.error_code, data.description)
 
         -- Handling error code
         for err_name, error_code in pairs(error_enum) do

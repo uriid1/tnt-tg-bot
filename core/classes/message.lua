@@ -76,4 +76,10 @@ function message:getUserReply()
     end
 end
 
+function message:getEntities()
+    if self.message and self.message.entities then
+        return self.message.entities
+    end
+end
+
 return message

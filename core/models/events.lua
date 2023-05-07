@@ -6,6 +6,7 @@
     #--# E-mail:   appdurov@gmail.com   #--#
     ####--------------------------------####
 --]]
+
 local f = function() end
 
 local event = {
@@ -78,14 +79,7 @@ local event = {
     ["onGetVoice"] = f;
 
     -- Entities
-    ["onGetEntityMention"] = f;
-    ["onGetEntityHashtag"] = f;
-    ["onGetEntityCashtag"] = f;
-    ["onGetEntityUrl"] = f;
-    ["onGetEntityEmail"] = f;
-    ["onGetEntityPhone"] = f;
-    ["onGetEntityFormattedText"] = f;
-    ["onGetEntityBotCommand"] = f;
+    ["onGetEntities"] = f;
 
     -- Error Handling
     ["onCommandErrorHandle"] = f;
