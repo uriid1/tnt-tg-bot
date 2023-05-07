@@ -13,7 +13,13 @@ local function init(bot)
 
     return function(data)
         -- Debug
-        dprint('[Error] error_code: %d | description: %s', data.error_code, data.description)
+        if data.body then
+            dprint('[Error] error_code: %d | description: %s', data.error_code, data.description)
+        elseif data.status then
+            dprint('[Error] status: %d | reason: %s', data.status, data.reason)
+        else
+            dprint(data)
+        end
 
         -- Handling error code
         for err_name, error_code in pairs(error_enum) do

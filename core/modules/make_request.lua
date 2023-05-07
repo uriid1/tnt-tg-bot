@@ -43,6 +43,11 @@ local function init(bot, max_connections)
         local url = 'https://api.telegram.org/bot'..bot.token..'/'..params.method
         local data = client:request('POST', url, body, opts)
 
+        if not data.body then
+            Error(data)
+            return
+        end
+
         -- Decode json
         local responceBody = json.decode(data.body)
 

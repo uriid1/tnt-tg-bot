@@ -16,6 +16,16 @@ local bot = require 'core.bot'
 local log = require 'log'
 local dec = require 'extensions.html-decoration'
 
+local InputFile = require 'core.types.InputFile'
+local InputMedia = require 'core.types.InputMedia'
+local InputMediaPhoto = require 'core.types.InputMediaPhoto'
+
+local InlineKeyboardMarkup = require 'core.types.InlineKeyboardMarkup'
+local InlineKeyboardButton = require 'core.types.InlineKeyboardButton'
+
+local ReplyKeyboardMarkup = require 'core.types.ReplyKeyboardMarkup'
+local KeyboardButton = require 'core.types.KeyboardButton'
+
 -- Command /start Example
 bot.cmd["/start"] = function(message)
     -- Get command arguments
@@ -47,21 +57,6 @@ bot.cmd["/start"] = function(message)
     })
 end
 
--- Command /inline Example
-bot.cmd["/inline"] = function(callback)
-    local keyboard = bot:inlineKeyboardInit()
-    bot:inlineCallbackButton(keyboard, {text = 'Button 1', callback = '/cb_button_1', row = 1})
-    bot:inlineCallbackButton(keyboard, {text = 'Button 2', callback = '/cb_button_2', row = 2})
-    bot:inlineCallbackButton(keyboard, {text = 'Button 2', callback = '/cb_button_2', row = 3})
-
-    -- Send callback buttons
-    bot:call('sendMessage', {
-        text = 'Buttons!';
-        chat_id = callback:getChatId();
-        reply_markup = keyboard:toJson();
-    })
-end
-
 -- Command /send_photo Example
 -- bot.cmd["/send_photo"] = function(message)
 --     bot:call('sendPhoto', {
@@ -71,24 +66,80 @@ end
 --     })
 -- end
 
-bot.cmd["/cb_button_1"] = function(callback)
+
+bot.cmd["/send_reply_buttons_1"] = function(message)
     bot:call('sendMessage', {
-        text = 'You press button 1';
-        chat_id = callback:getChatId();
+        text = 'Тест кнопок';
+        chat_id = message:getChatId();
+        reply_markup = ReplyKeyboardMarkup({
+            keyboard = {
+                { KeyboardButton(nil, { text = 'Button 1' }), KeyboardButton(nil, { text = 'Button 2' }) };
+                { KeyboardButton(nil, { text = 'Button 3' }) };
+            };
+
+            one_time_keyboard = true
+        });
     })
 end
 
-bot.cmd["/cb_button_2"] = function(callback)
+bot.cmd["/send_reply_buttons_2"] = function(message)
+    local keyboard = ReplyKeyboardMarkup({ one_time_keyboard = true })
+    KeyboardButton(keyboard, { text = 'Button 1' })
+    KeyboardButton(keyboard, { text = 'Button 2'; row = 2 })
+    KeyboardButton(keyboard, { text = 'Button 3'; row = 2 })
+
     bot:call('sendMessage', {
-        text = 'You press button 2';
-        chat_id = callback:getChatId();
+        text = 'Тест кнопок';
+        chat_id = message:getChatId();
+        reply_markup = keyboard:toJson()
     })
 end
 
-bot.cmd["/cb_button_3"] = function(callback)
+
+-- Тест отправки inline кнопок
+bot.cmd["/send_inline_buttons_1"] = function(message)
     bot:call('sendMessage', {
-        text = 'You press button 3';
-        chat_id = callback:getChatId();
+        text = 'Тест кнопок';
+        chat_id = message:getChatId();
+        reply_markup = InlineKeyboardMarkup({
+            inline_keyboard = {
+                { InlineKeyboardButton(nil, { text = 'Button 1',  callback_data = '/cb_close'; }) };
+                { InlineKeyboardButton(nil, { text = 'Button 2',  callback_data = '/cb_close'; }) }
+            }
+        })
+    })
+end
+
+bot.cmd["/send_inline_buttons_2"] = function(message)
+    local keyboard = InlineKeyboardMarkup()
+    InlineKeyboardButton(keyboard, { text = 'Button 1',  callback_data = '/cb_close'; });
+    InlineKeyboardButton(keyboard, { text = 'Button 2',  callback_data = '/cb_close'; row = 1 })
+
+    bot:call('sendMessage', {
+        text = 'Тест кнопок';
+        chat_id = message:getChatId();
+        reply_markup = keyboard:toJson()
+    })
+end
+
+bot.cmd["/send_media"] = function(message)
+    local data = InputMedia({
+        InputMediaPhoto({
+            media = 'AgACAgIAAxkDAAIJ52RX2qzt6oCMY5P9Ge9uVuZgTDH_AAL-yTEb9gABuEp-yXhmUY3rfAEAAwIAA3MAAy8E';
+            caption = 'Photo with file_id'
+        });
+        InputMediaPhoto({
+            media = 'attach://'..'image.png';
+            caption = 'Photo with disk'
+        });
+        InputMediaPhoto({
+            media = 'https://raw.githubusercontent.com/uriid1/scrfmp/main/AppleWar/lvl5.png';
+            caption = 'Photo with url'
+        });
+    });
+
+    bot:call('sendMediaGroup', data, {
+        chat_id = message:getChatId()
     })
 end
 

@@ -38,9 +38,8 @@ function bot:setOptions(options)
 
     -- Enents
     self.event = require 'core.models.events'
-    -- Middlewares
-    self.inputFile = require 'core.middlewares.inputFile'
 
+    -- Table of commands
     self.cmd = {}
 
     return self
@@ -50,136 +49,21 @@ end
 local f = function() end
 
 -- This function allows you to execute any method
-function bot:call(method, options)
+function bot:call(method, options, ...)
+    if ... then
+        for i = 1, select('#', ...) do
+            local data = select(i, ...)
+            if type(data) == 'table' then
+                for key, val in pairs(data) do
+                    options[key] = val
+                end
+            end
+        end
+    end
+
     return request {
         method = method;
         options = options;
-    }
-end
-
--- Inline Keyboard
---
--- Inline init
-function bot:inlineKeyboardInit()
-    local keyboard = {}
-    keyboard.__index = keyboard
-
-    local obj = {
-        inline_keyboard = {}
-    }
-
-    function keyboard:toJson()
-        return json.encode(self)
-    end
-
-    setmetatable(obj, keyboard)
-
-    return obj
-end
-
-bot.inlineKeyboardMarkup = bot.inlineKeyboardInit
-
--- InlineKeyboardButton
-function bot:inlineKeyboardButton(keyboard, opts)
-    -- Add to line
-    if not keyboard["inline_keyboard"][opts.row] then
-        table.insert(keyboard["inline_keyboard"], { opts })
-        return
-    end
-
-    -- Add to row
-    table.insert(keyboard["inline_keyboard"][opts.row or 1], opts)
-end
-
--- Add inline URL button
-function bot:inlineUrlButton(keyboard, opts)
-    local text = opts.text
-    local url = opts.url
-    local row = opts.row
-
-    local button = {
-        url = url;
-        text = text;
-    }
-
-    -- Add to line
-    if not keyboard["inline_keyboard"][row] then
-        table.insert(keyboard["inline_keyboard"], {button})
-        return
-    end
-
-    -- Add to row
-    table.insert(keyboard["inline_keyboard"][row or 1], button)
-end
-
--- Add inline callback button
-function bot:inlineCallbackButton(keyboard, opts)
-    local text = opts.text
-    local callback = opts.callback
-    local row = opts.row
-
-    local button = {
-        callback_data = callback;
-        text = text;
-    }
-
-    -- Add to line
-    if not keyboard["inline_keyboard"][row] then
-        table.insert(keyboard["inline_keyboard"], {button})
-        return
-    end
-
-    -- Add to row
-    table.insert(keyboard["inline_keyboard"][row or 1], button)
-end
-
-
--- Reply Reyboard
---
--- https://core.telegram.org/bots/api#replykeyboardmarkup
-function bot:replyKeyboardInit(opts)
-    local keyboard = {}
-    keyboard.__index = keyboard
-
-    local obj = {
-        keyboard = {}
-    }
-
-    function keyboard:toJson()
-        if opts then
-            for k,v in pairs(opts) do
-                self[k] = v
-            end
-        end
-
-        return json.encode(self)
-    end
-
-    setmetatable(obj, keyboard)
-
-    return obj
-end
-
-bot.replyKeyboardMarkup = bot.replyKeyboardInit
-
--- https://core.telegram.org/bots/api#keyboardbutton
-function bot:keyboardButton(keyboard, opts)
-    local row = opts.row
-
-    -- Add to line
-    if not keyboard["keyboard"][row] then
-        table.insert(keyboard["keyboard"], { opts })
-        return
-    end
-
-    -- Add to row
-    table.insert(keyboard["keyboard"][row or 1], opts)
-end
-
--- https://core.telegram.org/bots/api#replykeyboardremove
-function bot:ReplyKeyboardRemove()
-    return json.encode {
-        remove_keyboard = true
     }
 end
 
@@ -219,10 +103,10 @@ local send_certificate = function(options)
     end
 
     -- Certificate
-    local cert_data
+    local data
     if options.certificate ~= "non-self-signed" or options.certificate ~= false then
         local cert = fio.open(options.certificate, "O_RDONLY")
-        cert_data = {
+        data = {
             filename = options.certificate:match("[^/]*.$");
             data = cert:read();
         }
@@ -232,7 +116,7 @@ local send_certificate = function(options)
     -- Set webhook
     return bot:call('setWebhook', {
         url = options.url;
-        certificate = cert_data;
+        certificate = data;
         drop_pending_updates = options.drop_pending_updates or false;
         allowed_updates = options.allowed_updates or nil
     })
@@ -305,8 +189,7 @@ getUpdates = function(first_start, offset, timeout, token, client)
     if not first_start then
         if type(body) == 'table' then
             if not body.ok then
-                dprint(("[Error] error_code: %s | description: %s")
-                :format(body.error_code, body.description))
+                dprint("[Error] error_code: %s | description: %s", body.error_code, body.description)
                 return
             end
 
