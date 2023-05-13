@@ -1,15 +1,13 @@
--- Simple bot
--- Commands:
--- /start
--- /inline
+--
+-- Examples of how some methods and commands work
 --
 
 -- Init bot core
 local bot = require 'core.bot'
 :setOptions({
-    token = os.getenv('BOT_TOKEN');
-    debug = true;
-    parse_mode = 'HTML';
+    token = os.getenv('BOT_TOKEN'); -- Your bot Token
+    debug = true;                   -- This option enables debugging
+    parse_mode = 'HTML';            -- Mode for parsing entities
 })
 
 -- Load all libs/extensions
@@ -26,11 +24,9 @@ local InlineKeyboardButton = require 'core.types.InlineKeyboardButton'
 local ReplyKeyboardMarkup = require 'core.types.ReplyKeyboardMarkup'
 local KeyboardButton = require 'core.types.KeyboardButton'
 
--- Command /start Example
+-- Command /start
+-- Method getMe
 bot.cmd["/start"] = function(message)
-    -- Get command arguments
-    local args = message:getArguments({count = 3})
-
     -- Get bot information
     local data = bot:call('getMe')
 
@@ -57,19 +53,40 @@ bot.cmd["/start"] = function(message)
     })
 end
 
--- Command /send_photo Example
--- bot.cmd["/send_photo"] = function(message)
---     bot:call('sendPhoto', {
---         photo = bot.inputFile('image.png');
---         caption = 'Omg! It\'s photo';
---         chat_id = message:getChatId();
---     })
--- end
+-- Command /args_test
+-- Paring argumnts
+bot.cmd['/args_test'] = function(message)
+    local args = message:getArguments({count=3})
 
+    local arg1 = args[1]
+    local arg2 = args[2] or 'nil'
+    local arg3 = args[3] or 'nil'
 
+    local text = 'arg1: ' .. arg1 .. '\n'
+    .. 'arg2: ' .. arg2 .. '\n'
+    .. 'arg3: ' .. arg3
+
+    bot:call("sendMessage", {
+        text = text;
+        chat_id = message:getChatId() 
+    })
+end
+
+-- Command /send_photo
+-- Method sendPhoto
+bot.cmd["/send_photo"] = function(message)
+    bot:call('sendPhoto', {
+        photo = InputFile('/path/to/image.png');
+        caption = 'Omg! It\'s photo from disk!';
+        chat_id = message:getChatId();
+    })
+end
+
+-- Command /send_reply_buttons_1
+-- Method sendMessage with reply_markup
 bot.cmd["/send_reply_buttons_1"] = function(message)
     bot:call('sendMessage', {
-        text = 'Тест кнопок';
+        text = 'Reply keyboard buttons test 1';
         chat_id = message:getChatId();
         reply_markup = ReplyKeyboardMarkup({
             keyboard = {
@@ -82,24 +99,27 @@ bot.cmd["/send_reply_buttons_1"] = function(message)
     })
 end
 
+-- Command /send_reply_buttons_2
+-- Method sendMessage with reply_markup and keyboard buttons
 bot.cmd["/send_reply_buttons_2"] = function(message)
+    -- Another option for building buttons
     local keyboard = ReplyKeyboardMarkup({ one_time_keyboard = true })
     KeyboardButton(keyboard, { text = 'Button 1' })
     KeyboardButton(keyboard, { text = 'Button 2'; row = 2 })
     KeyboardButton(keyboard, { text = 'Button 3'; row = 2 })
 
     bot:call('sendMessage', {
-        text = 'Тест кнопок';
+        text = 'Reply keyboard buttons test 2';
         chat_id = message:getChatId();
         reply_markup = keyboard:toJson()
     })
 end
 
-
--- Тест отправки inline кнопок
+-- Command send_inline_buttons_1
+-- Method sendMessage with reply_markup
 bot.cmd["/send_inline_buttons_1"] = function(message)
     bot:call('sendMessage', {
-        text = 'Тест кнопок';
+        text = 'Inline keyboard buttons test 1';
         chat_id = message:getChatId();
         reply_markup = InlineKeyboardMarkup({
             inline_keyboard = {
@@ -110,19 +130,24 @@ bot.cmd["/send_inline_buttons_1"] = function(message)
     })
 end
 
+-- Command send_inline_buttons_1
+-- Method sendMessage with reply_markup and inline buttons
 bot.cmd["/send_inline_buttons_2"] = function(message)
+    -- Another option for building buttons
     local keyboard = InlineKeyboardMarkup()
     InlineKeyboardButton(keyboard, { text = 'Button 1',  callback_data = '/cb_close'; });
     InlineKeyboardButton(keyboard, { text = 'Button 2',  callback_data = '/cb_close'; row = 1 })
 
     bot:call('sendMessage', {
-        text = 'Тест кнопок';
+        text = 'Inline keyboard buttons test 2';
         chat_id = message:getChatId();
         reply_markup = keyboard:toJson()
     })
 end
 
-bot.cmd["/send_media"] = function(message)
+-- Command /send_media_group
+-- Method sendMediaGroup
+bot.cmd["/send_media_group"] = function(message)
     local data = InputMedia({
         InputMediaPhoto({
             media = 'AgACAgIAAxkDAAIJ52RX2qzt6oCMY5P9Ge9uVuZgTDH_AAL-yTEb9gABuEp-yXhmUY3rfAEAAwIAA3MAAy8E';
@@ -143,23 +168,23 @@ bot.cmd["/send_media"] = function(message)
     })
 end
 
--- Get Entities
+-- Event of getting entities
 bot.event.onGetEntities = function(message)
     local entities = message:getEntities()
 
-    -- Call command
+    -- Call bot command
     if entities[1] and entities[1].type == 'bot_command' then
         bot.Command(message)
     end
 end
 
--- Get callback
+-- Event of getting callbacks
 bot.event.onCallbackQuery = function(callbackQuery)
-    -- Call callback
+    -- Callback processing
     bot.CallbackCommand(callbackQuery)
 end
 
--- Event Example
+-- Event of getting any message
 bot.event.onGetMessageText = function(message)
     -- Send message
     bot:call('sendMessage', {
@@ -170,9 +195,13 @@ bot.event.onGetMessageText = function(message)
 end
 
 -- Run bot
+-- Use long polling to develop
+-- and webhook for release
+--
 -- Enable long polling
 bot:startLongPolling()
 
+-- Setup Web Hook
 -- bot:startWebHook({
 --     host = os.getenv('BOT_HOST');
 --     port = os.getenv('BOT_PORT');

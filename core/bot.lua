@@ -8,19 +8,19 @@
 --]]
 
 -- Init
-local bot = {}
+local bot = { _version = '0.1.0' }
 
 -- Load all libs
-require "extensions.string-extension"
-require "extensions.table-extension"
+require 'extensions.string-extension'
+require 'extensions.table-extension'
 local fiber = require 'fiber'
 local json = require 'json'
 local fio = require 'fio'
-local log = require 'log'
 local dprint = require 'core.modules.debug_print' (bot)
 local request = require 'core.modules.make_request' (bot)
 local event_switch = require 'core.modules.event_switch' (bot)
 local stats = require 'core.classes.stats' :new() :append('rps')
+local parse_mode = require 'core.enums.parse_mode'
 
 -- Set bot options
 function bot:setOptions(options)
@@ -30,7 +30,7 @@ function bot:setOptions(options)
 
     -- Set default options
     self.creator_id = 0
-    self.parse_mode = "HTML"
+    self.parse_mode = parse_mode.HTML
 
     -- Stats of RPS
     self.max_rps = 0
@@ -44,9 +44,6 @@ function bot:setOptions(options)
 
     return self
 end
-
--- Anonymous function
-local f = function() end
 
 -- This function allows you to execute any method
 function bot:call(method, options, ...)
@@ -70,44 +67,44 @@ end
 -- Command handler
 function bot.Command(message)
     local command = message:getArguments({count=1})[1]
-    if not bot["cmd"][command] then
+    if not bot['cmd'][command] then
         return
     end
 
-    dprint("[command] %s", command)
+    dprint('[command] %s', command)
 
-    bot["cmd"][command](message)
+    bot['cmd'][command](message)
 end
 
 -- Callback handler
 function bot.CallbackCommand(callbackQuery)
     local command = callbackQuery:getArguments({count=1})[1]
-    if not bot["cmd"][command] then
+    if not bot['cmd'][command] then
         return
     end
 
-    dprint("[callback] %s", command)
+    dprint('[callback] %s', command)
 
-    bot["cmd"][command](callbackQuery)
+    bot['cmd'][command](callbackQuery)
 end
 
 -- Send cert
 --
 local send_certificate = function(options)
     if type(options) ~= 'table' or
-        type(options.url) ~= "string" or
-        type(options.certificate) ~= "string"
+        type(options.url) ~= 'string' or
+        type(options.certificate) ~= 'string'
     then
-        dprint("[Error] Invalid options to start a webhook")
+        dprint('[Error] Invalid options to start a webhook')
         return
     end
 
-    -- Certificate
+    -- Read certificate
     local data
-    if options.certificate ~= "non-self-signed" or options.certificate ~= false then
-        local cert = fio.open(options.certificate, "O_RDONLY")
+    if options.certificate ~= 'non-self-signed' or options.certificate ~= false then
+        local cert = fio.open(options.certificate, 'O_RDONLY')
         data = {
-            filename = options.certificate:match("[^/]*.$");
+            filename = options.certificate:match('[^/]*.$');
             data = cert:read();
         }
         cert:close()
@@ -124,17 +121,16 @@ end
 
 -- Start webhook 
 function bot:startWebHook(options)
-    -- For calc RPS
+    -- RPS
     local rps_in_sec = 0
     local time = os.time()
     
+    -- Server setup
     local http_server = require 'http.server'
     local httpd = http_server.new(options.host, options.port)
-    httpd:route({
-        path = options.path or '';
-        method = 'POST';
-        template = '200';
-    }, function(req)
+
+    --
+    local function callback(req)
         -- Manage RPS
         --
         rps_in_sec = rps_in_sec + 1
@@ -160,21 +156,23 @@ function bot:startWebHook(options)
 
             bot.avg_rps = stats:get('rps')
         end)
-    end)
+    end
+
+    httpd:route({
+        path = options.path or '';
+        method = 'POST';
+        template = '200';
+    }, callback)
 
     -- 
     httpd:start()
-    dprint("[true] HTTP Server listening at 0.0.0.0:" .. options.port)
+    dprint('[true] HTTP Server listening at 0.0.0.0:' .. options.port)
 
     --
     local res = send_certificate(options)
     if not res.ok then
-        dprint(("[%s] description: %s"):format(res.ok, res.description))
-
-        -- Exit
-        if not res.ok then
-            os.exit()
-        end
+        dprint('[%s] description: %s', res.ok, res.description)
+        os.exit()
     end
 end
 
@@ -182,18 +180,18 @@ end
 --
 local getUpdates
 getUpdates = function(first_start, offset, timeout, token, client)
-    local res = client:request('GET', 'https://api.telegram.org'..string.format("/bot%s/getUpdates?offset=%d&timeout=%d", token, offset, timeout))
+    local res = client:request('GET', 'https://api.telegram.org'..string.format('/bot%s/getUpdates?offset=%d&timeout=%d', token, offset, timeout))
     local body = json.decode(res.body)
 
     -- First start
     if not first_start then
         if type(body) == 'table' then
             if not body.ok then
-                dprint("[Error] error_code: %s | description: %s", body.error_code, body.description)
+                dprint('[Error] error_code: %s | description: %s', body.error_code, body.description)
                 return
             end
 
-            dprint("[true] Long polling work")
+            dprint('[true] Long polling work')
         end
     end
 
@@ -206,7 +204,7 @@ getUpdates = function(first_start, offset, timeout, token, client)
         end
     else
         -- Debug
-        dprint("[false] Long polling.")
+        dprint('[false] Long polling.')
     end
 
     -- Get new updates
@@ -215,7 +213,7 @@ end
 
 function bot:startLongPolling(options)
     if options and type(options) ~= 'table' then
-        dprint("[Error] Invalid options to start a long polling")
+        dprint('[Error] Invalid options to start a long polling')
         return
     end
 
@@ -231,7 +229,7 @@ function bot:startLongPolling(options)
         polling_timeout = options.timeout or 60
     end
 
-    dprint("[true] Gettin Updates")
+    dprint('[true] Gettin Updates')
 
     -- Start long polling
     getUpdates(false, offset, polling_timeout, self.token, client)

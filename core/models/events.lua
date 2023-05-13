@@ -7,90 +7,88 @@
     ####--------------------------------####
 --]]
 
-local f = function() end
-
 local event = {
     -- Update
-    ["onChosenInlineResult"] = f;
-    ["ShippingQuery"] = f;
-    ["PreCheckoutQuery"] = f;
-    ["onPoll"] = f;
-    ["onPollAnswer"] = f;
-    ["onMyChatMember"] = f;
-    ["onChatMember"] = f;
-    ["onChatJoinRequest"] = f;
-    ["onChannelPost"] = f;
-    ["onEditedChannelPost"] = f;
+    onChosenInlineResult = nil;
+    ShippingQuery = nil;
+    PreCheckoutQuery = nil;
+    onPoll = nil;
+    onPollAnswer = nil;
+    onMyChatMember = nil;
+    onChatMember = nil;
+    onChatJoinRequest = nil;
+    onChannelPost = nil;
+    onEditedChannelPost = nil;
 
-    ["onEditedMessage"] = f;
-    ["onGetMessage"] = f;
-    ["onGetMessageText"] = f;
-    ["onInlineQuery"] = f;
+    onEditedMessage = nil;
+    onGetMessage = nil;
+    onGetMessageText = nil;
+    onInlineQuery = nil;
 
     -- CallBack
-    ["onCallbackQuery"] = f;
+    onCallbackQuery = nil;
 
     -- Chat
-    ["onSenderChat"] = f;
-    ["onNewChatTitle"] = f;
-    ["onNewChatPhoto"] = f;
-    ["onDeleteChatPhoto"] = f;
-    ["onGroupChatCreated"] = f;
-    ["onSupergroupChatCreated"] = f;
-    ["onChannelChatCreated"] = f;
-    ["onMigrateToChatId"] = f;
-    ["onMigrateFromChatId"] = f;
-    ["onNewChatMember"] = f;
-    ["onLeftChatMember"] = f;
+    onSenderChat = nil;
+    onNewChatTitle = nil;
+    onNewChatPhoto = nil;
+    onDeleteChatPhoto = nil;
+    onGroupChatCreated = nil;
+    onSupergroupChatCreated = nil;
+    onChannelChatCreated = nil;
+    onMigrateToChatId = nil;
+    onMigrateFromChatId = nil;
+    onNewChatMember = nil;
+    onLeftChatMember = nil;
 
     -- Payment
-    ["onInvoice"] = f;
-    ["onSuccessfulPayment"] = f;
+    onInvoice = nil;
+    onSuccessfulPayment = nil;
 
     -- Passport
-    ["onPassportData"] = f;
+    onPassportData = nil;
 
     -- Video Chat
-    ["onVideoChatScheduled"] = f;
-    ["onVideoChatStarted"] = f;
-    ["onVideoChatEnded"] = f;
-    ["onVideoChatParticipantsInvited"] = f;
+    onVideoChatScheduled = nil;
+    onVideoChatStarted = nil;
+    onVideoChatEnded = nil;
+    onVideoChatParticipantsInvited = nil;
 
     -- Forward
-    ["onForwardFrom"] = f;
-    ["onForwardFromChat"] = f;
+    onForwardFrom = nil;
+    onForwardFromChat = nil;
 
     -- Via bot
-    ["onViaBot"] = f;
+    onViaBot = nil;
 
     -- Media
-    ["onGetPhoto"] = f;
-    ["onGetVideo"] = f;
-    ["onGetAnimation"] = f;
-    ["onGetDocument"] = f;
-    ["onGetLocation"] = f;
-    ["onGetPoll"] = f;
-    ["onGetAudio"] = f;
-    ["onGetContact"] = f;
-    ["onGetDice"] = f;
-    ["onGetGame"] = f;
-    ["onGetVideoNote"] = f;
-    ["onGetSticker"] = f;
-    ["onGetVoice"] = f;
+    onGetPhoto = nil;
+    onGetVideo = nil;
+    onGetAnimation = nil;
+    onGetDocument = nil;
+    onGetLocation = nil;
+    onGetPoll = nil;
+    onGetAudio = nil;
+    onGetContact = nil;
+    onGetDice = nil;
+    onGetGame = nil;
+    onGetVideoNote = nil;
+    onGetSticker = nil;
+    onGetVoice = nil;
 
     -- Entities
-    ["onGetEntities"] = f;
+    onGetEntities = nil;
 
     -- Error Handling
-    ["onCommandErrorHandle"] = f;
-    ["onEventErrorHandle"] = f;
+    onCommandErrorHandle = nil;
+    onEventErrorHandle = nil;
 
     -- Request error hl
-    ["onRequestErr"] = f;
+    onRequestErr = nil;
 
     -- Other
-    ["onInformSpammer"] = f;
-    ["onUnknownUpdate"] = f; 
+    onInformSpammer = nil;
+    onUnknownUpdate = nil; 
 }
 
 return event

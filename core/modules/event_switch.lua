@@ -15,8 +15,9 @@ local dprint
 
 -- Event handler
 local call_event = function(event, data)
-    local data = processMessage(data)
-    return event(data)
+    if event then
+        return event(processMessage(data))
+    end
 end
 
 local function event_switch(result)
