@@ -101,7 +101,7 @@ local send_certificate = function(options)
 
     -- Read certificate
     local data
-    if options.certificate ~= 'non-self-signed' or options.certificate ~= false then
+    if options.certificate then
         local cert = fio.open(options.certificate, 'O_RDONLY')
         data = {
             filename = options.certificate:match('[^/]*.$');
@@ -127,7 +127,9 @@ function bot:startWebHook(options)
     
     -- Server setup
     local http_server = require 'http.server'
-    local httpd = http_server.new(options.host, options.port)
+    local host = options.host or '0.0.0.0'
+    local port = options.port or 8081
+    local httpd = http_server.new(host, port)
 
     --
     local function callback(req)

@@ -33,4 +33,34 @@ end
 bot:startLongPolling()
 ```
 
-*See main.lua for more examples 
+*See main.lua for more examples
+
+# WebHook
+*Using self-signed certificates
+```lua
+bot:startWebHook({
+    -- Server opts
+    port = 8081;
+    url = 'https://123.123.123.124/my_bot_location';
+    certificate = '/etc/path/to/ssl/public.pem';
+
+    -- Optional webhoo params
+    -- https://core.telegram.org/bots/api#setwebhook
+    drop_pending_updates = true;
+    allowed_updates = '["message", "my_chat_member", "callback_query"]'
+})
+```
+
+*Using NON self-signed certificates
+```lua
+bot:startWebHook({
+    -- Server opts
+    port = 8081;
+    url = 'https://mycoolssite.com/my_bot_location';
+
+    -- Optional webhoo params
+    -- https://core.telegram.org/bots/api#setwebhook
+    drop_pending_updates = true;
+    allowed_updates = '["message", "my_chat_member", "callback_query"]'
+})
+```
