@@ -44,7 +44,7 @@ bot:startWebHook({
     url = 'https://123.123.123.124/my_bot_location';
     certificate = '/etc/path/to/ssl/public.pem';
 
-    -- Optional webhoo params
+    -- Optional webhook params
     -- https://core.telegram.org/bots/api#setwebhook
     drop_pending_updates = true;
     allowed_updates = '["message", "my_chat_member", "callback_query"]'
@@ -58,7 +58,7 @@ bot:startWebHook({
     port = 8081;
     url = 'https://mycoolssite.com/my_bot_location';
 
-    -- Optional webhoo params
+    -- Optional webhook params
     -- https://core.telegram.org/bots/api#setwebhook
     drop_pending_updates = true;
     allowed_updates = '["message", "my_chat_member", "callback_query"]'

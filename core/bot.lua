@@ -13,7 +13,6 @@ local bot = { _version = '0.1.0' }
 -- Load all libs
 require 'extensions.string-extension'
 require 'extensions.table-extension'
-local fiber = require 'fiber'
 local json = require 'json'
 local fio = require 'fio'
 local dprint = require 'core.modules.debug_print' (bot)
@@ -151,13 +150,9 @@ function bot:startWebHook(options)
         end
 
         --
-        fiber.create(function()
-            local result = req:json()
+        event_switch(req:json())
 
-            event_switch(result)
-
-            bot.avg_rps = stats:get('rps')
-        end)
+        bot.avg_rps = stats:get('rps')
     end
 
     httpd:route({
