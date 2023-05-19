@@ -1,10 +1,10 @@
 --[[
-    ####--------------------------------####
-    #--# Author:   by uriid1            #--#
-    #--# License:  GNU GPLv3            #--#
-    #--# Telegram: @main_moderator      #--#
-    #--# E-mail:   appdurov@gmail.com   #--#
-    ####--------------------------------####
+   ####--------------------------------####
+   #--# Author:   by uriid1            #--#
+   #--# License:  GNU GPLv3            #--#
+   #--# Telegram: @main_moderator      #--#
+   #--# E-mail:   appdurov@gmail.com   #--#
+   ####--------------------------------####
 --]]
 
 local function set_hours(date, h, m, s)
@@ -26,7 +26,7 @@ end
 
 local function to_unix(date)
    if type(date) ~= 'string' then
-      return os.time()
+      return nil
    end
 
    local yy, mm, dd, hh, min, sec = date:match('^(%d+)%-(%d+)%-(%d+)T(%d+):(%d+):(%d+)Z$')

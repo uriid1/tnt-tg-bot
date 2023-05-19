@@ -7,18 +7,9 @@
     ####--------------------------------####
 --]]
 
---- ("Hello")[1] -> H
-debug.getmetatable("").__index = function(self, n)
-    if type(n) == "number" then
-        return self:sub(n, n)
-    end
-
-    return string[n]
-end
-
 -- AAABBBCCC -> ABC
 string.delrep = function(text, optional)
-    local sub    = optional and optional.sub    or string.sub
+    local sub = optional and optional.sub or string.sub
     local gmatch = optional and optional.gmatch or string.gmatch
 
     local cs = sub(text, 1, 1)
@@ -57,8 +48,6 @@ string.trim = function(text)
     return text:match("^%s*(.-)%s*$")
 end
 
--- Sub s
-assert(("Hello")[1] == "H", "ERROR SUB first symbol not 'H'")
 -- Delete rep
 assert(("AABBBCCCCD"):delrep() == "ABCD", "ERROR DELREP result not 'ABCD'")
 -- Split

@@ -10,22 +10,20 @@
 -- Class definition
 --
 local stats = {}
-stats.__index = stats
 
-function stats:new()
-    return setmetatable({}, self)
-end
-
-function stats:append(name, max_count)
+function stats:new(name, max_count)
     self[name] = {
         count = max_count or 10;
         parts = {};
     }
+
+    self.__index = self
+    return setmetatable({}, self)
 end
 
-function stats:set(name, val)
+function stats:put(name, val)
     if not self[name] then
-        return
+        return nil
     end
 
     if #self[name] == self.count then
@@ -35,9 +33,9 @@ function stats:set(name, val)
     table.insert(self[name].parts, val)
 end
 
-function stats:get(name)
+function stats:getAverage(name)
     if not self[name] then
-        return
+        return nil
     end
 
     local sum = 0

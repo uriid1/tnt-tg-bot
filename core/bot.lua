@@ -18,7 +18,7 @@ local fio = require 'fio'
 local dprint = require 'core.modules.debug_print' (bot)
 local request = require 'core.modules.make_request' (bot)
 local event_switch = require 'core.modules.event_switch' (bot)
-local stats = require 'core.classes.stats' :new() :append('rps')
+local stats = require 'core.classes.stats' :new('RPS')
 local parse_mode = require 'core.enums.parse_mode'
 
 -- Set bot options
@@ -118,7 +118,7 @@ local send_certificate = function(options)
     })
 end
 
--- Start webhook 
+-- Start webhook
 function bot:startWebHook(options)
     -- RPS
     local rps_in_sec = 0
@@ -130,7 +130,12 @@ function bot:startWebHook(options)
     local port = options.port or 8081
     local httpd = http_server.new(host, port)
 
-    --
+    local route = {
+        path = options.path or '';
+        method = 'POST';
+        template = '200';
+    }
+
     local function callback(req)
         -- Manage RPS
         --
@@ -143,29 +148,26 @@ function bot:startWebHook(options)
                 bot.max_rps = rps_in_sec
             end
 
-            -- In metrics
-            stats:set('rps', rps_in_sec)
+            stats:set('RPS', rps_in_sec)
 
             rps_in_sec = 0
         end
 
-        --
-        event_switch(req:json())
+        local data = req:json()
+        if bot.response_handler then
+            bot.response_handler(event_switch, data)
+        else
+            event_switch(data)
+        end
 
-        bot.avg_rps = stats:get('rps')
+        -- Current average RPS
+        bot.avg_rps = stats:getAverage('RPS')
     end
 
-    httpd:route({
-        path = options.path or '';
-        method = 'POST';
-        template = '200';
-    }, callback)
+    httpd:route(route, callback):start()
 
-    -- 
-    httpd:start()
     dprint('[true] HTTP Server listening at 0.0.0.0:' .. options.port)
 
-    --
     local res = send_certificate(options)
     if not res.ok then
         dprint('[%s] description: %s', res.ok, res.description)
@@ -195,8 +197,14 @@ getUpdates = function(first_start, offset, timeout, token, client)
     if type(body) == 'table' then
         if body.ok then
             for i = 1, #body.result do
-                event_switch(body.result[i])
-                offset = body.result[i].update_id + 1
+                local data = body.result[i]
+                if bot.response_handler then
+                    bot.response_handler(event_switch, data)
+                else
+                    bot.event_switch(data)
+                end
+
+                offset = data.update_id + 1
             end
         end
     else
