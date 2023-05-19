@@ -1,6 +1,6 @@
 # tarantool-telegram-bot
 Telegram Bot API for tarantool <br>
-Beta version 0.1.0
+Beta version 0.1.1
 
 # Usage example
 ```lua
