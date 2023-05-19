@@ -8,7 +8,7 @@
 --]]
 
 -- Init
-local bot = { _version = '0.1.1' }
+local bot = { _version = '0.1.3' }
 
 -- Load all libs
 require 'extensions.string-extension'
