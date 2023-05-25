@@ -77,6 +77,12 @@ function callback:getUserFrom()
     end
 end
 
+function callback:getUserFromId()
+    if self.callback_query and self.callback_query.from then
+        return self.callback_query.from.id
+    end
+end
+
 function callback:getUserMessageFrom()
     if self.message and self.message.from then
         return self.message.from

@@ -201,7 +201,7 @@ getUpdates = function(first_start, offset, timeout, token, client)
                 if bot.response_handler then
                     bot.response_handler(event_switch, data)
                 else
-                    bot.event_switch(data)
+                    event_switch(data)
                 end
 
                 offset = data.update_id + 1

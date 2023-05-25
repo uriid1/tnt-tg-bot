@@ -70,6 +70,12 @@ function message:getUserFrom()
     end
 end
 
+function message:getUserFromId()
+    if self.message and self.message.from then
+        return self.message.from.id
+    end
+end
+
 function message:getUserReply()
     if self.message and self.message.reply_to_message then
         return self.message.reply_to_message
@@ -79,6 +85,24 @@ end
 function message:getEntities()
     if self.message and self.message.entities then
         return self.message.entities
+    end
+end
+
+function message:getLeftChatMember()
+    if self.message and self.message.left_chat_member then
+        return self.message.left_chat_member
+    end
+end
+
+function message:getNewChatMember()
+    if self.message and self.message.new_chat_member then
+        return self.message.new_chat_member
+    end
+end
+
+function message:getNewChatMembers()
+    if self.message and self.message.new_chat_members then
+        return self.message.new_chat_members
     end
 end
 
