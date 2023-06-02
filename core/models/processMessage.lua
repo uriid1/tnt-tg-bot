@@ -9,14 +9,15 @@
 
 local message = require 'core.classes.message'
 local callback = require 'core.classes.callback'
+local chatMember = require 'core.classes.chatMember'
 
 local function processMessage(data)
     if data.message then
-        data = message:new(data)
+        return message:new(data)
     elseif data.callback_query then
-        data = callback:new(data)
-    else
-        data = data
+        return callback:new(data)
+    elseif data.my_chat_member then
+        return chatMember:new(data)
     end
 
     return data

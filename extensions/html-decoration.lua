@@ -83,6 +83,14 @@ function user_url(id, link_name)
     return ('<a href="tg://user?id=%s">%s</a>'):format(id, format(link_name))
 end
 
+-- Comvert object User to link
+function user(User)
+    if not User or (not User.id or not User.first_name) then
+        return 'Nil'
+    end
+    return ('<a href="tg://user?id=%s">%s</a>'):format(User.id, format(User.first_name))
+end
+
 -- Message URL
 function message_url(username, id, link_name)
     return ('<a href="https://t.me/%s/%s">%s</a>'):format(username, id, format(link_name))
@@ -104,6 +112,7 @@ return {
     code = code;
     url = url;
     user_url = user_url;
+    user = user;
     message_url = message_url;
     spoiler = spoiler;
 }

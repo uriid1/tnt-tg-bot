@@ -106,4 +106,28 @@ function message:getNewChatMembers()
     end
 end
 
+function message:isNewChatMember()
+    if self.message and self.message.new_chat_members then
+        return self.message.new_chat_members[1].id == self.message.from.id
+    end
+end
+
+function message:isAddNewChatMember()
+    if self.message and self.message.new_chat_members then
+        return self.message.new_chat_members[1].id ~= self.message.from.id
+    end
+end
+
+function message:isLeftMember()
+    if self.message and self.message.left_chat_member then
+        return self.message.left_chat_member.id == self.message.from.id
+    end
+end
+
+function message:isRemoveMember()
+    if self.message and self.message.left_chat_member then
+        return self.message.left_chat_member.id ~= self.message.from.id
+    end
+end
+
 return message
