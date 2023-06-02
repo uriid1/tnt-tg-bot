@@ -91,8 +91,7 @@ end
 --
 local send_certificate = function(options)
     if type(options) ~= 'table' or
-        type(options.url) ~= 'string' or
-        type(options.certificate) ~= 'string'
+        type(options.url) ~= 'string'
     then
         dprint('[Error] Invalid options to start a webhook')
         return
@@ -169,7 +168,7 @@ function bot:startWebHook(options)
     dprint('[true] HTTP Server listening at 0.0.0.0:' .. options.port)
 
     local res = send_certificate(options)
-    if not res.ok then
+    if res and not res.ok then
         dprint('[%s] description: %s', res.ok, res.description)
         os.exit()
     end
