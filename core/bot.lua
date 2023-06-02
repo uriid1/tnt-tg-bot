@@ -147,7 +147,7 @@ function bot:startWebHook(options)
                 bot.max_rps = rps_in_sec
             end
 
-            stats:set('RPS', rps_in_sec)
+            stats:put('RPS', rps_in_sec)
 
             rps_in_sec = 0
         end
