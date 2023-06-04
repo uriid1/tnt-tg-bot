@@ -56,7 +56,7 @@ bot:startWebHook({
 bot:startWebHook({
     -- Server opts
     port = 8081;
-    url = 'https://mycoolssite.com/my_bot_location';
+    url = 'https://mycoolsite.com/my_bot_location';
 
     -- Optional webhook params
     -- https://core.telegram.org/bots/api#setwebhook

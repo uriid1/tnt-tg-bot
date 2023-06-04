@@ -24,6 +24,8 @@ local InlineKeyboardButton = require 'core.types.InlineKeyboardButton'
 local ReplyKeyboardMarkup = require 'core.types.ReplyKeyboardMarkup'
 local KeyboardButton = require 'core.types.KeyboardButton'
 
+local chat_member_status = require 'core.enums.chat_member_status'
+
 -- Command /start
 -- Method getMe
 bot.cmd["/start"] = function(message)
@@ -192,6 +194,20 @@ bot.event.onGetMessageText = function(message)
         text = dec.bold(message:getText());
         chat_id = message:getChatId();
     })
+end
+
+-- Event of my chat member
+bot.event.onMyChatMember = function(myChatMember)
+    local status = myChatMember:getNewChatMemberStatus()
+   
+    if status == chat_member_status.MEMBER then
+        local ufrom = myChatMember:getUserFrom()
+
+        bot:call('sendMessage', {
+            text = dec.user(ufrom) .. ' - Added me to this chat';
+            chat_id = myChatMember:getChatId();
+        })
+    end
 end
 
 -- Run bot
