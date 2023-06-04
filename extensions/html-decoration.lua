@@ -85,10 +85,32 @@ end
 
 -- Comvert object User to link
 function user(User)
-    if not User or (not User.id or not User.first_name) then
+    if not User then
         return 'Nil'
     end
+
+    if not User.id or not User.first_name then
+        return 'Nil'
+    end
+
     return ('<a href="tg://user?id=%s">%s</a>'):format(User.id, format(User.first_name))
+end
+
+-- Comvert object Chat to link
+function chat(Chat)
+    if not Chat then
+        return 'Nil'
+    end
+
+    if not Chat.id or not Chat.title then
+        return 'Nil'
+    end
+
+    if Chat.invite_link then
+        return ('<a href="%s">%s</a>'):format(Chat.invite_link, format(Chat.title))
+    end
+
+    return ('<a href="https://t.me/%s">%s</a>'):format(Chat.username, format(Chat.title))
 end
 
 -- Message URL
@@ -113,6 +135,7 @@ return {
     url = url;
     user_url = user_url;
     user = user;
+    chat = chat;
     message_url = message_url;
     spoiler = spoiler;
 }
