@@ -72,6 +72,12 @@ function chatMember:getOldChatMember()
     end
 end
 
+function chatMember:getOldChatMemberStatus()
+    if self.chat_member and self.chat_member.old_chat_member then
+        return self.chat_member.old_chat_member.status
+    end
+end
+
 function chatMember:getNewChatMember()
     if self.chat_member and self.chat_member.new_chat_member then
         return self.chat_member.new_chat_member.user
