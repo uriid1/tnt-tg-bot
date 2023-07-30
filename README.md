@@ -1,8 +1,12 @@
 # tarantool-telegram-bot
 Telegram Bot API for tarantool <br>
-Beta version 0.1.9
+Beta version 0.3.2
 
 # Usage example
+1. $ chmod +x installdep.sh <br>
+2. $ ./installdep.sh <br>
+3. Create <b>main.lua</b>:<br>
+
 ```lua
 local bot = require 'core.bot'
 :setOptions({
@@ -32,6 +36,7 @@ end
 
 bot:startLongPolling()
 ```
+4. run tarantool main.lua<br>
 
 *See main.lua for more examples
 
@@ -43,6 +48,7 @@ bot:startWebHook({
     port = 8081;
     url = 'https://123.123.123.124/my_bot_location';
     certificate = '/etc/path/to/ssl/public.pem';
+    -- path = '/path' -- Optional
 
     -- Optional webhook params
     -- https://core.telegram.org/bots/api#setwebhook
@@ -57,6 +63,7 @@ bot:startWebHook({
     -- Server opts
     port = 8081;
     url = 'https://mycoolsite.com/my_bot_location';
+    -- path = '/path' -- Optional
 
     -- Optional webhook params
     -- https://core.telegram.org/bots/api#setwebhook
