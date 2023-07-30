@@ -1,44 +1,35 @@
---[[
-    ####--------------------------------####
-    #--# Author:   by uriid1            #--#
-    #--# License:  GNU GPLv3            #--#
-    #--# Telegram: @main_moderator      #--#
-    #--# E-mail:   appdurov@gmail.com   #--#
-    ####--------------------------------####
---]]
-
 -- https://core.telegram.org/bots/api#replykeyboardmarkup
 --
 local json = require 'json'
 
 function InlineKeyboardMarkup(data)
-    if data and type(data) ~= 'table' then
-        return nil
+  if data and type(data) ~= 'table' then
+    return nil
+  end
+
+  local obj = {}
+
+  -- Array of button rows,
+  -- each represented by an Array of InlineKeyboardButton objects
+  if data and type(data) == 'table' then
+    -- If table inline_keyboard exists
+    if type(data.inline_keyboard) == 'table' then
+      return json.encode(data)
     end
+  else
+    obj.inline_keyboard = {}
+  end
 
-    local obj = {}
+  local keyboard = {}
+  keyboard.__index = keyboard
 
-    -- Array of button rows,
-    -- each represented by an Array of InlineKeyboardButton objects
-    if data and type(data) == 'table' then
-        -- If table inline_keyboard exists
-        if type(data.inline_keyboard) == 'table' then
-            return json.encode(data)
-        end
-    else
-        obj.inline_keyboard = {}
-    end
+  function keyboard:toJson()
+    return json.encode(self)
+  end
 
-    local keyboard = {}
-    keyboard.__index = keyboard
+  setmetatable(obj, keyboard)
 
-    function keyboard:toJson()
-        return json.encode(self)
-    end
-
-    setmetatable(obj, keyboard)
-
-    return obj
+  return obj
 end
 
 return InlineKeyboardMarkup

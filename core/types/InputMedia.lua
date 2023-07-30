@@ -1,38 +1,29 @@
---[[
-    ####--------------------------------####
-    #--# Author:   by uriid1            #--#
-    #--# License:  GNU GPLv3            #--#
-    #--# Telegram: @main_moderator      #--#
-    #--# E-mail:   appdurov@gmail.com   #--#
-    ####--------------------------------####
---]]
-
-local json = require 'json'
-local InputFile = require 'core.types.InputFile'
+local json = require('json')
+local InputFile = require('core.types.InputFile')
 
 local function InputMedia(data)
-    if type(data) ~= 'table' then
-        return nil
+  if type(data) ~= 'table' then
+    return nil
+  end
+
+  local jsonData = {
+    media = {}
+  }
+
+  for i = 1, #data do
+    local media = data[i].media
+
+    local filename = media:match('^attach://(.+)')
+    if filename then
+      jsonData[filename] = InputFile(filename)
     end
 
-    local jsonData = {
-        media = {}
-    }
+    table.insert(jsonData.media, data[i])
+  end
 
-    for i = 1, #data do
-        local media = data[i].media
+  jsonData.media = json.encode(jsonData.media)
 
-        local filename = media:match('^attach://(.+)')
-        if filename then
-            jsonData[filename] = InputFile(filename)
-        end
-
-        table.insert(jsonData.media, data[i])
-    end
-
-    jsonData.media = json.encode(jsonData.media)
-
-    return jsonData
+  return jsonData
 end
 
 return InputMedia
