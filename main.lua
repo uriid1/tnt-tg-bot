@@ -7,9 +7,9 @@ local log = require 'log'
 package.setsearchroot('./core')
 local bot = require 'bot'
 :setOptions {
-  token = '6183645800:AAFYZ9UWnwKm-tlFx4bOL7G5yub7YYDPz_s'; -- Your bot Token
-  debug = true;                   -- This option enables debugging
-  parse_mode = 'HTML';            -- Mode for parsing entities
+  token = '123123123:KASHdlahsdlasdkj'; -- Your bot Token
+  debug = true;                         -- This option enables debugging
+  parse_mode = 'HTML';                  -- Mode for parsing entities
 }
 package.setsearchroot('./')
 
