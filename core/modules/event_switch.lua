@@ -1,6 +1,5 @@
 -- Event switch
 --
-local etable = require('extensions.uriid1-lua-extensions.table')
 local processMessage = require('core.models.processMessage')
 local bot
 local dprint
@@ -20,7 +19,7 @@ local function event_switch(result)
   end
 
   -- Not table
-  if not etable.isTable(result) then
+  if type(result) ~= "table" or not next(result) then
     dprint("[Error] Result is not a table", result)
     return
   end
