@@ -8,7 +8,7 @@
 --]]
 
 -- Init
-local bot = { _version = '0.3.7' }
+local bot = { _version = '0.4.0' }
 
 -- Load all libs
 local json = require('json')
