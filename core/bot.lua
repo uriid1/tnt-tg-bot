@@ -8,15 +8,14 @@
 --]]
 
 -- Init
-local bot = { _version = '0.3.3' }
+local bot = { _version = '0.3.7' }
 
 -- Load all libs
 local json = require('json')
 local fio = require('fio')
-local dprint = require('core.modules.debug_print')(bot)
-local request = require('core.modules.request')(bot)
+local log = require('log')
+local request = require('core.modules.request'):init(bot)
 local event_switch = require('core.modules.event_switch')(bot)
-local stats = require('core.classes.stats'):new('RPS')
 local parse_mode = require('core.enums.parse_mode')
 
 -- Set bot options
@@ -29,12 +28,8 @@ function bot:setOptions(options)
   self.creator_id = 0
   self.parse_mode = parse_mode.HTML
 
-  -- Stats of RPS
-  self.max_rps = 0
-  self.avg_rps = 0
-
   -- Enents
-  self.event = require 'core.models.events'
+  self.event = require('core.models.events'):init()
 
   -- Table of commands
   self.cmd = {}
@@ -55,7 +50,7 @@ function bot:call(method, options, ...)
     end
   end
 
-  return request {
+  return request:send {
     method = method;
     options = options;
   }
@@ -68,7 +63,7 @@ function bot.Command(message)
     return
   end
 
-  dprint('[command] %s', command)
+  log.info('[command] %s', command)
 
   bot['cmd'][command](message)
 end
@@ -80,7 +75,7 @@ function bot.CallbackCommand(callbackQuery)
     return
   end
 
-  dprint('[callback] %s', command)
+  log.info('[callback] %s', command)
 
   bot['cmd'][command](callbackQuery)
 end
@@ -91,7 +86,7 @@ local send_certificate = function(options)
   if type(options) ~= 'table' or
     type(options.url) ~= 'string'
   then
-    dprint('[Error] Invalid options to start a webhook')
+    log.error('[Error] Invalid options to start a webhook')
     return
   end
 
@@ -134,40 +129,21 @@ function bot:startWebHook(options)
   }
 
   local function callback(req)
-    -- Manage RPS
-    --
-    rps_in_sec = rps_in_sec + 1
-
-    if os.time() - time > 1 then
-      time = os.time()
-
-      if bot.max_rps < rps_in_sec then
-        bot.max_rps = rps_in_sec
-      end
-
-      stats:put('RPS', rps_in_sec)
-
-      rps_in_sec = 0
-    end
-
     local data = req:json()
     if bot.response_handler then
       bot.response_handler(event_switch, data)
     else
       event_switch(data)
     end
-
-    -- Current average RPS
-    bot.avg_rps = stats:getAverage('RPS')
   end
 
   httpd:route(route, callback):start()
 
-  dprint('[Success] HTTP Server listening at 0.0.0.0:' .. options.port)
+  log.info('[Success] HTTP Server listening at 0.0.0.0:' .. options.port)
 
   local res = send_certificate(options)
   if res and not res.ok then
-    dprint('[%s] description: %s', res.ok, res.description)
+    log.info('[%s] description: %s', res.ok, res.description)
     os.exit()
   end
 end
@@ -183,11 +159,11 @@ getUpdates = function(first_start, offset, timeout, token, client)
   if not first_start then
     if type(body) == 'table' then
       if not body.ok then
-        dprint('[Error] error_code: %s | description: %s', body.error_code, body.description)
+        log.error('[Error] error_code: %s | description: %s', body.error_code, body.description)
         return
       end
 
-      dprint('[Success] Long polling work')
+      log.info('[Success] Long polling work')
     end
   end
 
@@ -206,7 +182,7 @@ getUpdates = function(first_start, offset, timeout, token, client)
     end
   else
     -- Debug
-    dprint('[Error] Long polling.')
+    log.error('[Error] Long polling.')
   end
 
   -- Get new updates
@@ -215,7 +191,7 @@ end
 
 function bot:startLongPolling(options)
   if options and type(options) ~= 'table' then
-    dprint('[Error] Invalid options to start a long polling')
+    log.error('[Error] Invalid options to start a long polling')
     return
   end
 
@@ -231,7 +207,7 @@ function bot:startLongPolling(options)
     polling_timeout = options.timeout or 60
   end
 
-  dprint('[Success] Gettin Updates')
+  log.info('[Success] Gettin Updates')
 
   -- Start long polling
   getUpdates(false, offset, polling_timeout, self.token, client)

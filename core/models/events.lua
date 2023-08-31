@@ -1,85 +1,104 @@
-local event = {
-  -- Update
-  onChosenInlineResult = nil;
-  ShippingQuery = nil;
-  PreCheckoutQuery = nil;
-  onPoll = nil;
-  onPollAnswer = nil;
-  onMyChatMember = nil;
-  onChatMember = nil;
-  onChatJoinRequest = nil;
-  onChannelPost = nil;
-  onEditedChannelPost = nil;
+local log = require('log')
 
-  onEditedMessage = nil;
-  onGetMessage = nil;
-  onGetMessageText = nil;
-  onInlineQuery = nil;
+local event = {}
+
+event.enum = {
+  -- Update
+  onChosenInlineResult = true;
+  ShippingQuery = true;
+  PreCheckoutQuery = true;
+  onPoll = true;
+  onPollAnswer = true;
+  onMyChatMember = true;
+  onChatMember = true;
+  onChatJoinRequest = true;
+  onChannelPost = true;
+  onEditedChannelPost = true;
+
+  onEditedMessage = true;
+  onGetMessage = true;
+  onGetMessageText = true;
+  onInlineQuery = true;
 
   -- CallBack
-  onCallbackQuery = nil;
+  onCallbackQuery = true;
 
   -- Chat
-  onSenderChat = nil;
-  onNewChatTitle = nil;
-  onNewChatPhoto = nil;
-  onDeleteChatPhoto = nil;
-  onGroupChatCreated = nil;
-  onSupergroupChatCreated = nil;
-  onChannelChatCreated = nil;
-  onMigrateToChatId = nil;
-  onMigrateFromChatId = nil;
-  onNewChatMember = nil;
-  onLeftChatMember = nil;
+  onSenderChat = true;
+  onNewChatTitle = true;
+  onNewChatPhoto = true;
+  onDeleteChatPhoto = true;
+  onGroupChatCreated = true;
+  onSupergroupChatCreated = true;
+  onChannelChatCreated = true;
+  onMigrateToChatId = true;
+  onMigrateFromChatId = true;
+  onNewChatMember = true;
+  onLeftChatMember = true;
 
   -- Payment
-  onInvoice = nil;
-  onSuccessfulPayment = nil;
+  onInvoice = true;
+  onSuccessfulPayment = true;
 
   -- Passport
-  onPassportData = nil;
+  onPassportData = true;
 
   -- Video Chat
-  onVideoChatScheduled = nil;
-  onVideoChatStarted = nil;
-  onVideoChatEnded = nil;
-  onVideoChatParticipantsInvited = nil;
+  onVideoChatScheduled = true;
+  onVideoChatStarted = true;
+  onVideoChatEnded = true;
+  onVideoChatParticipantsInvited = true;
 
   -- Forward
-  onForwardFrom = nil;
-  onForwardFromChat = nil;
+  onForwardFrom = true;
+  onForwardFromChat = true;
 
   -- Via bot
-  onViaBot = nil;
+  onViaBot = true;
 
   -- Media
-  onGetPhoto = nil;
-  onGetVideo = nil;
-  onGetAnimation = nil;
-  onGetDocument = nil;
-  onGetLocation = nil;
-  onGetPoll = nil;
-  onGetAudio = nil;
-  onGetContact = nil;
-  onGetDice = nil;
-  onGetGame = nil;
-  onGetVideoNote = nil;
-  onGetSticker = nil;
-  onGetVoice = nil;
+  onGetPhoto = true;
+  onGetVideo = true;
+  onGetAnimation = true;
+  onGetDocument = true;
+  onGetLocation = true;
+  onGetPoll = true;
+  onGetAudio = true;
+  onGetContact = true;
+  onGetDice = true;
+  onGetGame = true;
+  onGetVideoNote = true;
+  onGetSticker = true;
+  onGetVoice = true;
 
   -- Entities
-  onGetEntities = nil;
+  onGetEntities = true;
 
   -- Error Handling
-  onCommandErrorHandle = nil;
-  onEventErrorHandle = nil;
+  onCommandErrorHandle = true;
+  onEventErrorHandle = true;
 
   -- Request error hl
-  onRequestErr = nil;
+  onRequestErr = true;
 
   -- Other
-  onInformSpammer = nil;
-  onUnknownUpdate = nil; 
+  onInformSpammer = true;
+  onUnknownUpdate = true; 
 }
+
+local function init_check(event_name)
+  return function()
+    log.error(' The called event \'%s\' does not exist', event_name)
+    return nil
+  end
+end
+
+function event:init()
+  for event_name,_ in pairs(event.enum) do
+    event[event_name] = init_check(event_name)
+  end
+
+  return self
+end
 
 return event

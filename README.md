@@ -1,8 +1,9 @@
 # tarantool-telegram-bot
 Telegram Bot API for tarantool <br>
-Beta version 0.3.3
+Beta version 0.3.7
 
 # Usage example
+0. git clone https://github.com/uriid1/tarantool-telegram-bot
 1. $ chmod +x installdep.sh <br>
 2. $ ./installdep.sh <br>
 3. Create <b>main.lua</b>:<br>

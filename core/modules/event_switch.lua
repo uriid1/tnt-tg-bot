@@ -1,8 +1,8 @@
 -- Event switch
 --
 local processMessage = require('core.models.processMessage')
+local log = require('log')
 local bot
-local dprint
 
 -- Event handler
 local call_event = function(event, data)
@@ -14,13 +14,13 @@ end
 local function event_switch(result)
   -- Empty result
   if not result then
-    dprint("[Error] Empty result")
+    log.error("[Error] Empty result")
     return
   end
 
   -- Not table
   if type(result) ~= "table" or not next(result) then
-    dprint("[Error] Result is not a table", result)
+    log.error("[Error] Result is not a table", result)
     return
   end
 
@@ -245,7 +245,6 @@ local function event_switch(result)
 end
 
 local function init(_bot)
-  dprint = require 'core.modules.debug_print' (_bot)
   bot = _bot
   return event_switch
 end
