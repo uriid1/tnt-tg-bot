@@ -7,9 +7,9 @@ local log = require('log')
 package.setsearchroot('./core')
 local bot = require('bot')
 :setOptions {
-  token = '123123123:KASHdlahsdlasdkj'; -- Your bot Token
-  debug = true;                         -- This option enables debugging
-  parse_mode = 'HTML';                  -- Mode for parsing entities
+  token = os.getenv('BOT_TOKEN'); -- Your bot Token
+  debug = true;                   -- This option enables debugging
+  parse_mode = 'HTML';            -- Mode for parsing entities
 }
 package.setsearchroot('./')
 
@@ -62,12 +62,12 @@ end
 bot.cmd['/args_test'] = function(message)
   local args = message:getArguments({count=3})
 
-  local arg1 = args[1] or 'nil'
+  local command_name = args[1]
   local arg2 = args[2] or 'nil'
   local arg3 = args[3] or 'nil'
 
-  local text_fmt = "arg1: %s\n arg2: %s\n arg3: %s\n"
-  local text = text_fmt:format(arg1, arg2, arg3)
+  local text_fmt = "Command: %s\n arg2: %s\n arg3: %s\n"
+  local text = text_fmt:format(command_name, arg2, arg3)
 
   bot:call("sendMessage", {
     text = text;

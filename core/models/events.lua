@@ -88,7 +88,7 @@ event.enum = {
 
 local function init_check(event_name)
   return function()
-    log.error(' The called event \'%s\' does not exist', event_name)
+    log.error('The called event \'%s\' does not exist', event_name)
     return nil
   end
 end
