@@ -35,7 +35,7 @@ local function InputMediaVideo(data)
   -- Optional. Mode for parsing entities in the video caption.
   if data.parse_mode then
     jsonData.parse_mode = data.parse_mode
-  end 
+  end
 
   -- Optional. List of special entities that appear in the caption,
   -- which can be specified instead of parse_mode
@@ -62,7 +62,7 @@ local function InputMediaVideo(data)
   if data.supports_streaming ~= nil then
     jsonData.supports_streaming = data.supports_streaming and true or false
   end
-  
+
   -- Optional. Pass True if the video needs to be covered with a spoiler animation
   if data.has_spoiler ~= nil then
     jsonData.has_spoiler = data.has_spoiler and true or false

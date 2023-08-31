@@ -3,7 +3,7 @@ local getenv = require('os').getenv
 local term = getenv('TERM')
 local color256 = term and (term == 'xterm' or term:find'-256color$')
 
-local function decorator(color) 
+local function decorator(color)
   if not color256 then
     return function(str)
       return str

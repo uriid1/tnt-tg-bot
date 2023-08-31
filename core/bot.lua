@@ -38,6 +38,7 @@ function bot:setOptions(options)
 end
 
 -- This function allows you to execute any method
+-- luacheck: ignore self
 function bot:call(method, options, ...)
   if ... then
     for i = 1, select('#', ...) do
@@ -112,10 +113,6 @@ end
 
 -- Start webhook
 function bot:startWebHook(options)
-  -- RPS
-  local rps_in_sec = 0
-  local time = os.time()
-  
   -- Server setup
   local http_server = require 'http.server'
   local host = options.host or '0.0.0.0'
@@ -152,7 +149,8 @@ end
 --
 local getUpdates
 getUpdates = function(first_start, offset, timeout, token, client)
-  local res = client:request('GET', 'https://api.telegram.org'..string.format('/bot%s/getUpdates?offset=%d&timeout=%d', token, offset, timeout))
+  local str_params = string.format('/bot%s/getUpdates?offset=%d&timeout=%d', token, offset, timeout)
+  local res = client:request('GET', 'https://api.telegram.org'..str_params)
   local body = json.decode(res.body)
 
   -- First start

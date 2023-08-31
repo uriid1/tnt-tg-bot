@@ -244,6 +244,7 @@ local function event_switch(result)
   return call_event(bot.event.onUnknownUpdate, result)
 end
 
+-- luacheck: ignore _bot
 local function init(_bot)
   bot = _bot
   return event_switch

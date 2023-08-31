@@ -10,12 +10,10 @@
   <del>strikethrough</del>
   <span class="tg-spoiler">spoiler</span>
   <tg-spoiler>spoiler</tg-spoiler>
-  <b>bold <i>italic bold <s>italic bold strikethrough <span class="tg-spoiler">italic bold strikethrough spoiler</span></s> <u>underline italic bold</u></i> bold</b>
   <a href="http://www.example.com/">inline URL</a>
   <a href="tg://user?id=123456789">inline mention of a user</a>
   <code>inline fixed-width code</code>
   <pre>pre-formatted fixed-width code block</pre>
-  <pre><code class="language-python">pre-formatted fixed-width code block written in the Python programming language</code></pre>
 ]]
 
 local html_escape_map = {
@@ -27,53 +25,53 @@ local html_escape_map = {
 }
 
 -- Format
-function format(text)
+local function format(text)
   text = tostring(text)
   return string.gsub(text, "[<>&\"']", html_escape_map)
 end
 
 -- Bold
-function bold(text)
+local function bold(text)
   return "<b>"..format(text).."</b>"
 end
 
 -- Italic
-function italic(text)
+local function italic(text)
   return "<i>"..format(text).."</i>"
 end
 
 -- Monospace
-function monospaced(text)
+local function monospaced(text)
   return "<code>"..format(text).."</code>"
 end
 
 -- Strike
-function strike(text)
+local function strike(text)
   return "<strike>"..format(text).."</strike>"
 end
 
 -- Underline
-function underline(text)
+local function underline(text)
   return "<u>"..format(text).."</u>"
 end
 
 -- Code
-function code(lang, code)
+local function code(lang, code)
   return ('<pre language="%s">%s</pre>'):format(lang, code)
 end
 
 -- URL
-function url(url, link_name)
+local function url(url, link_name)
   return ('<a href="%s">%s</a>'):format(url, format(link_name))
 end
 
 -- User URL
-function user_url(id, link_name)
+local function user_url(id, link_name)
   return ('<a href="tg://user?id=%s">%s</a>'):format(id, format(link_name))
 end
 
 -- Comvert object User to link
-function user(User)
+local function user(User)
   if not User then
     return 'Nil'
   end
@@ -86,7 +84,7 @@ function user(User)
 end
 
 -- Comvert object Chat to link
-function chat(Chat)
+local function chat(Chat)
   if not Chat then
     return 'Nil'
   end
@@ -103,12 +101,12 @@ function chat(Chat)
 end
 
 -- Message URL
-function message_url(username, id, link_name)
+local function message_url(username, id, link_name)
   return ('<a href="https://t.me/%s/%s">%s</a>'):format(username, id, format(link_name))
 end
 
 -- Spoiler
-function spoiler(text)
+local function spoiler(text)
   return ("<tg-spoiler>%s</tg-spoiler>"):format(format(text))
 end
 

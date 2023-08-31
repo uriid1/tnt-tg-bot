@@ -1,5 +1,5 @@
 -- https://core.telegram.org/bots/api#keyboardbutton
-function KeyboardButton(keyboard, data)
+local function KeyboardButton(keyboard, data)
   if type(data) ~= 'table' then
     return nil
   end
@@ -61,7 +61,7 @@ function KeyboardButton(keyboard, data)
 
     -- Add button to row
     table.insert(keyboard["keyboard"][data.row or 1], button)
-    
+
     return button
   end
 

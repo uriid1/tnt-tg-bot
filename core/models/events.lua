@@ -83,7 +83,7 @@ event.enum = {
 
   -- Other
   onInformSpammer = true;
-  onUnknownUpdate = true; 
+  onUnknownUpdate = true;
 }
 
 local function init_check(event_name)

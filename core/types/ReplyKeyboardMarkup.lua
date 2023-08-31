@@ -1,7 +1,7 @@
 -- https://core.telegram.org/bots/api#replykeyboardmarkup
 local json = require('json')
 
-function ReplyKeyboardMarkup(data)
+local function ReplyKeyboardMarkup(data)
   local obj = {}
 
   if type(data) ~= 'table' then
@@ -60,7 +60,7 @@ function ReplyKeyboardMarkup(data)
   if data.keyboard then
     return json.encode(obj)
   end
-  
+
   return obj
 end
 

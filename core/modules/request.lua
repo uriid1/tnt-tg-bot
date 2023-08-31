@@ -8,6 +8,7 @@ local bot
 
 local request = {}
 
+-- luacheck: ignore _bot
 function request:init(_bot, max_connections)
   bot = _bot
   Error = Error:init(bot)
@@ -16,6 +17,7 @@ function request:init(_bot, max_connections)
   return self
 end
 
+-- luacheck: ignore self
 function request:send(params)
   local opts
   local body

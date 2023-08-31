@@ -1,5 +1,5 @@
 -- https://core.telegram.org/bots/api#inlinekeyboardbutton
-function inlineKeyboardButton(keyboard, data)
+local function inlineKeyboardButton(keyboard, data)
   if type(data) ~= 'table' then
     return nil
   end
@@ -68,7 +68,7 @@ function inlineKeyboardButton(keyboard, data)
 
     -- Add button to row
     table.insert(keyboard["inline_keyboard"][data.row or 1], button)
-    
+
     return button
   end
 

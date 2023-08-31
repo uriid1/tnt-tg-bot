@@ -2,7 +2,7 @@
 --
 local json = require 'json'
 
-function InlineKeyboardMarkup(data)
+local function InlineKeyboardMarkup(data)
   if data and type(data) ~= 'table' then
     return nil
   end

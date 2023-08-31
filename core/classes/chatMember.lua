@@ -1,5 +1,3 @@
-local chat_member_status = require('core.enums.chat_member_status')
-
 -- Class definition
 --
 local chatMember = {}

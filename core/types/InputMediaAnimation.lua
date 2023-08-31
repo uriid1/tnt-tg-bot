@@ -35,7 +35,7 @@ local function InputMediaAnimation(data)
   -- Optional. Mode for parsing entities in the animation caption.
   if data.parse_mode then
     jsonData.parse_mode = data.parse_mode
-  end 
+  end
 
   -- Optional. List of special entities that appear in the caption,
   -- which can be specified instead of parse_mode
@@ -57,7 +57,7 @@ local function InputMediaAnimation(data)
   if data.duration then
     jsonData.duration = tonumber(data.duration)
   end
-  
+
   -- Optional. Pass True if the animation needs to be covered with a spoiler animation
   if data.has_spoiler ~= nil then
     jsonData.has_spoiler = data.has_spoiler and true or false

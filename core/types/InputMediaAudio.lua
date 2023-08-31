@@ -35,7 +35,7 @@ local function InputMediaAudio(data)
   -- Optional. Mode for parsing entities in the audio caption.
   if data.parse_mode then
     jsonData.parse_mode = data.parse_mode
-  end 
+  end
 
   -- Optional. List of special entities that appear in the caption,
   -- which can be specified instead of parse_mode
@@ -52,7 +52,7 @@ local function InputMediaAudio(data)
   if data.performer then
     jsonData.performer = tostring(data.performer)
   end
-  
+
   -- Optional. Title of the audio
   if data.title then
     jsonData.title = tostring(data.title)

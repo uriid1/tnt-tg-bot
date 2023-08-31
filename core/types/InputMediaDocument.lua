@@ -35,14 +35,14 @@ local function InputMediaDocument(data)
   -- Optional. Mode for parsing entities in the document caption.
   if data.parse_mode then
     jsonData.parse_mode = data.parse_mode
-  end 
+  end
 
   -- Optional. List of special entities that appear in the caption,
   -- which can be specified instead of parse_mode
   if data.caption_entities and type(data.caption_entities) == 'table' then
     jsonData.caption_entities = data.caption_entities
   end
-  
+
   -- Optional. Disables automatic server-side content type detection for files uploaded using multipart/form-data.
   -- Always True, if the document is sent as part of an album
   if data.disable_content_type_detection ~= nil then

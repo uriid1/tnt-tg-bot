@@ -6,7 +6,7 @@ local function inputFile(filename)
   end
 
   local fd = fio.open(filename, "O_RDONLY")
-  
+
   if fd == nil then
     return nil
   end

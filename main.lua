@@ -1,11 +1,11 @@
 --
 -- Examples of how some methods and commands work
 --
-local log = require 'log'
+local log = require('log')
 
 -- Init bot core
 package.setsearchroot('./core')
-local bot = require 'bot'
+local bot = require('bot')
 :setOptions {
   token = '123123123:KASHdlahsdlasdkj'; -- Your bot Token
   debug = true;                         -- This option enables debugging
@@ -14,19 +14,19 @@ local bot = require 'bot'
 package.setsearchroot('./')
 
 -- Load all libs/extensions
-local dec = require 'core.extensions.html-decoration'
+local dec = require('core.extensions.html-decoration')
 
-local InputFile = require 'core.types.InputFile'
-local InputMedia = require 'core.types.InputMedia'
-local InputMediaPhoto = require 'core.types.InputMediaPhoto'
+local InputFile = require('core.types.InputFile')
+local InputMedia = require('core.types.InputMedia')
+local InputMediaPhoto = require('core.types.InputMediaPhoto')
 
-local InlineKeyboardMarkup = require 'core.types.InlineKeyboardMarkup'
-local InlineKeyboardButton = require 'core.types.InlineKeyboardButton'
+local InlineKeyboardMarkup = require('core.types.InlineKeyboardMarkup')
+local InlineKeyboardButton = require('core.types.InlineKeyboardButton')
 
-local ReplyKeyboardMarkup = require 'core.types.ReplyKeyboardMarkup'
-local KeyboardButton = require 'core.types.KeyboardButton'
+local ReplyKeyboardMarkup = require('core.types.ReplyKeyboardMarkup')
+local KeyboardButton = require('core.types.KeyboardButton')
 
-local chat_member_status = require 'core.enums.chat_member_status'
+local chat_member_status = require('core.enums.chat_member_status')
 
 -- Command /start
 -- Method getMe
@@ -62,13 +62,12 @@ end
 bot.cmd['/args_test'] = function(message)
   local args = message:getArguments({count=3})
 
-  local arg1 = args[1]
+  local arg1 = args[1] or 'nil'
   local arg2 = args[2] or 'nil'
   local arg3 = args[3] or 'nil'
 
-  local text = 'arg1: ' .. arg1 .. '\n'
-  .. 'arg2: ' .. arg2 .. '\n'
-  .. 'arg3: ' .. arg3
+  local text_fmt = "arg1: %s\n arg2: %s\n arg3: %s\n"
+  local text = text_fmt:format(arg1, arg2, arg3)
 
   bot:call("sendMessage", {
     text = text;

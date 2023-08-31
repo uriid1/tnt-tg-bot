@@ -5,11 +5,13 @@ local Error = {}
 
 local bot
 
+-- luacheck: ignore _bot
 function Error:init(_bot)
   bot = _bot
   return self
 end
 
+-- luacheck: ignore self
 function Error:handle(data)
   if data.body then
     log.error('[Error] error_code: %d | description: %s', data.error_code, data.description)
@@ -25,7 +27,7 @@ function Error:handle(data)
       return bot.event.onRequestErr(data, err_name, error_code)
     end
   end
-  
+
   return bot.event.onRequestErr(data, nil, data.error_code)
 end
 
