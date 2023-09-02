@@ -186,14 +186,20 @@ bot.event.onGetEntities = function(message)
 
   -- Call bot command
   if entities[1] and entities[1].type == 'bot_command' then
-    bot.Command(message)
+    local command = bot.Command(message)
+    if command then
+      command(message)
+    end
   end
 end
 
 -- Event of getting callbacks
 bot.event.onCallbackQuery = function(callbackQuery)
   -- Callback processing
-  bot.CallbackCommand(callbackQuery)
+  local command = bot.CallbackCommand(callbackQuery)
+  if command then
+    command(callbackQuery)
+  end
 end
 
 -- Event of getting any message

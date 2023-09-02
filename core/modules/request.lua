@@ -3,25 +3,22 @@ local http = require('http.client')
 local mp_encode = require('multipart-post')
 local Error = require('core.middlewares.Error')
 
-local client
-local bot
-
 local request = {}
 
--- luacheck: ignore _bot
-function request:init(_bot, max_connections)
-  bot = _bot
+function request:init(bot, max_connections)
+  self.bot = bot
+  self.client = http.new { max_connections = max_connections or 40 }
   Error = Error:init(bot)
-  client = http.new { max_connections = max_connections or 100 }
 
   return self
 end
 
--- luacheck: ignore self
 function request:send(params)
   local opts
   local body
   local boundary
+  local bot = self.bot
+  local client = self.client
 
   if params.options then
     -- Set parse mode

@@ -15,7 +15,8 @@ local json = require('json')
 local fio = require('fio')
 local log = require('log')
 local request = require('core.modules.request'):init(bot)
-local event_switch = require('core.modules.event_switch')(bot)
+local events = require('core.models.events'):init()
+local switch = require('core.modules.switch'):init(bot)
 local parse_mode = require('core.enums.parse_mode')
 
 -- Set bot options
@@ -29,7 +30,7 @@ function bot:setOptions(options)
   self.parse_mode = parse_mode.HTML
 
   -- Enents
-  self.event = require('core.models.events'):init()
+  self.event = events
 
   -- Table of commands
   self.cmd = {}
@@ -65,8 +66,7 @@ function bot.Command(message)
   end
 
   log.info('[command] %s', command)
-
-  bot['cmd'][command](message)
+  return bot['cmd'][command]
 end
 
 -- Callback handler
@@ -77,8 +77,7 @@ function bot.CallbackCommand(callbackQuery)
   end
 
   log.info('[callback] %s', command)
-
-  bot['cmd'][command](callbackQuery)
+  return bot['cmd'][command]
 end
 
 -- Send cert
@@ -128,9 +127,9 @@ function bot:startWebHook(options)
   local function callback(req)
     local data = req:json()
     if bot.response_handler then
-      bot.response_handler(event_switch, data)
+      bot.response_handler(switch.call_event, data)
     else
-      event_switch(data)
+      switch:call_event(data)
     end
   end
 
@@ -170,9 +169,9 @@ getUpdates = function(first_start, offset, timeout, token, client)
       for i = 1, #body.result do
         local data = body.result[i]
         if bot.response_handler then
-          bot.response_handler(event_switch, data)
+          bot.response_handler(switch.call_event, data)
         else
-          event_switch(data)
+          switch:call_event(data)
         end
 
         offset = data.update_id + 1

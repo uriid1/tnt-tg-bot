@@ -56,13 +56,13 @@ local function underline(text)
 end
 
 -- Code
-local function code(lang, code)
-  return ('<pre language="%s">%s</pre>'):format(lang, code)
+local function code(lang, text)
+  return ('<pre language="%s">%s</pre>'):format(lang, text)
 end
 
 -- URL
-local function url(url, link_name)
-  return ('<a href="%s">%s</a>'):format(url, format(link_name))
+local function url(source, name)
+  return ('<a href="%s">%s</a>'):format(source, format(name))
 end
 
 -- User URL

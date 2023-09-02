@@ -1,8 +1,14 @@
 -- Event switch
 --
-local processMessage = require('core.models.processMessage')
 local log = require('log')
-local bot
+local processMessage = require('core.models.processMessage')
+
+local switch = {}
+
+function switch:init(bot)
+  self.bot = bot
+  return self
+end
 
 -- Event handler
 local call_event = function(event, data)
@@ -11,18 +17,21 @@ local call_event = function(event, data)
   end
 end
 
-local function event_switch(result)
+function switch:call_event(result)
   -- Empty result
   if not result then
-    log.error("[Error] Empty result")
+    log.error('[Error] Empty result')
     return
   end
 
   -- Not table
-  if type(result) ~= "table" or not next(result) then
-    log.error("[Error] Result is not a table", result)
+  if type(result) ~= 'table' or not next(result) then
+    log.error('[Error] Result is not a table', result)
     return
   end
+
+  -- Set bot link
+  local bot = self.bot
 
   -- Another events
   --
@@ -244,10 +253,4 @@ local function event_switch(result)
   return call_event(bot.event.onUnknownUpdate, result)
 end
 
--- luacheck: ignore _bot
-local function init(_bot)
-  bot = _bot
-  return event_switch
-end
-
-return init
+return switch
