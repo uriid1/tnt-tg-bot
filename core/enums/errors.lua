@@ -1,3 +1,6 @@
+--- Enum entity_type
+--
+
 -- https://core.telegram.org/api/errors
 local errors = {
   SEE_OTHER = 303;
@@ -11,4 +14,6 @@ local errors = {
   INTERNAL = 500;
 }
 
+--- errors
+-- @table export
 return errors

@@ -1,3 +1,6 @@
+--- Enum entity_type
+--
+
 -- https://core.telegram.org/bots/api#messageentity
 local entity_type = {
   MENTION = 'mention';
@@ -19,4 +22,6 @@ local entity_type = {
   CUSTOM_EMOJI = 'custom_emoji';
 }
 
+--- entity_type
+-- @table export
 return entity_type

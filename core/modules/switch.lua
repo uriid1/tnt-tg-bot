@@ -1,10 +1,14 @@
--- Event switch
---
+---
+-- Event switching module.
+-- @module switch
 local log = require('log')
 local processMessage = require('core.models.processMessage')
 
 local switch = {}
 
+---
+-- Initialize the event module.
+-- @return The initialized event module.
 function switch:init(bot)
   self.bot = bot
   return self
@@ -17,6 +21,8 @@ local call_event = function(event, data)
   end
 end
 
+---
+-- Call events.
 function switch:call_event(result)
   -- Empty result
   if not result then

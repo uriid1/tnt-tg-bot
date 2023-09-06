@@ -1,9 +1,12 @@
+---
+-- Event handling module.
+-- @module event
 local log = require('log')
 
 local event = {}
 
 event.enum = {
-  -- Update
+  -- Update events
   onChosenInlineResult = true;
   ShippingQuery = true;
   PreCheckoutQuery = true;
@@ -20,10 +23,10 @@ event.enum = {
   onGetMessageText = true;
   onInlineQuery = true;
 
-  -- CallBack
+  -- Callback query event
   onCallbackQuery = true;
 
-  -- Chat
+  -- Chat events
   onSenderChat = true;
   onNewChatTitle = true;
   onNewChatPhoto = true;
@@ -36,27 +39,27 @@ event.enum = {
   onNewChatMember = true;
   onLeftChatMember = true;
 
-  -- Payment
+  -- Payment events
   onInvoice = true;
   onSuccessfulPayment = true;
 
-  -- Passport
+  -- Passport events
   onPassportData = true;
 
-  -- Video Chat
+  -- Video Chat events
   onVideoChatScheduled = true;
   onVideoChatStarted = true;
   onVideoChatEnded = true;
   onVideoChatParticipantsInvited = true;
 
-  -- Forward
+  -- Forward events
   onForwardFrom = true;
   onForwardFromChat = true;
 
-  -- Via bot
+  -- Via bot event
   onViaBot = true;
 
-  -- Media
+  -- Media events
   onGetPhoto = true;
   onGetVideo = true;
   onGetAnimation = true;
@@ -71,21 +74,22 @@ event.enum = {
   onGetSticker = true;
   onGetVoice = true;
 
-  -- Entities
+  -- Entities events
   onGetEntities = true;
 
-  -- Error Handling
+  -- Error Handling events
   onCommandErrorHandle = true;
   onEventErrorHandle = true;
 
-  -- Request error hl
+  -- Request error handling event
   onRequestErr = true;
 
-  -- Other
+  -- Other events
   onInformSpammer = true;
   onUnknownUpdate = true;
 }
 
+-- Helper function to create event handlers for unsupported events.
 local function init_check(event_name)
   return function()
     log.error('The called event \'%s\' does not exist', event_name)
@@ -93,8 +97,11 @@ local function init_check(event_name)
   end
 end
 
+---
+-- Initialize the event module with event handlers.
+-- @return The initialized event module.
 function event:init()
-  for event_name,_ in pairs(event.enum) do
+  for event_name, _ in pairs(event.enum) do
     event[event_name] = init_check(event_name)
   end
 

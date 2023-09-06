@@ -1,3 +1,6 @@
+--- Enum chat_member_status
+--
+
 local chat_member_status = {
   CREATOR = 'creator';
   ADMINISTRATOR = 'administrator';
@@ -7,4 +10,6 @@ local chat_member_status = {
   KICKED = 'kicked';
 }
 
+--- chat_member_status
+-- @table export
 return chat_member_status

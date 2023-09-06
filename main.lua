@@ -4,17 +4,14 @@
 local log = require('log')
 
 -- Init bot core
-package.setsearchroot('./core')
-local bot = require('bot')
-:setOptions {
+local bot = require('core.bot'):init {
   token = os.getenv('BOT_TOKEN'); -- Your bot Token
   debug = true;                   -- This option enables debugging
   parse_mode = 'HTML';            -- Mode for parsing entities
 }
-package.setsearchroot('./')
 
 -- Load all libs/extensions
-local dec = require('core.extensions.html-decoration')
+local dec = require('core.extensions.html_formatter')
 
 local InputFile = require('core.types.InputFile')
 local InputMedia = require('core.types.InputMedia')

@@ -1,4 +1,5 @@
 scripts/
+doc/
 .rocks/
 .luacheckrc
 parameters.ini

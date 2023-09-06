@@ -1,16 +1,9 @@
---[[
-  [------------------------------------]
-  [   Author:   uriid1                 ]
-  [   License:  GNU GPLv3              ]
-  [   Telegram: @main_moderator        ]
-  [   E-mail:   appdurov@gmail.com     ]
-  [------------------------------------]
---]]
+---
+-- Tarantool telegram bot API.
+-- @module bot
 
--- Init
-local bot = { _version = '0.4.3' }
+local bot = {_version = '0.4.3'}
 
--- Load all libs
 local json = require('json')
 local fio = require('fio')
 local log = require('log')
@@ -19,26 +12,28 @@ local events = require('core.models.events'):init()
 local switch = require('core.modules.switch'):init(bot)
 local parse_mode = require('core.enums.parse_mode')
 
--- Set bot options
-function bot:setOptions(options)
-  for key, value in pairs(options) do
-    self[key] = value
-  end
-
+---
+-- Initializes the bot with options.
+-- @param options (table) Options table.
+--   - debug (boolean, optional): Enable debug mode.
+--   - parse_mode (string, optional): The default parse mode (HTML by default).
+-- @return (table) The bot object.
+function bot:init(options)
   -- Set default options
-  self.creator_id = 0
-  self.parse_mode = parse_mode.HTML
-
-  -- Enents
+  self.debug = options.debug or false
+  self.parse_mode = options.parse_mode or parse_mode.HTML
   self.event = events
-
-  -- Table of commands
   self.cmd = {}
 
   return self
 end
 
--- This function allows you to execute any method
+---
+-- Executes a Telegram Bot API method.
+-- @param method (string) The method to execute.
+-- @param options (table) Method options.
+-- @param ... (vararg) Additional arguments (tables) for options.
+-- @return (table) The response from the Telegram Bot API.
 -- luacheck: ignore self
 function bot:call(method, options, ...)
   if ... then
@@ -53,14 +48,17 @@ function bot:call(method, options, ...)
   end
 
   return request:send {
-    method = method;
-    options = options;
+    method = method,
+    options = options
   }
 end
 
--- Command handler
+---
+-- Handles a command message.
+-- @param message (table) The command message.
+-- @return (function) The command handler function.
 function bot.Command(message)
-  local command = message:getArguments({count=1})[1]
+  local command = message:getArguments({ count = 1 })[1]
   if not bot['cmd'][command] then
     return
   end
@@ -69,9 +67,12 @@ function bot.Command(message)
   return bot['cmd'][command]
 end
 
--- Callback handler
+---
+-- Handles a callback query.
+-- @param callbackQuery (table) The callback query.
+-- @return (function) The callback handler function.
 function bot.CallbackCommand(callbackQuery)
-  local command = callbackQuery:getArguments({count=1})[1]
+  local command = callbackQuery:getArguments({ count = 1 })[1]
   if not bot['cmd'][command] then
     return
   end
@@ -80,12 +81,16 @@ function bot.CallbackCommand(callbackQuery)
   return bot['cmd'][command]
 end
 
--- Send cert
---
-local send_certificate = function(options)
-  if type(options) ~= 'table' or
-    type(options.url) ~= 'string'
-  then
+---
+-- Sends a certificate for webhook setup.
+-- @param options (table) Options table.
+--   - url (string): The URL for the webhook.
+--   - certificate (string, optional): The path to the certificate file.
+--   - drop_pending_updates (boolean, optional): Whether to drop pending updates (false by default).
+--   - allowed_updates (table, optional): List of allowed updates (nil by default).
+-- @return (table) The response from the Telegram Bot API.
+local function send_certificate(options)
+  if type(options) ~= 'table' or type(options.url) ~= 'string' then
     log.error('[Error] Invalid options to start a webhook')
     return
   end
@@ -95,33 +100,38 @@ local send_certificate = function(options)
   if options.certificate then
     local cert = fio.open(options.certificate, 'O_RDONLY')
     data = {
-      filename = options.certificate:match('[^/]*.$');
-      data = cert:read();
+      filename = options.certificate:match('[^/]*.$'),
+      data = cert:read()
     }
     cert:close()
   end
 
   -- Set webhook
   return bot:call('setWebhook', {
-    url = options.url;
-    certificate = data;
-    drop_pending_updates = options.drop_pending_updates or false;
+    url = options.url,
+    certificate = data,
+    drop_pending_updates = options.drop_pending_updates or false,
     allowed_updates = options.allowed_updates or nil
   })
 end
 
--- Start webhook
+---
+-- Starts the webhook.
+-- @param options (table) Options table.
+--   - host (string, optional): The host to bind to (default is '0.0.0.0').
+--   - port (number, optional): The port to listen on (default is 8081).
+--   - path (string, optional): The webhook path (empty string by default).
 function bot:startWebHook(options)
   -- Server setup
-  local http_server = require 'http.server'
+  local http_server = require('http.server')
   local host = options.host or '0.0.0.0'
   local port = options.port or 8081
   local httpd = http_server.new(host, port)
 
   local route = {
-    path = options.path or '';
-    method = 'POST';
-    template = '200';
+    path = options.path or '',
+    method = 'POST',
+    template = '200'
   }
 
   local function callback(req)
@@ -144,12 +154,10 @@ function bot:startWebHook(options)
   end
 end
 
--- Start long polling
---
 local getUpdates
 getUpdates = function(first_start, offset, timeout, token, client)
-  local str_params = string.format('/bot%s/getUpdates?offset=%d&timeout=%d', token, offset, timeout)
-  local res = client:request('GET', 'https://api.telegram.org'..str_params)
+  local url = string.format('https://api.telegram.org/bot%s/getUpdates?offset=%d&timeout=%d', token, offset, timeout)
+  local res = client:request('GET', url)
   local body = json.decode(res.body)
 
   -- First start
@@ -186,14 +194,19 @@ getUpdates = function(first_start, offset, timeout, token, client)
   return getUpdates(true, offset, timeout, token, client)
 end
 
+---
+-- Starts long polling.
+-- @param options (table, optional) Options table.
+--   - offset (number, optional): The update offset (default is -1).
+--   - timeout (number, optional): The polling timeout in seconds (default is 60).
 function bot:startLongPolling(options)
   if options and type(options) ~= 'table' then
-    log.error('[Error] Invalid options to start a long polling')
+    log.error('[Error] Invalid options to start long polling')
     return
   end
 
-  local http = require 'http.client'
-  local client = http.new({max_connections = 100})
+  local http = require('http.client')
+  local client = http.new({ max_connections = 1 })
 
   -- Set options
   local offset = -1
@@ -204,7 +217,7 @@ function bot:startLongPolling(options)
     polling_timeout = options.timeout or 60
   end
 
-  log.info('[Success] Gettin Updates')
+  log.info('[Success] Getting Updates')
 
   -- Start long polling
   getUpdates(false, offset, polling_timeout, self.token, client)

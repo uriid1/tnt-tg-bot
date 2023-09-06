@@ -1,3 +1,7 @@
+---
+-- Process incoming data and create corresponding objects.
+-- @module processMessage
+
 local message = require 'core.classes.message'
 local callback = require 'core.classes.callback'
 local chatMember = require 'core.classes.chatMember'

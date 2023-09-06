@@ -1,3 +1,5 @@
+-- Input file
+--
 local fio = require('fio')
 
 local function inputFile(filename)
