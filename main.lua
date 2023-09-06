@@ -42,7 +42,7 @@ bot.cmd["/start"] = function(message)
 
   for paramName, value in pairs(data.result) do
     paramName = dec.bold(paramName)
-    value = dec.mono(value)
+    value = dec.monospaced(value)
 
     infoText = infoText .. paramName .. ': ' .. value .. '\n'
   end
