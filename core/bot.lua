@@ -2,7 +2,7 @@
 -- Tarantool telegram bot API.
 -- @module bot
 
-local bot = {_version = '0.4.3'}
+local bot = {_version = '0.5.0'}
 
 local json = require('json')
 local fio = require('fio')
@@ -20,6 +20,7 @@ local parse_mode = require('core.enums.parse_mode')
 -- @return (table) The bot object.
 function bot:init(options)
   -- Set default options
+  self.token = options.token
   self.debug = options.debug or false
   self.parse_mode = options.parse_mode or parse_mode.HTML
   self.event = events
