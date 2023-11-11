@@ -11,13 +11,11 @@ chatMember.__index = chatMember
 --   - chat_member (table): The chat member data.
 -- @return (chatMember) The chatMember object.
 function chatMember:new(data)
-  local obj = {
-    update_id = data.update_id,
-    chat_member = data.chat_member
-  }
+  local obj = {}
+  obj.update_id = data.update_id
+  obj.chat_member = data.chat_member
 
-  setmetatable(obj, self)
-  return obj
+  return setmetatable(obj, self)
 end
 
 ---
@@ -118,5 +116,7 @@ function chatMember:getNewChatMemberStatus()
     return self.chat_member.new_chat_member.status
   end
 end
+
+setmetatable(chatMember, { __call = chatMember.new })
 
 return chatMember

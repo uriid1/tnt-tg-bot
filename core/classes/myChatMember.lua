@@ -9,13 +9,11 @@ myChatMember.__index = myChatMember
 -- @param data The data for initializing the object.
 -- @return The created myChatMember object.
 function myChatMember:new(data)
-  local obj = {
-    update_id = data.update_id;
-    my_chat_member = data.my_chat_member
-  }
+  local obj = {}
+  obj.update_id = data.update_id
+  obj.my_chat_member = data.my_chat_member
 
-  setmetatable(obj, self)
-  return obj
+  return setmetatable(obj, self)
 end
 
 ---
@@ -116,5 +114,7 @@ function myChatMember:getOldChatMemberStatus()
     return self.my_chat_member.old_chat_member.status
   end
 end
+
+setmetatable(myChatMember, { __call = myChatMember.new })
 
 return myChatMember

@@ -11,23 +11,21 @@ callback.__index = callback
 --   - callback_query (table): The callback query data.
 -- @return (callback) The callback object.
 function callback:new(data)
-  local obj = {
-    update_id = data.update_id,
-    message = data.callback_query.message,
-    callback_query = data.callback_query
-  }
+  local obj = {}
+  obj.update_id = data.update_id
+  obj.message = data.callback_query.message
+  obj.callback_query = data.callback_query
 
-  setmetatable(obj, self)
-  return obj
+  return setmetatable(obj, self)
 end
 
 ---
 -- Gets the update ID.
 -- @return (number) The update ID.
 function callback:getUpdateId()
-    if self.update_id then
-        return self.update_id
-    end
+  if self.update_id then
+    return self.update_id
+  end
 end
 
 ---
@@ -142,5 +140,7 @@ function callback:isSameUser()
     return self.callback_query.from.id == self.message.reply_to_message.from.id
   end
 end
+
+setmetatable(callback, { __call = callback.new })
 
 return callback
