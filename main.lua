@@ -4,7 +4,8 @@
 local log = require('log')
 
 -- Init bot core
-local bot = require('core.bot'):init {
+local bot = require('core.bot')
+bot {
   token = os.getenv('BOT_TOKEN'); -- Your bot Token
   debug = true;                   -- This option enables debugging
   parse_mode = 'HTML';            -- Mode for parsing entities
@@ -212,7 +213,7 @@ end
 -- Event of my chat member
 bot.event.onMyChatMember = function(myChatMember)
   local status = myChatMember:getNewChatMemberStatus()
-   
+
   if status == chat_member_status.MEMBER then
     local ufrom = myChatMember:getUserFrom()
 
