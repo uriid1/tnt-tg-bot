@@ -1,15 +1,3 @@
-# Welcome
-```
- ███████████ ██████   █████ ███████████    ███████████   █████████     ███████████     ███████    ███████████
-░█░░░███░░░█░░██████ ░░███ ░█░░░███░░░█   ░█░░░███░░░█  ███░░░░░███   ░░███░░░░░███  ███░░░░░███ ░█░░░███░░░█
-░   ░███  ░  ░███░███ ░███ ░   ░███  ░    ░   ░███  ░  ███     ░░░     ░███    ░███ ███     ░░███░   ░███  ░ 
-    ░███     ░███░░███░███     ░███           ░███    ░███             ░██████████ ░███      ░███    ░███    
-    ░███     ░███ ░░██████     ░███           ░███    ░███    █████    ░███░░░░░███░███      ░███    ░███    
-    ░███     ░███  ░░█████     ░███           ░███    ░░███  ░░███     ░███    ░███░░███     ███     ░███    
-    █████    █████  ░░█████    █████          █████    ░░█████████     ███████████  ░░░███████░      █████   
-   ░░░░░    ░░░░░    ░░░░░    ░░░░░          ░░░░░      ░░░░░░░░░     ░░░░░░░░░░░     ░░░░░░░       ░░░░░    
-```    
-
 # Usage example
 0. $ git clone https://github.com/uriid1/tarantool-telegram-bot
 1. $ chmod +x installdep.sh <br>
@@ -17,12 +5,12 @@
 3. Create <b>main.lua</b>:<br>
 
 ```lua
-local bot = require 'core.bot'
-:setOptions({
+local bot = require('core.bot')
+bot {
   token = os.getenv('BOT_TOKEN'); -- Your bot Token
   debug = true;                   -- This option enables debugging
   parse_mode = 'HTML';            -- Mode for parsing entities
-})
+}
 
 -- Event of getting entities
 bot.event.onGetEntities = function(message)
