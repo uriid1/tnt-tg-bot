@@ -12,13 +12,11 @@ message.__index = message
 --
 -- @return (message) The message object.
 function message:new(data)
-  local obj = {
-    update_id = data.update_id,
-    message = data.message
-  }
+  local obj = {}
+  obj.update_id = data.update_id
+  obj.message = data.message
 
-  setmetatable(obj, self)
-  return obj
+  return setmetatable(obj, self)
 end
 
 ---
@@ -186,5 +184,7 @@ function message:isRemoveMember()
     return self.message.left_chat_member.id ~= self.message.from.id
   end
 end
+
+setmetatable(message, { __call = message.new })
 
 return message

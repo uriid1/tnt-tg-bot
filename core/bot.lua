@@ -2,7 +2,7 @@
 -- Tarantool telegram bot API.
 -- @module bot
 
-local bot = {_version = '0.5.0'}
+local bot = {_version = '0.5.2'}
 
 local json = require('json')
 local fio = require('fio')
@@ -24,6 +24,7 @@ function bot:init(options)
   self.debug = options.debug or false
   self.parse_mode = options.parse_mode or parse_mode.HTML
   self.event = events
+  bot.rate = options.rate or nil
   self.cmd = {}
 
   return self
@@ -48,10 +49,16 @@ function bot:call(method, options, ...)
     end
   end
 
-  return request:send {
+  local params = {
     method = method,
     options = options
   }
+
+  if bot.rate then
+    return bot.rate.limit(request, params)
+  end
+
+  return request:send(params)
 end
 
 ---
@@ -223,5 +230,7 @@ function bot:startLongPolling(options)
   -- Start long polling
   getUpdates(false, offset, polling_timeout, self.token, client)
 end
+
+setmetatable(bot, { __call = bot.init })
 
 return bot

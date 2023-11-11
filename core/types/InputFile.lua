@@ -13,7 +13,8 @@ local function inputFile(filename)
     return nil
   end
 
-  local data = fd:read(); fd:close()
+  local data = fd:read()
+  fd:close()
 
   return {
     data = data;
