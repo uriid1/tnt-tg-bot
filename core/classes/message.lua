@@ -108,6 +108,14 @@ end
 -- Gets the user who replied to the message.
 -- @return (table) The user data of the reply.
 function message:getUserReply()
+  if self.message and self.message.reply_to_message and self.message.reply_to_message.from then
+    return self.message.reply_to_message.from
+  end
+end
+
+---
+--
+function message:getReplyToMessage()
   if self.message and self.message.reply_to_message then
     return self.message.reply_to_message
   end
@@ -182,6 +190,14 @@ end
 function message:isRemoveMember()
   if self.message and self.message.left_chat_member then
     return self.message.left_chat_member.id ~= self.message.from.id
+  end
+end
+
+---
+--
+function message:trimCommand()
+  if self.message and self.message.text and self.message.__command then
+    return self.message.text:gsub(self.message.__command..' ', '', 1)
   end
 end
 
