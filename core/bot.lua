@@ -2,7 +2,7 @@
 -- Tarantool telegram bot API.
 -- @module bot
 
-local bot = {_version = '0.5.2'}
+local bot = {_version = '0.5.5'}
 
 local json = require('json')
 local fio = require('fio')
