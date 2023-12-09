@@ -1,5 +1,7 @@
 --- HTML formatting functions.
 -- @module html_formatter
+local utf8 = require('utf8')
+
 local M = {}
 
 local html_escape_map = {
@@ -35,11 +37,27 @@ function M.italic(text)
   return "<i>"..M.format(text).."</i>"
 end
 
+function M.bi(text)
+  return "<b><i>"..M.format(text).."</i></b>"
+end
+
+function M.title(text1, text2)
+  if text2 then
+    text1 = text1..' '..text2
+  end
+
+  return "<b><i>"..M.format(text1).."</i></b>"
+end
+
 ---
 -- Wrap the input text in "code" tags for monospaced formatting.
 -- @param text The input text.
 -- @return The formatted text.
 function M.monospaced(text)
+  return "<code>"..M.format(text).."</code>"
+end
+
+function M.mono(text)
   return "<code>"..M.format(text).."</code>"
 end
 
@@ -88,13 +106,15 @@ end
 
 ---
 -- Convert a Telegram User object to a mention link.
--- @param User The User object.
+-- @param user The User object.
 -- @return The formatted user mention link.
-function M.user(User)
-  if not User or not User.id or not User.first_name then
-    return 'Nil'
-  end
-  return ('<a href="tg://user?id=%s">%s</a>'):format(User.id, M.format(User.first_name))
+local MAX_USER_LENGHT = 25
+
+function M.user(user)
+  local name = user.first_name or user.username or 'Аноним'
+  name = utf8.sub(name, 1, MAX_USER_LENGHT)
+
+  return ('<a href="tg://user?id=%s">%s</a>'):format(user.id, M.format(name))
 end
 
 ---

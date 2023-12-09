@@ -63,29 +63,39 @@ end
 
 ---
 -- Handles a command message.
--- @param message (table) The command message.
--- @return (function) The command handler function.
-function bot.Command(message)
-  local command = message:getArguments({ count = 1 })[1]
-  if not bot['cmd'][command] then
-    return
+-- @param data (table) The command message.
+-- @return command, username
+function bot.Command(data)
+  local command = data:getArguments({ count = 1 })[1]
+
+  local username
+  if command:find('@') then
+    command, username = command:match("(/.+)([@].+)")
   end
 
-  log.info('[command] %s', command)
-  return bot['cmd'][command]
+  if not bot['cmd'][command] then
+    return nil, nil
+  end
+
+  data.message.__command = command
+
+  log.info('[command] '..command)
+  return bot['cmd'][command], username
 end
 
 ---
 -- Handles a callback query.
--- @param callbackQuery (table) The callback query.
+-- @param data (table) The callback query.
 -- @return (function) The callback handler function.
-function bot.CallbackCommand(callbackQuery)
-  local command = callbackQuery:getArguments({ count = 1 })[1]
+function bot.CallbackCommand(data)
+  local command = data:getArguments({ count = 1 })[1]
   if not bot['cmd'][command] then
     return
   end
 
-  log.info('[callback] %s', command)
+  data.message.__command = command
+
+  log.info('[callback] '..command)
   return bot['cmd'][command]
 end
 
@@ -167,6 +177,7 @@ getUpdates = function(first_start, offset, timeout, token, client)
   local url = string.format('https://api.telegram.org/bot%s/getUpdates?offset=%d&timeout=%d', token, offset, timeout)
   local res = client:request('GET', url)
   local body = json.decode(res.body)
+  -- p(body)
 
   -- First start
   if not first_start then

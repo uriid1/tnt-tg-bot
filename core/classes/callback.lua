@@ -131,6 +131,14 @@ function callback:getUserReply()
 end
 
 ---
+--
+function callback:getReplyToMessage()
+  if self.message and self.message.reply_to_message then
+    return self.message.reply_to_message
+  end
+end
+
+---
 -- Checks if the user who sent the callback query is the same as the one who replied to the associated message.
 -- @return (boolean) True if it's the same user, false otherwise.
 function callback:isSameUser()
@@ -138,6 +146,14 @@ function callback:isSameUser()
     self.message and self.message.reply_to_message
   then
     return self.callback_query.from.id == self.message.reply_to_message.from.id
+  end
+end
+
+---
+--
+function callback:trimCommand()
+  if self.message and self.message.text and self.message.__command then
+    return self.message.text:gsub(self.message.__command..' ', '', 1)
   end
 end
 
