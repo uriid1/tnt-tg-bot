@@ -1,15 +1,15 @@
 # Usage example
 0. $ git clone https://github.com/uriid1/tarantool-telegram-bot
-1. $ chmod +x installdep.sh <br>
-2. $ ./installdep.sh <br>
+1. $ chmod +x install-dependencies.sh <br>
+2. $ sh install-dependencies.sh <br>
 3. Create <b>main.lua</b>:<br>
 
 ```lua
 local bot = require('core.bot')
 bot {
-  token = os.getenv('BOT_TOKEN'); -- Your bot Token
-  debug = true;                   -- This option enables debugging
-  parse_mode = 'HTML';            -- Mode for parsing entities
+  token = os.getenv('BOT_TOKEN'), -- Your bot Token
+  debug = true,                   -- This option enables debugging
+  parse_mode = 'HTML',            -- Mode for parsing entities
 }
 
 -- Event of getting entities
@@ -29,8 +29,8 @@ end
 bot.cmd["/start"] = function(message)
   -- Send text message
   bot:call('sendMessage', {
-    text = 'Hello!';
-    chat_id = message:getChatId();
+    text = 'Hello!',
+    chat_id = message:getChatId(),
   })
 end
 
@@ -46,13 +46,13 @@ bot:startLongPolling()
 bot:startWebHook({
   -- Server opts
   port = 8081;
-  url = 'https://123.123.123.124/my_bot_location';
-  certificate = '/etc/path/to/ssl/public.pem';
-  -- path = '/path' -- Optional
+  url = 'https://123.123.123.124/my_bot_location',
+  certificate = '/etc/path/to/ssl/public.pem',
+  -- path = '/path', -- Optional
 
   -- Optional webhook params
   -- https://core.telegram.org/bots/api#setwebhook
-  drop_pending_updates = true;
+  drop_pending_updates = true,
   allowed_updates = '["message", "my_chat_member", "callback_query"]'
 })
 ```
@@ -61,13 +61,13 @@ bot:startWebHook({
 ```lua
 bot:startWebHook({
   -- Server opts
-  port = 8081;
-  url = 'https://mycoolsite.com/my_bot_location';
-  -- path = '/path' -- Optional
+  port = 8081,
+  url = 'https://mycoolsite.com/my_bot_location',
+  -- path = '/path', -- Optional
 
   -- Optional webhook params
   -- https://core.telegram.org/bots/api#setwebhook
-  drop_pending_updates = true;
+  drop_pending_updates = true,
   allowed_updates = '["message", "my_chat_member", "callback_query"]'
 })
 ```

@@ -1,12 +1,12 @@
 ---
 -- Module for making HTTP requests to the Telegram Bot API.
 -- @module request
+local request = {}
+
 local json = require('json')
 local http = require('http.client')
-local mp_encode = require('multipart-post')
+local mpEncode = require('multipart-post')
 local Error = require('core.middlewares.Error')
-
-local request = {}
 
 ---
 -- Initialize the request module with a bot instance and maximum connections.
@@ -16,6 +16,7 @@ local request = {}
 function request:init(bot, max_connections)
   self.bot = bot
   self.client = http.new { max_connections = max_connections or 40 }
+
   Error = Error:init(bot)
 
   return self
@@ -35,40 +36,57 @@ function request:send(params)
   if params.options then
     -- Set parse mode
     if params.options.text or params.options.caption then
-      params.options.parse_mode = params.options.parse_mode or bot.parse_mode
+      if not params.options.parse_mode then
+        params.options.parse_mode = bot.parse_mode
+      end
     end
 
     -- Make multipart-data
-    body, boundary = mp_encode(params.options)
+    body, boundary = mpEncode(params.options)
 
     -- Make headers
     opts = {
       headers = {
-        ['Content-Type'] = "multipart/form-data; boundary="..boundary;
+        ['Content-Type'] = "multipart/form-data; boundary="..boundary,
       }
     }
   end
 
   -- Request
-  local url_fmt = 'https://api.telegram.org/bot%s/%s'
-  local url = url_fmt:format(bot.token, params.method)
-  local data = client:request('POST', url, body, opts)
+  local urlFmt = 'https://api.telegram.org/bot%s/%s'
+  local data = client:request('POST', urlFmt:format(bot.token, params.method), body, opts)
 
   if not data.body then
     Error:handle(data)
-    return
+
+    local err
+    if data then
+      err = data
+    else
+      err = 'Empty data received'
+    end
+
+    return err
   end
 
   -- Decode JSON response
-  local response_body = json.decode(data.body)
+  local data = json.decode(data.body)
 
   -- Handle error
-  if not response_body.ok then
-    Error:handle(response_body)
-    return
+  if not data.ok then
+    Error:handle(data)
+
+    local err
+    if data then
+      err = data
+    else
+      err = 'Empty data received'
+    end
+
+    return nil, err
   end
 
-  return response_body
+  return data
 end
 
 return request

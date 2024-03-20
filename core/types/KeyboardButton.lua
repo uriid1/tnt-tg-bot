@@ -1,3 +1,4 @@
+-- Keyboard Button
 -- https://core.telegram.org/bots/api#keyboardbutton
 local function KeyboardButton(keyboard, data)
   if type(data) ~= 'table' then

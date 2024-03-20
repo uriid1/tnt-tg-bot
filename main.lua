@@ -6,9 +6,9 @@ local log = require('log')
 -- Init bot core
 local bot = require('core.bot')
 bot {
-  token = os.getenv('BOT_TOKEN'); -- Your bot Token
-  debug = true;                   -- This option enables debugging
-  parse_mode = 'HTML';            -- Mode for parsing entities
+  token = os.getenv('BOT_TOKEN'), -- Your bot Token
+  debug = true,                   -- This option enables debugging
+  parse_mode = 'HTML',            -- Mode for parsing entities
 }
 
 -- Load all libs/extensions
@@ -34,6 +34,7 @@ bot.cmd["/start"] = function(message)
 
   if not data.ok then
     log.error(data)
+
     return
   end
 
@@ -50,8 +51,8 @@ bot.cmd["/start"] = function(message)
 
   -- Send text message
   bot:call('sendMessage', {
-    text = infoText;
-    chat_id = message:getChatId();
+    text = infoText,
+    chat_id = message:getChatId(),
   })
 end
 
@@ -68,8 +69,8 @@ bot.cmd['/args_test'] = function(message)
   local text = text_fmt:format(command_name, arg2, arg3)
 
   bot:call("sendMessage", {
-    text = text;
-    chat_id = message:getChatId() 
+    text = text,
+    chat_id = message:getChatId(),
   })
 end
 
@@ -78,7 +79,7 @@ bot.cmd['/cb_close'] = function(callback)
   -- Delete message
   bot:call('deleteMessage', {
     chat_id = callback:getChatId(),
-    message_id = callback:getMessageId()
+    message_id = callback:getMessageId(),
   })
 end
 
@@ -86,9 +87,9 @@ end
 -- Method sendPhoto
 bot.cmd["/send_photo"] = function(message)
   bot:call('sendPhoto', {
-    photo = InputFile('/path/to/image.png');
-    caption = 'Omg! It\'s photo from disk!';
-    chat_id = message:getChatId();
+    photo = InputFile('/path/to/image.png'),
+    caption = 'Omg! It\'s photo from disk!',
+    chat_id = message:getChatId(),
   })
 end
 
@@ -96,16 +97,16 @@ end
 -- Method sendMessage with reply_markup
 bot.cmd["/send_reply_buttons_1"] = function(message)
   bot:call('sendMessage', {
-    text = 'Reply keyboard buttons test 1';
-    chat_id = message:getChatId();
+    text = 'Reply keyboard buttons test 1',
+    chat_id = message:getChatId(),
     reply_markup = ReplyKeyboardMarkup({
       keyboard = {
-        { KeyboardButton(nil, { text = 'Button 1' }), KeyboardButton(nil, { text = 'Button 2' }) };
-        { KeyboardButton(nil, { text = 'Button 3' }) };
-      };
+        { KeyboardButton(nil, { text = 'Button 1' }), KeyboardButton(nil, { text = 'Button 2' }) },
+        { KeyboardButton(nil, { text = 'Button 3' }) },
+      },
 
-      one_time_keyboard = true
-    });
+      one_time_keyboard = true,
+    })
   })
 end
 
@@ -115,13 +116,13 @@ bot.cmd["/send_reply_buttons_2"] = function(message)
   -- Another option for building buttons
   local keyboard = ReplyKeyboardMarkup({ one_time_keyboard = true })
   KeyboardButton(keyboard, { text = 'Button 1' })
-  KeyboardButton(keyboard, { text = 'Button 2'; row = 2 })
-  KeyboardButton(keyboard, { text = 'Button 3'; row = 2 })
+  KeyboardButton(keyboard, { text = 'Button 2', row = 2 })
+  KeyboardButton(keyboard, { text = 'Button 3', row = 2 })
 
   bot:call('sendMessage', {
-    text = 'Reply keyboard buttons test 2';
-    chat_id = message:getChatId();
-    reply_markup = keyboard:toJson()
+    text = 'Reply keyboard buttons test 2',
+    chat_id = message:getChatId(),
+    reply_markup = keyboard:toJson(),
   })
 end
 
@@ -129,12 +130,12 @@ end
 -- Method sendMessage with reply_markup
 bot.cmd["/send_inline_buttons_1"] = function(message)
   bot:call('sendMessage', {
-    text = 'Inline keyboard buttons test 1';
-    chat_id = message:getChatId();
+    text = 'Inline keyboard buttons test 1',
+    chat_id = message:getChatId(),
     reply_markup = InlineKeyboardMarkup({
       inline_keyboard = {
-        { InlineKeyboardButton(nil, { text = 'Button 1',  callback_data = '/cb_close'; }) };
-        { InlineKeyboardButton(nil, { text = 'Button 2',  callback_data = '/cb_close'; }) }
+        { InlineKeyboardButton(nil, { text = 'Button 1',  callback_data = '/cb_close' }) },
+        { InlineKeyboardButton(nil, { text = 'Button 2',  callback_data = '/cb_close' }) }
       }
     })
   })
@@ -145,13 +146,13 @@ end
 bot.cmd["/send_inline_buttons_2"] = function(message)
   -- Another option for building buttons
   local keyboard = InlineKeyboardMarkup()
-  InlineKeyboardButton(keyboard, { text = 'Button 1',  callback_data = '/cb_close'; });
-  InlineKeyboardButton(keyboard, { text = 'Button 2',  callback_data = '/cb_close'; row = 1 })
+  InlineKeyboardButton(keyboard, { text = 'Button 1',  callback_data = '/cb_close' })
+  InlineKeyboardButton(keyboard, { text = 'Button 2',  callback_data = '/cb_close', row = 1 })
 
   bot:call('sendMessage', {
-    text = 'Inline keyboard buttons test 2';
-    chat_id = message:getChatId();
-    reply_markup = keyboard:toJson()
+    text = 'Inline keyboard buttons test 2',
+    chat_id = message:getChatId(),
+    reply_markup = keyboard:toJson(),
   })
 end
 
@@ -160,18 +161,18 @@ end
 bot.cmd["/send_media_group"] = function(message)
   local data = InputMedia({
     InputMediaPhoto({
-      media = 'AgACAgIAAxkDAAIJ52RX2qzt6oCMY5P9Ge9uVuZgTDH_AAL-yTEb9gABuEp-yXhmUY3rfAEAAwIAA3MAAy8E';
-      caption = 'Photo with file_id'
-    });
+      media = 'AgACAgIAAxkDAAIJ52RX2qzt6oCMY5P9Ge9uVuZgTDH_AAL-yTEb9gABuEp-yXhmUY3rfAEAAwIAA3MAAy8E',
+      caption = 'Photo with file_id',
+    }),
     InputMediaPhoto({
-      media = 'attach://'..'image.png';
-      caption = 'Photo with disk'
-    });
+      media = 'attach://'..'image.png',
+      caption = 'Photo with disk',
+    }),
     InputMediaPhoto({
-      media = 'https://raw.githubusercontent.com/uriid1/scrfmp/main/AppleWar/lvl5.png';
-      caption = 'Photo with url'
-    });
-  });
+      media = 'https://raw.githubusercontent.com/uriid1/scrfmp/main/AppleWar/lvl5.png',
+      caption = 'Photo with url',
+    }),
+  })
 
   bot:call('sendMediaGroup', data, {
     chat_id = message:getChatId()
@@ -204,9 +205,8 @@ end
 bot.event.onGetMessageText = function(message)
   -- Send message
   bot:call('sendMessage', {
-    parse_mode = 'HTML';
-    text = dec.bold(message:getText());
-    chat_id = message:getChatId();
+    text = dec.bold(message:getText()),
+    chat_id = message:getChatId(),
   })
 end
 
@@ -218,8 +218,8 @@ bot.event.onMyChatMember = function(myChatMember)
     local ufrom = myChatMember:getUserFrom()
 
     bot:call('sendMessage', {
-      text = dec.user(ufrom) .. ' - Added me to this chat';
-      chat_id = myChatMember:getChatId();
+      text = dec.user(ufrom) .. ' - Added me to this chat',
+      chat_id = myChatMember:getChatId(),
     })
   end
 end
@@ -233,10 +233,10 @@ bot:startLongPolling()
 
 -- Setup Web Hook
 -- bot:startWebHook({
---   host = os.getenv('BOT_HOST');
---   port = os.getenv('BOT_PORT');
---   url = os.getenv('BOT_URL');
---   certificate = os.getenv('BOT_CERTIFICATE');
---   drop_pending_updates = true;
+--   host = os.getenv('BOT_HOST'),
+--   port = os.getenv('BOT_PORT'),
+--   url = os.getenv('BOT_URL'),
+--   certificate = os.getenv('BOT_CERTIFICATE'),
+--   drop_pending_updates = true,
 --   allowed_updates = '["message", "my_chat_member", "callback_query"]'
 -- })

@@ -1,16 +1,17 @@
 ---
 -- Event switching module.
 -- @module switch
+local switch = {}
+
 local log = require('log')
 local processMessage = require('core.models.processMessage')
-
-local switch = {}
 
 ---
 -- Initialize the event module.
 -- @return The initialized event module.
 function switch:init(bot)
   self.bot = bot
+
   return self
 end
 
@@ -24,15 +25,15 @@ end
 ---
 -- Call events.
 function switch:call_event(result)
-  -- Empty result
   if not result then
-    log.error('[Error] Empty result')
+    log.error('Empty result')
+
     return
   end
 
-  -- Not table
+  -- Not a table
   if type(result) ~= 'table' or not next(result) then
-    log.error('[Error] Result is not a table', result)
+    log.error('Result is not a table', result)
     return
   end
 
@@ -154,7 +155,6 @@ function switch:call_event(result)
 
   elseif result.message.migrate_from_chat_id then
     return call_event(bot.event.onMigrateFromChatId, result)
-
   end
 
   -- Payment

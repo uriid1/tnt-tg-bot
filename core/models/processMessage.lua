@@ -2,10 +2,10 @@
 -- Process incoming data and create corresponding objects.
 -- @module processMessage
 
-local message = require 'core.classes.message'
-local callback = require 'core.classes.callback'
-local chatMember = require 'core.classes.chatMember'
-local myChatMember = require 'core.classes.myChatMember'
+local message = require('core.classes.message')
+local callback = require('core.classes.callback')
+local chatMember = require('core.classes.chatMember')
+local myChatMember = require('core.classes.myChatMember')
 
 local function processMessage(data)
   if data.message then

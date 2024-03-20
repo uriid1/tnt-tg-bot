@@ -14,7 +14,7 @@ message.__index = message
 function message:new(data)
   local obj = {}
   obj.update_id = data.update_id
-  obj.message = data.message
+  obj.message = data.message or data.result
 
   return setmetatable(obj, self)
 end
@@ -114,7 +114,17 @@ function message:getUserReply()
 end
 
 ---
---
+-- message.reply_to_message
+-- @return (number)
+function message:getUserReplyId()
+  if self.message and self.message.reply_to_message and self.message.reply_to_message.from then
+    return self.message.reply_to_message.from.id
+  end
+end
+
+---
+-- message.reply_to_message
+-- @return (table)
 function message:getReplyToMessage()
   if self.message and self.message.reply_to_message then
     return self.message.reply_to_message
@@ -194,7 +204,7 @@ function message:isRemoveMember()
 end
 
 ---
---
+-- @return (test)
 function message:trimCommand()
   if self.message and self.message.text and self.message.__command then
     return self.message.text:gsub(self.message.__command..' ', '', 1)

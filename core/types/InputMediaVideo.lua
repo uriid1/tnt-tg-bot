@@ -1,3 +1,4 @@
+-- Input Media Video
 -- https://core.telegram.org/bots/api#inputmediavideo
 local function InputMediaVideo(data)
   if type(data) ~= 'table' then

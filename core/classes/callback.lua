@@ -13,8 +13,8 @@ callback.__index = callback
 function callback:new(data)
   local obj = {}
   obj.update_id = data.update_id
-  obj.message = data.callback_query.message
-  obj.callback_query = data.callback_query
+  obj.message = data.callback_query.message or (data.result and data.result.message)
+  obj.callback_query = data.callback_query or data.result
 
   return setmetatable(obj, self)
 end
@@ -131,7 +131,7 @@ function callback:getUserReply()
 end
 
 ---
---
+-- @return (table)
 function callback:getReplyToMessage()
   if self.message and self.message.reply_to_message then
     return self.message.reply_to_message
@@ -150,7 +150,7 @@ function callback:isSameUser()
 end
 
 ---
---
+-- @return (text)
 function callback:trimCommand()
   if self.message and self.message.text and self.message.__command then
     return self.message.text:gsub(self.message.__command..' ', '', 1)

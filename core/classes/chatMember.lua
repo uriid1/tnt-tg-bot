@@ -13,7 +13,7 @@ chatMember.__index = chatMember
 function chatMember:new(data)
   local obj = {}
   obj.update_id = data.update_id
-  obj.chat_member = data.chat_member
+  obj.chat_member = data.chat_member or data.result
 
   return setmetatable(obj, self)
 end

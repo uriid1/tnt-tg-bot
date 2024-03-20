@@ -2,8 +2,9 @@
 -- Tarantool telegram bot API.
 -- @module bot
 
-local bot = {_version = '0.5.5'}
+local bot = {_version = '0.6.0'}
 
+local fiber = require('fiber')
 local json = require('json')
 local fio = require('fio')
 local log = require('log')
@@ -20,12 +21,12 @@ local parse_mode = require('core.enums.parse_mode')
 -- @return (table) The bot object.
 function bot:init(options)
   -- Set default options
+  self.cmd = {}
+  self.rate = options.rate
   self.token = options.token
   self.debug = options.debug or false
-  self.parse_mode = options.parse_mode or parse_mode.HTML
   self.event = events
-  bot.rate = options.rate or nil
-  self.cmd = {}
+  self.parse_mode = options.parse_mode or parse_mode.HTML
 
   return self
 end
@@ -35,7 +36,8 @@ end
 -- @param method (string) The method to execute.
 -- @param options (table) Method options.
 -- @param ... (vararg) Additional arguments (tables) for options.
--- @return (table) The response from the Telegram Bot API.
+-- @return[1] (table) The response from the Telegram Bot API.
+-- @return[2] Error
 -- luacheck: ignore self
 function bot:call(method, options, ...)
   if ... then
@@ -51,7 +53,7 @@ function bot:call(method, options, ...)
 
   local params = {
     method = method,
-    options = options
+    options = options,
   }
 
   if bot.rate then
@@ -109,7 +111,7 @@ end
 -- @return (table) The response from the Telegram Bot API.
 local function send_certificate(options)
   if type(options) ~= 'table' or type(options.url) ~= 'string' then
-    log.error('[Error] Invalid options to start a webhook')
+    log.error('Invalid options to start a webhook')
     return
   end
 
@@ -154,8 +156,8 @@ function bot:startWebHook(options)
 
   local function callback(req)
     local data = req:json()
-    if bot.response_handler then
-      bot.response_handler(switch.call_event, data)
+    if self.response_handler then
+      self.response_handler(switch.call_event, data)
     else
       switch:call_event(data)
     end
@@ -183,11 +185,11 @@ getUpdates = function(first_start, offset, timeout, token, client)
   if not first_start then
     if type(body) == 'table' then
       if not body.ok then
-        log.error('[Error] error_code: %s | description: %s', body.error_code, body.description)
+        log.error('error_code: %s | description: %s', body.error_code, body.description)
         return
       end
 
-      log.info('[Success] Long polling work')
+      log.info('Long polling work')
     end
   end
 
@@ -195,18 +197,21 @@ getUpdates = function(first_start, offset, timeout, token, client)
     if body.ok then
       for i = 1, #body.result do
         local data = body.result[i]
-        if bot.response_handler then
-          bot.response_handler(switch.call_event, data)
-        else
-          switch:call_event(data)
-        end
+
+        fiber.create(function ()
+          if bot.response_handler then
+            bot.response_handler(switch.call_event, data)
+          else
+            switch:call_event(data)
+          end
+        end)
 
         offset = data.update_id + 1
       end
     end
   else
     -- Debug
-    log.error('[Error] Long polling.')
+    log.error('Long polling error')
   end
 
   -- Get new updates
@@ -220,7 +225,7 @@ end
 --   - timeout (number, optional): The polling timeout in seconds (default is 60).
 function bot:startLongPolling(options)
   if options and type(options) ~= 'table' then
-    log.error('[Error] Invalid options to start long polling')
+    log.error('Invalid options to start long polling')
     return
   end
 

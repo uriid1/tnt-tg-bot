@@ -2,11 +2,11 @@
 --
 
 local chat_type = {
-  SENDER = 'sender';
-  PRIVATE = 'private';
-  GROUP = 'group';
-  SUPERGROUP = 'supergroup';
-  CHANNEL = 'channel';
+  SENDER = 'sender',
+  PRIVATE = 'private',
+  GROUP = 'group',
+  SUPERGROUP = 'supergroup',
+  CHANNEL = 'channel',
 }
 
 --- chat_type
