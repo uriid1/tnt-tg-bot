@@ -33,24 +33,28 @@ function request:send(params)
   local bot = self.bot
   local client = self.client
 
-  if params.options then
-    -- Set parse mode
-    if params.options.text or params.options.caption then
-      if not params.options.parse_mode then
-        params.options.parse_mode = bot.parse_mode
-      end
-    end
-
-    -- Make multipart-data
-    body, boundary = mpEncode(params.options)
-
-    -- Make headers
-    opts = {
-      headers = {
-        ['Content-Type'] = "multipart/form-data; boundary="..boundary,
-      }
-    }
+  if not params.options then
+    goto req_send
   end
+
+  -- Set parse mode
+  if params.options.text or params.options.caption then
+    if not params.options.parse_mode then
+      params.options.parse_mode = bot.parse_mode
+    end
+  end
+
+  -- Make multipart-data
+  body, boundary = mpEncode(params.options)
+
+  -- Make headers
+  opts = {
+    headers = {
+      ['Content-Type'] = "multipart/form-data; boundary="..boundary,
+    }
+  }
+
+  ::req_send::
 
   -- Request
   local urlFmt = 'https://api.telegram.org/bot%s/%s'

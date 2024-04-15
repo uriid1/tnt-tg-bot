@@ -2,13 +2,13 @@
 -- Examples of how some methods and commands work
 --
 local log = require('log')
-
--- Init bot core
 local bot = require('core.bot')
-bot {
+local parse_mode = require('core.enums.parse_mode')
+
+-- Setup
+bot:cfg {
   token = os.getenv('BOT_TOKEN'), -- Your bot Token
-  debug = true,                   -- This option enables debugging
-  parse_mode = 'HTML',            -- Mode for parsing entities
+  parse_mode = parse_mode.HTML,   -- Mode for parsing entities
 }
 
 -- Load all libs/extensions
@@ -28,7 +28,7 @@ local chat_member_status = require('core.enums.chat_member_status')
 
 -- Command /start
 -- Method getMe
-bot.cmd["/start"] = function(message)
+bot.commands["/start"] = function(message)
   -- Get bot information
   local data = bot:call('getMe')
 
@@ -58,7 +58,7 @@ end
 
 -- Command /args_test
 -- Paring argumnts
-bot.cmd['/args_test'] = function(message)
+bot.commands['/args_test'] = function(message)
   local args = message:getArguments({count=3})
 
   local command_name = args[1]
@@ -75,7 +75,7 @@ bot.cmd['/args_test'] = function(message)
 end
 
 -- Close all callback command
-bot.cmd['/cb_close'] = function(callback)
+bot.commands['/cb_close'] = function(callback)
   -- Delete message
   bot:call('deleteMessage', {
     chat_id = callback:getChatId(),
@@ -85,17 +85,19 @@ end
 
 -- Command /send_photo
 -- Method sendPhoto
-bot.cmd["/send_photo"] = function(message)
-  bot:call('sendPhoto', {
-    photo = InputFile('/path/to/image.png'),
+bot.commands["/send_photo"] = function(message)
+  local result = bot:call('sendPhoto', {
+    photo = InputFile('image.jpg'),
     caption = 'Omg! It\'s photo from disk!',
     chat_id = message:getChatId(),
   })
+
+  log.info(result)
 end
 
 -- Command /send_reply_buttons_1
 -- Method sendMessage with reply_markup
-bot.cmd["/send_reply_buttons_1"] = function(message)
+bot.commands["/send_reply_buttons_1"] = function(message)
   bot:call('sendMessage', {
     text = 'Reply keyboard buttons test 1',
     chat_id = message:getChatId(),
@@ -112,7 +114,7 @@ end
 
 -- Command /send_reply_buttons_2
 -- Method sendMessage with reply_markup and keyboard buttons
-bot.cmd["/send_reply_buttons_2"] = function(message)
+bot.commands["/send_reply_buttons_2"] = function(message)
   -- Another option for building buttons
   local keyboard = ReplyKeyboardMarkup({ one_time_keyboard = true })
   KeyboardButton(keyboard, { text = 'Button 1' })
@@ -128,7 +130,7 @@ end
 
 -- Command send_inline_buttons_1
 -- Method sendMessage with reply_markup
-bot.cmd["/send_inline_buttons_1"] = function(message)
+bot.commands["/send_inline_buttons_1"] = function(message)
   bot:call('sendMessage', {
     text = 'Inline keyboard buttons test 1',
     chat_id = message:getChatId(),
@@ -143,7 +145,7 @@ end
 
 -- Command send_inline_buttons_1
 -- Method sendMessage with reply_markup and inline buttons
-bot.cmd["/send_inline_buttons_2"] = function(message)
+bot.commands["/send_inline_buttons_2"] = function(message)
   -- Another option for building buttons
   local keyboard = InlineKeyboardMarkup()
   InlineKeyboardButton(keyboard, { text = 'Button 1',  callback_data = '/cb_close' })
@@ -158,18 +160,18 @@ end
 
 -- Command /send_media_group
 -- Method sendMediaGroup
-bot.cmd["/send_media_group"] = function(message)
+bot.commands["/send_media_group"] = function(message)
   local data = InputMedia({
+    -- InputMediaPhoto({
+    --   media = 'AgACAgIAAxkDAAIJ52RX2qzt6oCMY5P9Ge9uVuZgTDH_AAL-yTEb9gABuEp-yXhmUY3rfAEAAwIAA3MAAy8E',
+    --   caption = 'Photo with file_id',
+    -- }),
     InputMediaPhoto({
-      media = 'AgACAgIAAxkDAAIJ52RX2qzt6oCMY5P9Ge9uVuZgTDH_AAL-yTEb9gABuEp-yXhmUY3rfAEAAwIAA3MAAy8E',
-      caption = 'Photo with file_id',
-    }),
-    InputMediaPhoto({
-      media = 'attach://'..'image.png',
+      media = 'attach://'..'image.jpg',
       caption = 'Photo with disk',
     }),
     InputMediaPhoto({
-      media = 'https://raw.githubusercontent.com/uriid1/scrfmp/main/AppleWar/lvl5.png',
+      media = 'https://raw.githubusercontent.com/uriid1/scrfmp/main/perfect-arkanoid/arkanoid.png',
       caption = 'Photo with url',
     }),
   })
@@ -180,7 +182,7 @@ bot.cmd["/send_media_group"] = function(message)
 end
 
 -- Event of getting entities
-bot.event.onGetEntities = function(message)
+bot.events.onGetEntities = function(message)
   local entities = message:getEntities()
 
   -- Call bot command
@@ -193,7 +195,7 @@ bot.event.onGetEntities = function(message)
 end
 
 -- Event of getting callbacks
-bot.event.onCallbackQuery = function(callbackQuery)
+bot.events.onCallbackQuery = function(callbackQuery)
   -- Callback processing
   local command = bot.CallbackCommand(callbackQuery)
   if command then
@@ -202,7 +204,7 @@ bot.event.onCallbackQuery = function(callbackQuery)
 end
 
 -- Event of getting any message
-bot.event.onGetMessageText = function(message)
+bot.events.onGetMessageText = function(message)
   -- Send message
   bot:call('sendMessage', {
     text = dec.bold(message:getText()),
@@ -211,7 +213,7 @@ bot.event.onGetMessageText = function(message)
 end
 
 -- Event of my chat member
-bot.event.onMyChatMember = function(myChatMember)
+bot.events.onMyChatMember = function(myChatMember)
   local status = myChatMember:getNewChatMemberStatus()
 
   if status == chat_member_status.MEMBER then
@@ -224,6 +226,11 @@ bot.event.onMyChatMember = function(myChatMember)
   end
 end
 
+-- Handle errors
+bot.events.onRequestErr = function(data, err_name, error_code)
+  log.error(data)
+end
+
 -- Run bot
 -- Use long polling to develop
 -- and webhook for release
@@ -233,10 +240,10 @@ bot:startLongPolling()
 
 -- Setup Web Hook
 -- bot:startWebHook({
---   host = os.getenv('BOT_HOST'),
---   port = os.getenv('BOT_PORT'),
---   url = os.getenv('BOT_URL'),
---   certificate = os.getenv('BOT_CERTIFICATE'),
+--   host = '0.0.0.0',
+--   port = 5505,
+--   url = 'https://mysite.ru/myBotUrl',
+--   certificate = '/etc/cert/myBotName/public.pem',
 --   drop_pending_updates = true,
 --   allowed_updates = '["message", "my_chat_member", "callback_query"]'
 -- })

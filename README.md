@@ -6,7 +6,7 @@
 
 ```lua
 local bot = require('core.bot')
-bot {
+bot:cfg {
   token = os.getenv('BOT_TOKEN'), -- Your bot Token
   debug = true,                   -- This option enables debugging
   parse_mode = 'HTML',            -- Mode for parsing entities
@@ -48,7 +48,7 @@ bot:startWebHook({
   port = 8081;
   url = 'https://123.123.123.124/my_bot_location',
   certificate = '/etc/path/to/ssl/public.pem',
-  -- path = '/path', -- Optional
+  -- path = '/path', -- Optional ruote path
 
   -- Optional webhook params
   -- https://core.telegram.org/bots/api#setwebhook
@@ -63,7 +63,7 @@ bot:startWebHook({
   -- Server opts
   port = 8081,
   url = 'https://mycoolsite.com/my_bot_location',
-  -- path = '/path', -- Optional
+  -- path = '/path', -- Optional ruote path
 
   -- Optional webhook params
   -- https://core.telegram.org/bots/api#setwebhook

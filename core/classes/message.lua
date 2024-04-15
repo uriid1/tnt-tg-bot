@@ -51,6 +51,15 @@ function message:getArguments(opts)
 end
 
 ---
+-- Get the chat information from the message object.
+-- @return The chat information.
+function message:getChat()
+  if self.message and self.message.chat then
+    return self.message.chat
+  end
+end
+
+---
 -- Gets the chat ID from the message data.
 -- @return (number) The chat ID.
 function message:getChatId()

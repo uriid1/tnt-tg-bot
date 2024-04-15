@@ -2,30 +2,28 @@
 -- Tarantool telegram bot API.
 -- @module bot
 
-local bot = {_version = '0.6.0'}
+local bot = { _version = '0.7.0' }
 
 local fiber = require('fiber')
 local json = require('json')
 local fio = require('fio')
 local log = require('log')
+local events = require('core.middlewares.events')
 local request = require('core.modules.request'):init(bot)
-local events = require('core.models.events'):init()
 local switch = require('core.modules.switch'):init(bot)
 local parse_mode = require('core.enums.parse_mode')
 
 ---
 -- Initializes the bot with options.
 -- @param options (table) Options table.
---   - debug (boolean, optional): Enable debug mode.
 --   - parse_mode (string, optional): The default parse mode (HTML by default).
 -- @return (table) The bot object.
-function bot:init(options)
+function bot:cfg(options)
   -- Set default options
-  self.cmd = {}
+  self.commands = {}
   self.rate = options.rate
   self.token = options.token
-  self.debug = options.debug or false
-  self.event = events
+  self.events = events
   self.parse_mode = options.parse_mode or parse_mode.HTML
 
   return self
@@ -72,17 +70,17 @@ function bot.Command(data)
 
   local username
   if command:find('@') then
-    command, username = command:match("(/.+)([@].+)")
+    command, username = command:match("(/.+)@(.+)")
   end
 
-  if not bot['cmd'][command] then
+  if not bot.commands[command] then
     return nil, nil
   end
 
   data.message.__command = command
 
   log.info('[command] '..command)
-  return bot['cmd'][command], username
+  return bot.commands[command], username
 end
 
 ---
@@ -91,14 +89,14 @@ end
 -- @return (function) The callback handler function.
 function bot.CallbackCommand(data)
   local command = data:getArguments({ count = 1 })[1]
-  if not bot['cmd'][command] then
+  if not bot.commands[command] then
     return
   end
 
   data.message.__command = command
 
   log.info('[callback] '..command)
-  return bot['cmd'][command]
+  return bot.commands[command]
 end
 
 ---
@@ -140,7 +138,7 @@ end
 -- @param options (table) Options table.
 --   - host (string, optional): The host to bind to (default is '0.0.0.0').
 --   - port (number, optional): The port to listen on (default is 8081).
---   - path (string, optional): The webhook path (empty string by default).
+--   - path (string, optional): The route path ('/' string by default).
 function bot:startWebHook(options)
   -- Server setup
   local http_server = require('http.server')
@@ -149,28 +147,39 @@ function bot:startWebHook(options)
   local httpd = http_server.new(host, port)
 
   local route = {
-    path = options.path or '',
+    path = options.path or '/',
     method = 'POST',
-    template = '200'
   }
 
   local function callback(req)
     local data = req:json()
+
+    -- Debug
+    -- p(body)
+
     if self.response_handler then
       self.response_handler(switch.call_event, data)
     else
       switch:call_event(data)
     end
+
+    return {
+      status = 200,
+      headers = { ['content-type'] = 'text/plain' },
+      body = [[Ok]]
+    }
   end
 
   httpd:route(route, callback):start()
 
   log.info('[Success] HTTP Server listening at 0.0.0.0:' .. options.port)
 
-  local res = send_certificate(options)
-  if res and not res.ok then
-    log.info('[%s] description: %s', res.ok, res.description)
-    os.exit()
+  if options.maintenance_mode ~= 'maint' then
+    local res = send_certificate(options)
+    if res and not res.ok then
+      log.info('[%s] description: %s', res.ok, res.description)
+      os.exit(1)
+    end
   end
 end
 
@@ -179,6 +188,8 @@ getUpdates = function(first_start, offset, timeout, token, client)
   local url = string.format('https://api.telegram.org/bot%s/getUpdates?offset=%d&timeout=%d', token, offset, timeout)
   local res = client:request('GET', url)
   local body = json.decode(res.body)
+
+  -- Debug
   -- p(body)
 
   -- First start
@@ -246,7 +257,5 @@ function bot:startLongPolling(options)
   -- Start long polling
   getUpdates(false, offset, polling_timeout, self.token, client)
 end
-
-setmetatable(bot, { __call = bot.init })
 
 return bot
