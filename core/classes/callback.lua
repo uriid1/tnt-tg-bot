@@ -59,6 +59,15 @@ function callback:getArguments(opts)
 end
 
 ---
+-- Gets the chat  from the associated message.
+-- @return (number) The chat.
+function callback:getChat()
+  if self.message and self.message.chat then
+    return self.message.chat
+  end
+end
+
+---
 -- Gets the chat ID from the associated message.
 -- @return (number) The chat ID.
 function callback:getChatId()
