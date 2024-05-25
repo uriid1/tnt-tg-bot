@@ -108,11 +108,17 @@ end
 -- Convert a Telegram User object to a mention link.
 -- @param user The User object.
 -- @return The formatted user mention link.
-local MAX_USER_LENGHT = 25
+local MAX_USERNAME_LENGHT = 25
 
-function M.user(user)
+function M.user(user, opts)
   local name = user.first_name or user.username or 'Аноним'
-  name = utf8.sub(name, 1, MAX_USER_LENGHT)
+  name = utf8.sub(name, 1, MAX_USERNAME_LENGHT)
+
+  if opts then
+    if opts.no_link then
+      return M.format(name)
+    end
+  end
 
   return ('<a href="tg://user?id=%s">%s</a>'):format(user.id, M.format(name))
 end

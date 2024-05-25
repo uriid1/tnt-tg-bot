@@ -29,7 +29,6 @@ end
 function request:send(params)
   local opts
   local body
-  local boundary
   local bot = self.bot
   local client = self.client
 
@@ -44,15 +43,24 @@ function request:send(params)
     end
   end
 
-  -- Make multipart-data
-  body, boundary = mpEncode(params.options)
-
   -- Make headers
-  opts = {
-    headers = {
-      ['Content-Type'] = "multipart/form-data; boundary="..boundary,
+  opts = {}
+
+  if params.is_multipart then
+    -- Make multipart-data
+    local boundary
+    body, boundary = mpEncode(params.options)
+
+    opts.headers = {
+      ['Content-Type'] = 'multipart/form-data; boundary=' .. boundary,
     }
-  }
+  else
+    body = json.encode(params.options)
+
+    opts.headers = {
+      ['Content-Type'] = 'application/json'
+    }
+  end
 
   ::req_send::
 
@@ -60,26 +68,8 @@ function request:send(params)
   local urlFmt = 'https://api.telegram.org/bot%s/%s'
   local data = client:request('POST', urlFmt:format(bot.token, params.method), body, opts)
 
-  if not data.body then
-    Error:handle(data)
-
-    local err
-    if data then
-      err = data
-    else
-      err = 'Empty data received'
-    end
-
-    return err
-  end
-
-  -- Decode JSON response
-  local data = json.decode(data.body)
-
   -- Handle error
-  if not data.ok then
-    Error:handle(data)
-
+  if data.body == nil then
     local err
     if data then
       err = data
@@ -90,7 +80,22 @@ function request:send(params)
     return nil, err
   end
 
-  return data
+  -- Decode JSON response
+  local data = json.decode(data.body)
+
+  -- Handle error
+  if data.ok == false then
+    local err
+    if data then
+      err = data
+    else
+      err = 'Empty data received'
+    end
+
+    return nil, err
+  end
+
+  return data, nil
 end
 
 return request

@@ -1,14 +1,24 @@
-# Usage example
-0. $ git clone https://github.com/uriid1/tarantool-telegram-bot
-1. $ chmod +x install-dependencies.sh <br>
-2. $ sh install-dependencies.sh <br>
-3. Create <b>main.lua</b>:<br>
+# Description
+This library is being developed with the needs of my Telegram bots in mind. Therefore, some parts of the "Telegram bot API types" are missing, but they can be easily implemented, as the main part of everything necessary is ready.
+I wrote main.lua, which turned out to be quite mixed in terms of logic. Hopefully, it won't be too difficult to figure it out.
 
+In my experience, this library is much simpler than similar ones written in Python, Node.js, Go.
+
+# Usage example
+```sh
+$ git clone https://github.com/uriid1/tarantool-telegram-bot
+$ chmod +x install-dependencies.sh
+$ sh install-dependencies.sh
+$ tarantool main.lua
+```
+See main.lua for more examples
+
+# Minimal Example
 ```lua
+-- init.lua
 local bot = require('core.bot')
 bot:cfg {
   token = os.getenv('BOT_TOKEN'), -- Your bot Token
-  debug = true,                   -- This option enables debugging
   parse_mode = 'HTML',            -- Mode for parsing entities
 }
 
@@ -26,7 +36,7 @@ bot.event.onGetEntities = function(message)
 end
 
 -- Command /start Example
-bot.cmd["/start"] = function(message)
+bot.commands["/start"] = function(message)
   -- Send text message
   bot:call('sendMessage', {
     text = 'Hello!',
@@ -36,11 +46,8 @@ end
 
 bot:startLongPolling()
 ```
-4. run tarantool main.lua<br>
 
-*See main.lua for more examples
-
-# WebHook
+# Usage of Webhooks
 *Using self-signed certificates
 ```lua
 bot:startWebHook({
@@ -48,7 +55,8 @@ bot:startWebHook({
   port = 8081;
   url = 'https://123.123.123.124/my_bot_location',
   certificate = '/etc/path/to/ssl/public.pem',
-  -- path = '/path', -- Optional ruote path
+  -- Optional ruote path
+  -- path = '/path',
 
   -- Optional webhook params
   -- https://core.telegram.org/bots/api#setwebhook
@@ -63,7 +71,8 @@ bot:startWebHook({
   -- Server opts
   port = 8081,
   url = 'https://mycoolsite.com/my_bot_location',
-  -- path = '/path', -- Optional ruote path
+  -- Optional ruote path
+  -- path = '/path',
 
   -- Optional webhook params
   -- https://core.telegram.org/bots/api#setwebhook

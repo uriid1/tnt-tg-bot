@@ -64,6 +64,7 @@ local function inlineKeyboardButton(keyboard, data)
     -- Add button to line
     if not keyboard["inline_keyboard"][data.row] then
       table.insert(keyboard["inline_keyboard"], { button })
+
       return button
     end
 
@@ -72,13 +73,6 @@ local function inlineKeyboardButton(keyboard, data)
 
     return button
   end
-
-  -- Additional param
-  -- setmetatable(button, {
-  --   additional = {
-  --     row = data.row
-  --   }
-  -- })
 
   return button
 end

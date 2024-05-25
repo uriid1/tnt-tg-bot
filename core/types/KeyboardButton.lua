@@ -1,7 +1,8 @@
 -- Keyboard Button
 -- https://core.telegram.org/bots/api#keyboardbutton
+--
 local function KeyboardButton(keyboard, data)
-  if type(data) ~= 'table' then
+  if data and type(data) ~= 'table' then
     return nil
   end
 
@@ -57,6 +58,7 @@ local function KeyboardButton(keyboard, data)
     -- Add button to line
     if not keyboard["keyboard"][data.row] then
       table.insert(keyboard["keyboard"], { button })
+
       return button
     end
 
@@ -65,13 +67,6 @@ local function KeyboardButton(keyboard, data)
 
     return button
   end
-
-  -- Additional param
-  -- setmetatable(button, {
-  --   additional = {
-  --     row = data.row
-  --   }
-  -- })
 
   return button
 end

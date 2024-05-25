@@ -4,7 +4,7 @@ local json = require('json')
 local InputFile = require('core.types.InputFile')
 
 local function InputMedia(data)
-  if type(data) ~= 'table' then
+  if not data then
     return nil
   end
 

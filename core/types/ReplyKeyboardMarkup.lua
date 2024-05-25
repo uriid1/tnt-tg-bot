@@ -1,14 +1,14 @@
 -- Reply Keyboard Markup
 -- https://core.telegram.org/bots/api#replykeyboardmarkup
+--
 local json = require('json')
 
 local function ReplyKeyboardMarkup(data)
-  local obj = {}
-
-  if type(data) ~= 'table' then
-    obj.keyboard = {}
-    return obj
+  if not data then
+    return { keyboard = {} }
   end
+
+  local obj = {}
 
   -- Array of button rows, each represented by an Array of KeyboardButton objects
   if data.keyboard and type(data.keyboard) == 'table' then

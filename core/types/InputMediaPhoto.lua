@@ -1,7 +1,8 @@
 -- Input Media Photo
 -- https://core.telegram.org/bots/api#inputmediaphoto
+--
 local function InputMediaPhoto(data)
-  if type(data) ~= 'table' then
+  if not data then
     return nil
   end
 

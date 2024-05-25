@@ -1,85 +1,85 @@
 local events_list = {
   -- Update events
-  "onChosenInlineResult",
-  "ShippingQuery",
-  "PreCheckoutQuery",
-  "onPoll",
-  "onPollAnswer",
-  "onMyChatMember",
-  "onChatMember",
-  "onChatJoinRequest",
-  "onChannelPost",
-  "onEditedChannelPost",
+  'onChosenInlineResult',
+  'ShippingQuery',
+  'PreCheckoutQuery',
+  'onPoll',
+  'onPollAnswer',
+  'onMyChatMember',
+  'onChatMember',
+  'onChatJoinRequest',
+  'onChannelPost',
+  'onEditedChannelPost',
 
-  "onEditedMessage",
-  "onGetMessage",
-  "onGetMessageText",
-  "onInlineQuery",
+  'onEditedMessage',
+  'onGetMessage',
+  'onGetMessageText',
+  'onInlineQuery',
 
   -- Callback query event
-  "onCallbackQuery",
+  'onCallbackQuery',
 
   -- Chat events
-  "onSenderChat",
-  "onNewChatTitle",
-  "onNewChatPhoto",
-  "onDeleteChatPhoto",
-  "onGroupChatCreated",
-  "onSupergroupChatCreated",
-  "onChannelChatCreated",
-  "onMigrateToChatId",
-  "onMigrateFromChatId",
-  "onNewChatMember",
-  "onLeftChatMember",
+  'onSenderChat',
+  'onNewChatTitle',
+  'onNewChatPhoto',
+  'onDeleteChatPhoto',
+  'onGroupChatCreated',
+  'onSupergroupChatCreated',
+  'onChannelChatCreated',
+  'onMigrateToChatId',
+  'onMigrateFromChatId',
+  'onNewChatMember',
+  'onLeftChatMember',
 
   -- Payment events
-  "onInvoice",
-  "onSuccessfulPayment",
+  'onInvoice',
+  'onSuccessfulPayment',
 
   -- Passport events
-  "onPassportData",
+  'onPassportData',
 
   -- Video Chat events
-  "onVideoChatScheduled",
-  "onVideoChatStarted",
-  "onVideoChatEnded",
-  "onVideoChatParticipantsInvited",
+  'onVideoChatScheduled',
+  'onVideoChatStarted',
+  'onVideoChatEnded',
+  'onVideoChatParticipantsInvited',
 
   -- Forward events
-  "onForwardFrom",
-  "onForwardFromChat",
+  'onForwardFrom',
+  'onForwardFromChat',
 
   -- Via bot event
-  "onViaBot",
+  'onViaBot',
 
   -- Media events
-  "onGetPhoto",
-  "onGetVideo",
-  "onGetAnimation",
-  "onGetDocument",
-  "onGetLocation",
-  "onGetPoll",
-  "onGetAudio",
-  "onGetContact",
-  "onGetDice",
-  "onGetGame",
-  "onGetVideoNote",
-  "onGetSticker",
-  "onGetVoice",
+  'onGetPhoto',
+  'onGetVideo',
+  'onGetAnimation',
+  'onGetDocument',
+  'onGetLocation',
+  'onGetPoll',
+  'onGetAudio',
+  'onGetContact',
+  'onGetDice',
+  'onGetGame',
+  'onGetVideoNote',
+  'onGetSticker',
+  'onGetVoice',
 
   -- Entities events
-  "onGetEntities",
+  'onGetEntities',
 
   -- Error Handling events
-  "onCommandErrorHandle",
-  "onEventErrorHandle",
+  'onCommandErrorHandle',
+  'onEventErrorHandle',
 
   -- Request error handling event
-  "onRequestErr",
+  'onRequestErr',
 
   -- Other events
-  "onInformSpammer",
-  "onUnknownUpdate",
+  'onInformSpammer',
+  'onUnknownUpdate',
 }
 
 return events_list

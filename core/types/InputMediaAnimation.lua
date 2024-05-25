@@ -1,8 +1,8 @@
 -- Input Media Animation
---
 -- https://core.telegram.org/bots/api#inputmediaanimation
+--
 local function InputMediaAnimation(data)
-  if type(data) ~= 'table' then
+  if not data then
     return nil
   end
 

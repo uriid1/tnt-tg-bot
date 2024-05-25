@@ -1,7 +1,8 @@
 -- Input Media Audio
 -- https://core.telegram.org/bots/api#inputmediaaudio
+--
 local function InputMediaAudio(data)
-  if type(data) ~= 'table' then
+  if not data then
     return nil
   end
 

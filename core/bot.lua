@@ -2,7 +2,7 @@
 -- Tarantool telegram bot API.
 -- @module bot
 
-local bot = { _version = '0.7.0' }
+local bot = { _version = '0.7.5' }
 
 local fiber = require('fiber')
 local json = require('json')
@@ -33,29 +33,20 @@ end
 -- Executes a Telegram Bot API method.
 -- @param method (string) The method to execute.
 -- @param options (table) Method options.
--- @param ... (vararg) Additional arguments (tables) for options.
 -- @return[1] (table) The response from the Telegram Bot API.
 -- @return[2] Error
--- luacheck: ignore self
-function bot:call(method, options, ...)
-  if ... then
-    for i = 1, select('#', ...) do
-      local data = select(i, ...)
-      if type(data) == 'table' then
-        for key, val in pairs(data) do
-          options[key] = val
-        end
-      end
-    end
-  end
-
+function bot:call(method, options, request_param)
   local params = {
     method = method,
     options = options,
   }
 
-  if bot.rate then
-    return bot.rate.limit(request, params)
+  if request_param and request_param.multipart_post then
+    params.is_multipart = true
+  end
+
+  if self.rate and self.rate.limit then
+    return self.rate.limit(request, params)
   end
 
   return request:send(params)
@@ -130,7 +121,7 @@ local function send_certificate(options)
     certificate = data,
     drop_pending_updates = options.drop_pending_updates or false,
     allowed_updates = options.allowed_updates or nil
-  })
+  }, { multipart_post = true })
 end
 
 ---
@@ -177,7 +168,7 @@ function bot:startWebHook(options)
   if options.maintenance_mode ~= 'maint' then
     local res = send_certificate(options)
     if res and not res.ok then
-      log.info('[%s] description: %s', res.ok, res.description)
+      log.error('[%s] description: %s', res.ok, res.description)
       os.exit(1)
     end
   end
@@ -194,31 +185,27 @@ getUpdates = function(first_start, offset, timeout, token, client)
 
   -- First start
   if not first_start then
-    if type(body) == 'table' then
-      if not body.ok then
-        log.error('error_code: %s | description: %s', body.error_code, body.description)
-        return
-      end
-
-      log.info('Long polling work')
+    if not body.ok then
+      log.error('error_code: %s | description: %s', body.error_code, body.description)
+      return
     end
+
+    log.info('Long polling work')
   end
 
-  if type(body) == 'table' then
-    if body.ok then
-      for i = 1, #body.result do
-        local data = body.result[i]
+  if body.ok and body.result then
+    for i = 1, #body.result do
+      local data = body.result[i]
 
-        fiber.create(function ()
-          if bot.response_handler then
-            bot.response_handler(switch.call_event, data)
-          else
-            switch:call_event(data)
-          end
-        end)
+      fiber.create(function ()
+        if bot.response_handler then
+          bot.response_handler(switch.call_event, data)
+        else
+          switch:call_event(data)
+        end
+      end)
 
-        offset = data.update_id + 1
-      end
+      offset = data.update_id + 1
     end
   else
     -- Debug

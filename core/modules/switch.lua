@@ -1,10 +1,9 @@
 ---
 -- Event switching module.
 -- @module switch
-local switch = {}
-
-local log = require('log')
 local processMessage = require('core.middlewares.processMessage')
+
+local switch = {}
 
 ---
 -- Initialize the event module.
@@ -17,16 +16,6 @@ end
 
 -- Call events
 function switch:call_event(result)
-  --
-  -- Not a table
-  --
-  if type(result) ~= 'table' or not next(result) then
-    log.error('Result is not a table', result)
-
-    return
-  end
-  --
-
   -- Set bot link
   local bot = self.bot
 

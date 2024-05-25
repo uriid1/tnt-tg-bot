@@ -1,7 +1,8 @@
 -- Input Media Document
 -- https://core.telegram.org/bots/api#inputmediadocument
+--
 local function InputMediaDocument(data)
-  if type(data) ~= 'table' then
+  if not data then
     return nil
   end
 

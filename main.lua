@@ -1,9 +1,13 @@
 --
 -- Examples of how some methods and commands work
 --
+local fiber = require('fiber')
 local log = require('log')
 local bot = require('core.bot')
 local parse_mode = require('core.enums.parse_mode')
+-- Optional
+-- local p = require('pimp')
+-- _G.p = p
 
 -- Setup
 bot:cfg {
@@ -13,27 +17,54 @@ bot:cfg {
 
 -- Load all libs/extensions
 local dec = require('core.extensions.html_formatter')
-
+local chat_member_status = require('core.enums.chat_member_status')
+local bot_command_scope = require('core.enums.bot_command_scope')
+-- Inputs
 local InputFile = require('core.types.InputFile')
 local InputMedia = require('core.types.InputMedia')
 local InputMediaPhoto = require('core.types.InputMediaPhoto')
-
+-- Inline buttons
 local InlineKeyboardMarkup = require('core.types.InlineKeyboardMarkup')
 local InlineKeyboardButton = require('core.types.InlineKeyboardButton')
-
+-- Reply buttons
 local ReplyKeyboardMarkup = require('core.types.ReplyKeyboardMarkup')
 local KeyboardButton = require('core.types.KeyboardButton')
+local ReplyKeyboardRemove = require('core.types.ReplyKeyboardRemove')
+-- Bot commands
+local BotCommand = require('core.types.BotCommand')
+local BotCommandScope = require('core.types.BotCommandScope')
 
-local chat_member_status = require('core.enums.chat_member_status')
+-- Command handler
+local function processCommand(data, opts)
+  -- Callback commanmd
+  if opts and opts.is_callback then
+    local command = bot.CallbackCommand(data)
+    if command then
+      command(data)
+
+      -- Answer callback
+      bot:call('answerCallbackQuery', {
+        callback_query_id = data:getQueryId()
+      })
+    end
+    
+    return
+  end
+
+  -- Bot command or other
+  local command = bot.Command(data)
+  if command then
+    command(data)
+  end
+end
 
 -- Command /start
--- Method getMe
-bot.commands["/start"] = function(message)
+bot.commands['/start'] = function(message)
   -- Get bot information
-  local data = bot:call('getMe')
+  local data, err = bot:call('getMe')
 
-  if not data.ok then
-    log.error(data)
+  if err then
+    log.error(err)
 
     return
   end
@@ -56,26 +87,81 @@ bot.commands["/start"] = function(message)
   })
 end
 
+-- Set bot commands
+bot.commands['/set_commands'] = function(message)
+  local _, err = bot:call('setMyCommands', {
+    commands = {
+      BotCommand({ '/start', 'Start the bot' }),
+      BotCommand({ '/timer', 'Timer test' }),
+      BotCommand({ '/test' })
+    },
+    scope = BotCommandScope(bot_command_scope.DEFAULT)
+  })
+
+  if err then
+    log.error(err)
+
+    return
+  end
+
+  bot:call('sendMessage', {
+    text = 'Commands installed',
+    chat_id = message:getChatId(),
+  })
+end
+
+-- Delete bot commands
+bot.commands['/delete_commands'] = function(message)
+  local _, err = bot:call('deleteMyCommands', {
+    scope = BotCommandScope(bot_command_scope.DEFAULT)
+  })
+
+  if err then
+    log.error(err)
+
+    return
+  end
+
+  bot:call('sendMessage', {
+    text = 'Commands removed',
+    chat_id = message:getChatId(),
+  })
+end
+
+-- Test timer
+bot.commands['/timer'] = function(message)
+  for i = 1, 3 do
+    bot:call('sendMessage', {
+      text = 'timeout: ' .. i,
+      chat_id = message:getChatId(),
+    })
+
+    fiber.sleep(1)
+  end
+end
+
 -- Command /args_test
 -- Paring argumnts
 bot.commands['/args_test'] = function(message)
-  local args = message:getArguments({count=3})
+  -- arguments[1] -- Command name
+  -- arguments[2] -- Argument 1
+  -- arguments[3] -- Argument 2
+  local arguments = message:getArguments({ count = 3 })
+  local arg1 = arguments[1] or 'nil'
+  local arg2 = arguments[2] or 'nil'
+  local arg3 = arguments[3] or 'nil'
 
-  local command_name = args[1]
-  local arg2 = args[2] or 'nil'
-  local arg3 = args[3] or 'nil'
+  local text_fmt = 'Command: %s\n arg2: %s\n arg3: %s\n'
+  local text = text_fmt:format(arg1, arg2, arg3)
 
-  local text_fmt = "Command: %s\n arg2: %s\n arg3: %s\n"
-  local text = text_fmt:format(command_name, arg2, arg3)
-
-  bot:call("sendMessage", {
+  bot:call('sendMessage', {
     text = text,
     chat_id = message:getChatId(),
   })
 end
 
 -- Close all callback command
-bot.commands['/cb_close'] = function(callback)
+bot.commands['cb_close'] = function(callback)
   -- Delete message
   bot:call('deleteMessage', {
     chat_id = callback:getChatId(),
@@ -83,28 +169,44 @@ bot.commands['/cb_close'] = function(callback)
   })
 end
 
+bot.commands['cb_button'] = function(callback)
+  -- arguments[1] - Command name
+  -- arguments[2] - Button ID
+  local arguments = callback:getArguments({ count = 2 })
+  local buttonId = tonumber(arguments[2])
+
+  bot:call('sendMessage', {
+    text = 'Press Button: '..buttonId,
+    chat_id = callback:getChatId(),
+  })
+end
+
 -- Command /send_photo
 -- Method sendPhoto
-bot.commands["/send_photo"] = function(message)
-  local result = bot:call('sendPhoto', {
+bot.commands['/send_photo'] = function(message)
+  local result, err = bot:call('sendPhoto', {
     photo = InputFile('image.jpg'),
     caption = 'Omg! It\'s photo from disk!',
     chat_id = message:getChatId(),
-  })
+  }, { multipart_post = true })
+
+  if err then
+    log.error(err)
+  end
 
   log.info(result)
 end
 
 -- Command /send_reply_buttons_1
 -- Method sendMessage with reply_markup
-bot.commands["/send_reply_buttons_1"] = function(message)
+bot.commands['/send_reply_buttons_1'] = function(message)
   bot:call('sendMessage', {
     text = 'Reply keyboard buttons test 1',
     chat_id = message:getChatId(),
     reply_markup = ReplyKeyboardMarkup({
       keyboard = {
-        { KeyboardButton(nil, { text = 'Button 1' }), KeyboardButton(nil, { text = 'Button 2' }) },
-        { KeyboardButton(nil, { text = 'Button 3' }) },
+        { KeyboardButton(nil, { text = 'Apple' }), KeyboardButton(nil, { text = 'Banana' }) },
+        { KeyboardButton(nil, { text = 'Orange' }) },
       },
 
       one_time_keyboard = true,
@@ -114,30 +216,44 @@ end
 
 -- Command /send_reply_buttons_2
 -- Method sendMessage with reply_markup and keyboard buttons
-bot.commands["/send_reply_buttons_2"] = function(message)
+bot.commands['/send_reply_buttons_2'] = function(message)
   -- Another option for building buttons
-  local keyboard = ReplyKeyboardMarkup({ one_time_keyboard = true })
-  KeyboardButton(keyboard, { text = 'Button 1' })
-  KeyboardButton(keyboard, { text = 'Button 2', row = 2 })
-  KeyboardButton(keyboard, { text = 'Button 3', row = 2 })
+  local keyboard = ReplyKeyboardMarkup({ one_time_keyboard = false })
+  KeyboardButton(keyboard, { text = 'Apple' })
+  KeyboardButton(keyboard, { text = 'Banana' })
+  KeyboardButton(keyboard, { text = 'Orange', row = 2 })
 
   bot:call('sendMessage', {
     text = 'Reply keyboard buttons test 2',
     chat_id = message:getChatId(),
-    reply_markup = keyboard:toJson(),
+    reply_markup = keyboard,
+  })
+end
+
+-- Command remove_reply_keyboard
+-- Work only in private chat type
+-- see https://core.telegram.org/bots/api#replykeyboardremove
+bot.commands['/remove_reply_keyboard'] = function(message)
+  bot:call('sendMessage', {
+    text = 'Removed reply keyboard',
+    chat_id = message:getChatId(),
+    reply_markup = ReplyKeyboardRemove({ selective = true }),
   })
 end
 
 -- Command send_inline_buttons_1
 -- Method sendMessage with reply_markup
-bot.commands["/send_inline_buttons_1"] = function(message)
+bot.commands['/send_inline_buttons_1'] = function(message)
   bot:call('sendMessage', {
     text = 'Inline keyboard buttons test 1',
     chat_id = message:getChatId(),
     reply_markup = InlineKeyboardMarkup({
       inline_keyboard = {
-        { InlineKeyboardButton(nil, { text = 'Button 1',  callback_data = '/cb_close' }) },
-        { InlineKeyboardButton(nil, { text = 'Button 2',  callback_data = '/cb_close' }) }
+        {
+          InlineKeyboardButton(nil, { text = 'Button 1', callback_data = 'cb_button 1' }),
+          InlineKeyboardButton(nil, { text = 'Button 2', callback_data = 'cb_button 2' })
+        },
+        { InlineKeyboardButton(nil, { text = 'Close', callback_data = 'cb_close' }) }
       }
     })
   })
@@ -145,23 +261,25 @@ end
 
 -- Command send_inline_buttons_1
 -- Method sendMessage with reply_markup and inline buttons
-bot.commands["/send_inline_buttons_2"] = function(message)
+bot.commands['/send_inline_buttons_2'] = function(message)
   -- Another option for building buttons
   local keyboard = InlineKeyboardMarkup()
-  InlineKeyboardButton(keyboard, { text = 'Button 1',  callback_data = '/cb_close' })
-  InlineKeyboardButton(keyboard, { text = 'Button 2',  callback_data = '/cb_close', row = 1 })
+  InlineKeyboardButton(keyboard, { text = 'Button 1', callback_data = 'cb_button 1' })
+  InlineKeyboardButton(keyboard, { text = 'Button 2', callback_data = 'cb_button 2', row = 1 })
+  InlineKeyboardButton(keyboard, { text = 'Close', callback_data = 'cb_close' })
 
   bot:call('sendMessage', {
     text = 'Inline keyboard buttons test 2',
     chat_id = message:getChatId(),
-    reply_markup = keyboard:toJson(),
+    reply_markup = keyboard,
   })
 end
 
 -- Command /send_media_group
 -- Method sendMediaGroup
-bot.commands["/send_media_group"] = function(message)
+bot.commands['/send_media_group'] = function(message)
   local data = InputMedia({
+    -- For file id
     -- InputMediaPhoto({
     --   media = 'AgACAgIAAxkDAAIJ52RX2qzt6oCMY5P9Ge9uVuZgTDH_AAL-yTEb9gABuEp-yXhmUY3rfAEAAwIAA3MAAy8E',
     --   caption = 'Photo with file_id',
@@ -176,8 +294,10 @@ bot.commands["/send_media_group"] = function(message)
     }),
   })
 
+  data.chat_id = message:getChatId()
+
   bot:call('sendMediaGroup', data, {
-    chat_id = message:getChatId()
+    multipart_post = true
   })
 end
 
@@ -185,26 +305,39 @@ end
 bot.events.onGetEntities = function(message)
   local entities = message:getEntities()
 
-  -- Call bot command
   if entities[1] and entities[1].type == 'bot_command' then
-    local command = bot.Command(message)
-    if command then
-      command(message)
-    end
+    -- Call bot command
+    processCommand(message)
   end
 end
 
 -- Event of getting callbacks
-bot.events.onCallbackQuery = function(callbackQuery)
-  -- Callback processing
-  local command = bot.CallbackCommand(callbackQuery)
-  if command then
-    command(callbackQuery)
-  end
+bot.events.onCallbackQuery = function(callback)
+  -- Call bot callback
+  processCommand(callback, { is_callback = true })
 end
 
 -- Event of getting any message
 bot.events.onGetMessageText = function(message)
+  local text = message:getText()
+    
+  local result
+  if text == 'Apple' then
+    result = 'You got +1 apple!'
+  elseif text == 'Banana' then
+    result = 'You got +1 banana!'
+  elseif text == 'Orange' then
+    result = 'You got +1 orange!'
+  end
+
+  if result then
+    bot:call('sendMessage', {
+      text = result,
+      chat_id = message:getChatId(),
+    })
+    return
+  end
+
   -- Send message
   bot:call('sendMessage', {
     text = dec.bold(message:getText()),
@@ -227,8 +360,8 @@ bot.events.onMyChatMember = function(myChatMember)
 end
 
 -- Handle errors
-bot.events.onRequestErr = function(data, err_name, error_code)
-  log.error(data)
+bot.events.onRequestErr = function(err, _, _)
+  log.error(err)
 end
 
 -- Run bot

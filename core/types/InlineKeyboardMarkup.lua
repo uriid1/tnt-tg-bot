@@ -11,7 +11,7 @@ local function InlineKeyboardMarkup(data)
 
   -- Array of button rows,
   -- each represented by an Array of InlineKeyboardButton objects
-  if data and type(data) == 'table' then
+  if data then
     -- If table inline_keyboard exists
     if type(data.inline_keyboard) == 'table' then
       return json.encode(data)

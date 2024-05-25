@@ -13,7 +13,7 @@ for i = 1, #events_list do
   local name = events_list[i]
 
   events[name] = function()
-    log.error('The called event \'%s\' does not exist', name)
+    log.debug('The called event \'%s\' does not exist', name)
   end
 end
 
