@@ -1,4 +1,4 @@
--- https://core.telegram.org/bots/api#botcommandscope 
+-- https://core.telegram.org/bots/api#botcommandscope
 
 local bot_command_scope = {
   DEFAULT = 'default',

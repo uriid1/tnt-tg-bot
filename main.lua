@@ -47,7 +47,7 @@ local function processCommand(data, opts)
         callback_query_id = data:getQueryId()
       })
     end
-    
+
     return
   end
 
@@ -320,7 +320,7 @@ end
 -- Event of getting any message
 bot.events.onGetMessageText = function(message)
   local text = message:getText()
-    
+
   local result
   if text == 'Apple' then
     result = 'You got +1 apple!'
