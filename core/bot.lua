@@ -1,27 +1,34 @@
 ---
--- Tarantool telegram bot API.
+--- Tarantool Telegram Bot API
+--- By uriid1
+--- Licence GPL V2
+---
 -- @module bot
+local bot = { _version = '0.8.0' }
 
-local bot = { _version = '0.7.5' }
-
-local fiber = require('fiber')
-local json = require('json')
-local fio = require('fio')
 local log = require('log')
+local fio = require('fio')
+local json = require('json')
+local fiber = require('fiber')
 local events = require('core.middlewares.events')
-local request = require('core.modules.request'):init(bot)
 local switch = require('core.modules.switch'):init(bot)
+local request = require('core.modules.request'):init(bot)
 local parse_mode = require('core.enums.parse_mode')
 
----
--- Initializes the bot with options.
--- @param options (table) Options table.
---   - parse_mode (string, optional): The default parse mode (HTML by default).
--- @return (table) The bot object.
+--- Initializes the bot with options
+--
+-- @param options (table) Options
+  -- @param[opt] options.token (string) Bot token
+  -- @param[opt] options.parse_mode (string) Parse mode. HTML by default
+-- @usage
+-- bot:cfg {
+--  token = '1234567:AABBccDDFF',
+--  parse_mode = 'HTML'
+-- }
+--
+-- @return bot object
 function bot:cfg(options)
-  -- Set default options
   self.commands = {}
-  self.rate = options.rate
   self.token = options.token
   self.events = events
   self.parse_mode = options.parse_mode or parse_mode.HTML
@@ -29,12 +36,20 @@ function bot:cfg(options)
   return self
 end
 
----
--- Executes a Telegram Bot API method.
--- @param method (string) The method to execute.
--- @param options (table) Method options.
--- @return[1] (table) The response from the Telegram Bot API.
--- @return[2] Error
+--- Executes a Telegram Bot API method.
+--
+-- @param method (string) TG API method to execute
+-- @param options (table) Method options
+-- @param[optchain] request_param (table) { multipart_post = true }
+--
+-- @usage
+-- bot:call("sendMessage", {
+--  text = 'Hello!',
+--  chat_id = 123456789,
+-- })
+--
+-- @return (table) Response from the Telegram Bot API
+-- @return (table) Error object
 function bot:call(method, options, request_param)
   local params = {
     method = method,
@@ -45,17 +60,15 @@ function bot:call(method, options, request_param)
     params.is_multipart = true
   end
 
-  if self.rate and self.rate.limit then
-    return self.rate.limit(request, params)
-  end
-
   return request:send(params)
 end
 
----
--- Handles a command message.
--- @param data (table) The command message.
--- @return command, username
+--- Handles a command message
+--
+-- @param data (table) Message object
+--
+-- @return Command func
+-- @return Bot username
 function bot.Command(data)
   local command = data:getArguments({ count = 1 })[1]
 
@@ -68,38 +81,42 @@ function bot.Command(data)
     return nil, nil
   end
 
-  data.message.__command = command
+  data.__command = command
 
   log.info('[command] '..command)
   return bot.commands[command], username
 end
 
----
--- Handles a callback query.
--- @param data (table) The callback query.
--- @return (function) The callback handler function.
+--- Handles a callback query
+--
+-- @param data (table) Callback query object
+--
+-- @return Command func
 function bot.CallbackCommand(data)
   local command = data:getArguments({ count = 1 })[1]
   if not bot.commands[command] then
     return
   end
 
-  data.message.__command = command
+  data.__command = command
 
   log.info('[callback] '..command)
   return bot.commands[command]
 end
 
----
--- Sends a certificate for webhook setup.
--- @param options (table) Options table.
---   - url (string): The URL for the webhook.
---   - certificate (string, optional): The path to the certificate file.
---   - drop_pending_updates (boolean, optional): Whether to drop pending updates (false by default).
---   - allowed_updates (table, optional): List of allowed updates (nil by default).
--- @return (table) The response from the Telegram Bot API.
-local function send_certificate(options)
-  if type(options) ~= 'table' or type(options.url) ~= 'string' then
+--- Sends a certificate for webhook setup
+--
+-- @param options (table) Options table
+  -- @param options.url (string) URL for the webhook
+  -- @param options.certificate (string) Path to the certificate file
+  -- @param options.drop_pending_updates (boolean) Whether to drop pending updates (false by default)
+  -- @param options.allowed_updates (table) List of allowed updates (nil by default)
+--
+-- @return (table) Response data
+function bot.send_certificate(options)
+  if type(options) ~= 'table'
+    or type(options.url) ~= 'string'
+  then
     log.error('Invalid options to start a webhook')
     return
   end
@@ -124,14 +141,13 @@ local function send_certificate(options)
   }, { multipart_post = true })
 end
 
----
--- Starts the webhook.
--- @param options (table) Options table.
---   - host (string, optional): The host to bind to (default is '0.0.0.0').
---   - port (number, optional): The port to listen on (default is 8081).
---   - path (string, optional): The route path ('/' string by default).
+--- Start the webhook
+--
+-- @param options (table) Options table
+  -- @param options.host (string) Host to bind to (default is '0.0.0.0')
+  -- @param options.port (number) Port to listen on (default is 8081)
+  -- @param options.path (string) Route path ('/' string by default)
 function bot:startWebHook(options)
-  -- Server setup
   local http_server = require('http.server')
   local host = options.host or '0.0.0.0'
   local port = options.port or 8081
@@ -144,9 +160,6 @@ function bot:startWebHook(options)
 
   local function callback(req)
     local data = req:json()
-
-    -- Debug
-    -- p(body)
 
     if self.response_handler then
       self.response_handler(switch.call_event, data)
@@ -161,12 +174,14 @@ function bot:startWebHook(options)
     }
   end
 
-  httpd:route(route, callback):start()
+  httpd
+    :route(route, callback)
+    :start()
 
-  log.info('[Success] HTTP Server listening at 0.0.0.0:' .. options.port)
+  log.info('[Success] HTTP Server listening at %s:%d', host, port)
 
   if options.maintenance_mode ~= 'maint' then
-    local res = send_certificate(options)
+    local res = bot.send_certificate(options)
     if res and not res.ok then
       log.error('[%s] description: %s', res.ok, res.description)
       os.exit(1)
@@ -180,13 +195,10 @@ getUpdates = function(first_start, offset, timeout, token, client)
   local res = client:request('GET', url)
   local body = json.decode(res.body)
 
-  -- Debug
-  -- p(body)
-
   -- First start
   if not first_start then
     if not body.ok then
-      log.error('error_code: %s | description: %s', body.error_code, body.description)
+      log.error('Error code: %s | Description: %s', body.error_code, body.description)
       return
     end
 
@@ -216,11 +228,12 @@ getUpdates = function(first_start, offset, timeout, token, client)
   return getUpdates(true, offset, timeout, token, client)
 end
 
----
--- Starts long polling.
--- @param options (table, optional) Options table.
---   - offset (number, optional): The update offset (default is -1).
---   - timeout (number, optional): The polling timeout in seconds (default is 60).
+--- Start long polling
+--
+-- @param[opt] options (table) Options table
+  -- @param[opt] options.offset (number) Update offset (default is -1)
+  -- @param[opt] options.timeout (number) Polling timeout in seconds (default is 60)
+  -- @param[opt] options.max_connections (number) (default is 1)
 function bot:startLongPolling(options)
   if options and type(options) ~= 'table' then
     log.error('Invalid options to start long polling')
@@ -228,7 +241,7 @@ function bot:startLongPolling(options)
   end
 
   local http = require('http.client')
-  local client = http.new({ max_connections = 1 })
+  local client = http.new({ max_connections = options and options.max_connections or 1 })
 
   -- Set options
   local offset = -1
@@ -241,7 +254,6 @@ function bot:startLongPolling(options)
 
   log.info('[Success] Getting Updates')
 
-  -- Start long polling
   getUpdates(false, offset, polling_timeout, self.token, client)
 end
 

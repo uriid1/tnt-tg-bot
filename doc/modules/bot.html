@@ -1,0 +1,364 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Reference</title>
+    <link rel="stylesheet" href="../ldoc_new.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>ldoc</h1>
+
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Functions">Functions</a></li>
+</ul>
+
+
+<h2>Modules</h2>
+<ul class="nowrap">
+  <li><strong>bot</strong></li>
+  <li><a href="../modules/classes.callback.html">classes.callback</a></li>
+  <li><a href="../modules/classes.chatMember.html">classes.chatMember</a></li>
+  <li><a href="../modules/classes.message.html">classes.message</a></li>
+  <li><a href="../modules/classes.myChatMember.html">classes.myChatMember</a></li>
+  <li><a href="../modules/extensions.html_formatter.html">extensions.html_formatter</a></li>
+  <li><a href="../modules/middlewares.events.html">middlewares.events</a></li>
+  <li><a href="../modules/middlewares.processMessage.html">middlewares.processMessage</a></li>
+  <li><a href="../modules/modules.request.html">modules.request</a></li>
+  <li><a href="../modules/modules.switch.html">modules.switch</a></li>
+  <li><a href="../modules/types.BotCommand.html">types.BotCommand</a></li>
+  <li><a href="../modules/types.BotCommandScope.html">types.BotCommandScope</a></li>
+  <li><a href="../modules/types.InlineKeyboardButton.html">types.InlineKeyboardButton</a></li>
+  <li><a href="../modules/types.InlineKeyboardMarkup.html">types.InlineKeyboardMarkup</a></li>
+  <li><a href="../modules/types.InputFile.html">types.InputFile</a></li>
+  <li><a href="../modules/types.InputMedia.html">types.InputMedia</a></li>
+  <li><a href="../modules/types.InputMediaAnimation.html">types.InputMediaAnimation</a></li>
+  <li><a href="../modules/types.InputMediaAudio.html">types.InputMediaAudio</a></li>
+  <li><a href="../modules/types.InputMediaDocument.html">types.InputMediaDocument</a></li>
+  <li><a href="../modules/types.InputMediaPhoto.html">types.InputMediaPhoto</a></li>
+  <li><a href="../modules/types.InputMediaVideo.html">types.InputMediaVideo</a></li>
+  <li><a href="../modules/types.KeyboardButton.html">types.KeyboardButton</a></li>
+  <li><a href="../modules/types.LinkPreviewOptions.html">types.LinkPreviewOptions</a></li>
+  <li><a href="../modules/types.ReplyKeyboardMarkup.html">types.ReplyKeyboardMarkup</a></li>
+  <li><a href="../modules/types.ReplyKeyboardRemove.html">types.ReplyKeyboardRemove</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>bot</code></h1>
+<p>Tarantool Telegram Bot API
+ By uriid1
+ Licence GPL V2</p>
+<p></p>
+
+
+<h2><a href="#Functions">Functions</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#cfg">cfg (options)</a></td>
+	<td class="summary">Initializes the bot with options</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#call">call (method, options[, request_param])</a></td>
+	<td class="summary">Executes a Telegram Bot API method.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Command">Command (data)</a></td>
+	<td class="summary">Handles a command message</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#CallbackCommand">CallbackCommand (data)</a></td>
+	<td class="summary">Handles a callback query</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#send_certificate">send_certificate (options)</a></td>
+	<td class="summary">Sends a certificate for webhook setup</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#startWebHook">startWebHook (options)</a></td>
+	<td class="summary">Start the webhook</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#startLongPolling">startLongPolling ([options])</a></td>
+	<td class="summary">Start long polling</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Functions"></a>Functions</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "cfg"></a>
+    <strong>cfg (options)</strong>
+    </dt>
+    <dd>
+    Initializes the bot with options
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">options</span> (table) Options
+        <ul>
+        <li><span class="parameter">token</span>
+         (string) Bot token
+         (<em>optional</em>)
+        </li>
+        <li><span class="parameter">parse_mode</span>
+         (string) Parse mode. HTML by default
+         (<em>optional</em>)
+        </li>
+        </li></ul>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        bot object
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">bot:<span class="function-name">cfg</span> {
+ token = <span class="string">'1234567:AABBccDDFF'</span>,
+ parse_mode = <span class="string">'HTML'</span>
+}
+</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "call"></a>
+    <strong>call (method, options[, request_param])</strong>
+    </dt>
+    <dd>
+    Executes a Telegram Bot API method.
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">method</span>
+         (string) TG API method to execute
+        </li>
+        <li><span class="parameter">options</span>
+         (table) Method options
+        </li>
+        <li><span class="parameter">request_param</span>
+         (table) { multipart_post = true }
+         (<em>optional</em>)
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+        <li>
+        (table) Response from the Telegram Bot API</li>
+        <li>
+        (table) Error object</li>
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">bot:<span class="function-name">call</span>(<span class="string">"sendMessage"</span>, {
+ text = <span class="string">'Hello!'</span>,
+ chat_id = <span class="number">123456789</span>,
+})
+</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "Command"></a>
+    <strong>Command (data)</strong>
+    </dt>
+    <dd>
+    Handles a command message
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">data</span>
+         (table) Message object
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+        <li>
+        Command func</li>
+        <li>
+        Bot username</li>
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "CallbackCommand"></a>
+    <strong>CallbackCommand (data)</strong>
+    </dt>
+    <dd>
+    Handles a callback query
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">data</span>
+         (table) Callback query object
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        Command func
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "send_certificate"></a>
+    <strong>send_certificate (options)</strong>
+    </dt>
+    <dd>
+    Sends a certificate for webhook setup
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">options</span> (table) Options table
+        <ul>
+        <li><span class="parameter">url</span>
+         (string) URL for the webhook
+        </li>
+        <li><span class="parameter">certificate</span>
+         (string) Path to the certificate file
+        </li>
+        <li><span class="parameter">drop_pending_updates</span>
+         (boolean) Whether to drop pending updates (false by default)
+        </li>
+        <li><span class="parameter">allowed_updates</span>
+         (table) List of allowed updates (nil by default)
+        </li>
+        </li></ul>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        (table) Response data
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "startWebHook"></a>
+    <strong>startWebHook (options)</strong>
+    </dt>
+    <dd>
+    Start the webhook
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">options</span> (table) Options table
+        <ul>
+        <li><span class="parameter">host</span>
+         (string) Host to bind to (default is '0.0.0.0')
+        </li>
+        <li><span class="parameter">port</span>
+         (number) Port to listen on (default is 8081)
+        </li>
+        <li><span class="parameter">path</span>
+         (string) Route path ('/' string by default)
+        </li>
+        </li></ul>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "startLongPolling"></a>
+    <strong>startLongPolling ([options])</strong>
+    </dt>
+    <dd>
+    Start long polling
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">options</span> (table) Options table
+        <ul>
+        <li><span class="parameter">offset</span>
+         (number) Update offset (default is -1)
+         (<em>optional</em>)
+        </li>
+        <li><span class="parameter">timeout</span>
+         (number) Polling timeout in seconds (default is 60)
+         (<em>optional</em>)
+        </li>
+        <li><span class="parameter">max_connections</span>
+         (number) (default is 1)
+         (<em>optional</em>)
+        </li>
+        </li></ul>
+    </ul>
+
+
+
+
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/lunarmodules/LDoc">LDoc 1.5.0</a></i>
+<i style="float:right;">Last updated 2024-08-17 19:14:10 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>

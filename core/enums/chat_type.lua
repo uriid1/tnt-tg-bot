@@ -1,14 +1,10 @@
---- Enum chat_type
---
-
+-- Enum chat type
 local chat_type = {
-  SENDER = 'sender',
-  PRIVATE = 'private',
-  GROUP = 'group',
+  SENDER     = 'sender',
+  PRIVATE    = 'private',
+  GROUP      = 'group',
   SUPERGROUP = 'supergroup',
-  CHANNEL = 'channel',
+  CHANNEL    = 'channel',
 }
 
---- chat_type
--- @table export
 return chat_type

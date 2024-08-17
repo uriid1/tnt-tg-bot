@@ -1,7 +1,9 @@
--- Input Media Video
--- https://core.telegram.org/bots/api#inputmediavideo
---
-local function InputMediaVideo(data)
+--- https://core.telegram.org/bots/api#inputmediavideo
+
+local InputMediaVideo
+--- Function InputMediaVideo
+-- @function InputMediaVideo
+function InputMediaVideo(data)
   if not data then
     return nil
   end

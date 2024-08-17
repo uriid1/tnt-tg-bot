@@ -1,7 +1,10 @@
--- https://core.telegram.org/bots/api#botcommandscope
+--- https://core.telegram.org/bots/api#botcommandscope
 local bot_command_scope = require('core.enums.bot_command_scope')
 
-local function BotCommandScope(scope, data)
+local BotCommandScope
+--- Type BotCommandScope
+-- @function BotCommandScope
+function BotCommandScope(scope, data)
   if not scope then
     return { type = bot_command_scope.DEFAULT }
   end

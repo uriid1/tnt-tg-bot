@@ -8,8 +8,8 @@ In my experience, this library is much simpler than similar ones written in Pyth
 ```sh
 $ git clone https://github.com/uriid1/tarantool-telegram-bot
 $ chmod +x install-dependencies.sh
-$ sh install-dependencies.sh
-$ tarantool main.lua
+$ sh install-dependencies.sh -o
+$ BOT_TOKEN=123456:AAAAABBBBCCCCDDDeeeFFFF tarantool main.lua
 ```
 See main.lua for more examples
 

@@ -1,7 +1,9 @@
--- Reply Keyboard Remove
--- https://core.telegram.org/bots/api#replykeyboardremove
---
-local function ReplyKeyboardRemove(data)
+--- https://core.telegram.org/bots/api#replykeyboardremove
+
+local ReplyKeyboardRemove
+--- Function ReplyKeyboardRemove
+-- @function ReplyKeyboardRemove
+function ReplyKeyboardRemove(data)
   if not data then
     return {
       remove_keyboard = true,

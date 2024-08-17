@@ -15,6 +15,19 @@ bot:cfg {
   parse_mode = parse_mode.HTML,   -- Mode for parsing entities
 }
 
+-- Commands:
+-- /start
+-- /set_commands
+-- /timer
+-- /args_test arg1 arg2
+-- /send_photo
+-- /send_reply_buttons_1
+-- /send_reply_buttons_2
+-- /remove_reply_keyboard
+-- /send_inline_buttons_1
+-- /send_inline_buttons_2
+-- /send_media_group
+
 -- Load all libs/extensions
 local dec = require('core.extensions.html_formatter')
 local chat_member_status = require('core.enums.chat_member_status')
@@ -184,7 +197,7 @@ end
 -- Command /send_photo
 -- Method sendPhoto
 bot.commands['/send_photo'] = function(message)
-  local result, err = bot:call('sendPhoto', {
+  local data, err = bot:call('sendPhoto', {
     photo = InputFile('image.jpg'),
     caption = 'Omg! It\'s photo from disk!',
     chat_id = message:getChatId(),
@@ -192,9 +205,15 @@ bot.commands['/send_photo'] = function(message)
 
   if err then
     log.error(err)
+
+    return
   end
 
-  log.info(result)
+  local fileIdArr = data.result.photo
+  local file_id = fileIdArr[#fileIdArr].file_id
+  local width = fileIdArr[#fileIdArr].width
+  local height = fileIdArr[#fileIdArr].height
+  log.info('File ID: %s Width: %d Height: %d', file_id, width, height)
 end
 
 -- Command /send_reply_buttons_1
@@ -259,7 +278,7 @@ bot.commands['/send_inline_buttons_1'] = function(message)
   })
 end
 
--- Command send_inline_buttons_1
+-- Command send_inline_buttons_2
 -- Method sendMessage with reply_markup and inline buttons
 bot.commands['/send_inline_buttons_2'] = function(message)
   -- Another option for building buttons

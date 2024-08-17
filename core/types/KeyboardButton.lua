@@ -1,7 +1,9 @@
--- Keyboard Button
--- https://core.telegram.org/bots/api#keyboardbutton
---
-local function KeyboardButton(keyboard, data)
+--- https://core.telegram.org/bots/api#keyboardbutton
+
+local KeyboardButton
+--- Function KeyboardButton
+-- @function KeyboardButton
+function KeyboardButton(keyboard, data)
   if data and type(data) ~= 'table' then
     return nil
   end

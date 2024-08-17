@@ -1,20 +1,18 @@
----
--- Event switching module.
--- @module switch
+--- Event switching module
+-- @module modules.switch
 local processMessage = require('core.middlewares.processMessage')
 
 local switch = {}
 
----
--- Initialize the event module.
--- @return The initialized event module.
+--- Initialize the event module
+-- @return Initialized event module
 function switch:init(bot)
   self.bot = bot
 
   return self
 end
 
--- Call events
+-- Call event(s)
 function switch:call_event(result)
   -- Set bot link
   local bot = self.bot

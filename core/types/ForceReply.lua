@@ -1,6 +1,4 @@
--- Force Reply
 -- https://core.telegram.org/bots/api#forcereply
---
 local function ForceReply(data)
   if not data then
     return {

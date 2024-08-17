@@ -1,4 +1,5 @@
--- 'https',://core.telegram.org/bots/api#chatpermissions
+-- Enum chat member permissions
+-- https://core.telegram.org/bots/api#chatpermissions
 local chat_member_permissions = {
   'can_send_messages',
   'can_send_audios',

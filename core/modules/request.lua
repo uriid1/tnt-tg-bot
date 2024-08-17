@@ -1,31 +1,25 @@
----
--- Module for making HTTP requests to the Telegram Bot API.
--- @module request
+--- Module for making HTTP requests to the Telegram Bot API
+-- @module modules.request
 local request = {}
 
 local json = require('json')
 local http = require('http.client')
 local mpEncode = require('multipart-post')
-local Error = require('core.middlewares.Error')
 
----
--- Initialize the request module with a bot instance and maximum connections.
--- @param bot The bot instance.
--- @param max_connections The maximum number of connections (optional, default is 40).
--- @return The initialized request module.
+--- Initialize the request module with a bot instance and maximum connections
+-- @param bot Bot instance
+-- @param max_connections Maximum number of connections (optional, default is 40)
+-- @return (table) Request module
 function request:init(bot, max_connections)
   self.bot = bot
   self.client = http.new { max_connections = max_connections or 40 }
 
-  Error = Error:init(bot)
-
   return self
 end
 
----
--- Send an HTTP request to the Telegram Bot API.
--- @param params The request parameters.
--- @return The response from the API, or nil if there was an error.
+--- Send an HTTP request to the Telegram Bot API
+-- @param params (table) Request parameters
+-- @return (table) Response from the API, or nil if there was an error
 function request:send(params)
   local opts
   local body
@@ -65,8 +59,12 @@ function request:send(params)
   ::req_send::
 
   -- Request
-  local urlFmt = 'https://api.telegram.org/bot%s/%s'
-  local data = client:request('POST', urlFmt:format(bot.token, params.method), body, opts)
+  local data = client:request(
+    'POST',
+    'https://api.telegram.org/bot'..bot.token..'/'..params.method,
+    body,
+    opts
+  )
 
   -- Handle error
   if data.body == nil then

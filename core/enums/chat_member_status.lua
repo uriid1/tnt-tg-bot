@@ -1,15 +1,11 @@
---- Enum chat_member_status
---
-
+-- Enum chat member status
 local chat_member_status = {
-  CREATOR = 'creator',
+  CREATOR       = 'creator',
   ADMINISTRATOR = 'administrator',
-  MEMBER = 'member',
-  RESTRICTED = 'restricted',
-  LEFT = 'left',
-  KICKED = 'kicked',
+  MEMBER        = 'member',
+  RESTRICTED    = 'restricted',
+  LEFT          = 'left',
+  KICKED        = 'kicked',
 }
 
---- chat_member_status
--- @table export
 return chat_member_status

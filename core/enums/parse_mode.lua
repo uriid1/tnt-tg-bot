@@ -1,12 +1,8 @@
---- Enum parse_mode
---
-
+-- Enum parse mode
 local parse_mode = {
-  HTML = 'HTML',
-  MARKDOWN = 'Markdown',
+  HTML        = 'HTML',
+  MARKDOWN    = 'Markdown',
   MARKDOWN_V2 = 'MarkdownV2',
 }
 
---- parse_mode
--- @table export
 return parse_mode

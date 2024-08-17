@@ -1,5 +1,4 @@
 scripts/
-doc/
 .rocks/
 .luacheckrc
-parameters.ini
+init.lua
