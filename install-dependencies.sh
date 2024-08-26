@@ -67,7 +67,7 @@ tarantoolctl rocks install --server=https://rocks.tarantool.org/ --local http
 install "lua-multipart-post"
 tarantoolctl rocks install --server=https://luarocks.org lua-multipart-post 1.0-0
 
-# # Optional
+# Optional
 if [[ "$1" -eq "-o" ]]; then
   install "pimp"
   tarantoolctl rocks install --server=https://luarocks.org pimp

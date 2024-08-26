@@ -52,16 +52,16 @@ bot:startLongPolling()
 ```lua
 bot:startWebHook({
   -- Server opts
-  port = 8081;
-  url = 'https://123.123.123.124/my_bot_location',
+  port = 8081,
+  host = '0.0.0.0',
+  -- Bot opts
+  bot_url = 'https://123.123.123.124/my_bot_location',
   certificate = '/etc/path/to/ssl/public.pem',
-  -- Optional ruote path
-  -- path = '/path',
 
   -- Optional webhook params
   -- https://core.telegram.org/bots/api#setwebhook
   drop_pending_updates = true,
-  allowed_updates = '["message", "my_chat_member", "callback_query"]'
+  allowed_updates = { "message", "my_chat_member", "callback_query" }
 })
 ```
 
@@ -70,13 +70,14 @@ bot:startWebHook({
 bot:startWebHook({
   -- Server opts
   port = 8081,
-  url = 'https://mycoolsite.com/my_bot_location',
-  -- Optional ruote path
-  -- path = '/path',
+  host = '0.0.0.0',
+  -- Bot opts
+  bot_url = 'https://123.123.123.124/my_bot_location',
+  certificate = '/etc/path/to/ssl/public.pem',
 
   -- Optional webhook params
   -- https://core.telegram.org/bots/api#setwebhook
   drop_pending_updates = true,
-  allowed_updates = '["message", "my_chat_member", "callback_query"]'
+  allowed_updates = { "message", "my_chat_member", "callback_query" }
 })
 ```

@@ -4,7 +4,7 @@
 --- Licence GPL V2
 ---
 -- @module bot
-local bot = { _version = '0.8.0' }
+local bot = { _version = '0.8.2' }
 
 local log = require('log')
 local fio = require('fio')
@@ -115,7 +115,7 @@ end
 -- @return (table) Response data
 function bot.send_certificate(options)
   if type(options) ~= 'table'
-    or type(options.url) ~= 'string'
+    or type(options.bot_url) ~= 'string'
   then
     log.error('Invalid options to start a webhook')
     return
@@ -124,6 +124,11 @@ function bot.send_certificate(options)
   -- Read certificate
   local data
   if options.certificate then
+    if not fio.path.exists(options.certificate) then
+      log.error('Certificate not found: '..options.certificate)
+      return
+    end
+
     local cert = fio.open(options.certificate, 'O_RDONLY')
     data = {
       filename = options.certificate:match('[^/]*.$'),
@@ -132,12 +137,16 @@ function bot.send_certificate(options)
     cert:close()
   end
 
+  if type(options.allowed_updates) == 'table' then
+    options.allowed_updates = json.encode(options.allowed_updates)
+  end
+
   -- Set webhook
   return bot:call('setWebhook', {
     url = options.url,
     certificate = data,
     drop_pending_updates = options.drop_pending_updates or false,
-    allowed_updates = options.allowed_updates or nil
+    allowed_updates = options.allowed_updates
   }, { multipart_post = true })
 end
 
@@ -145,12 +154,12 @@ end
 --
 -- @param options (table) Options table
   -- @param options.host (string) Host to bind to (default is '0.0.0.0')
-  -- @param options.port (number) Port to listen on (default is 8081)
+  -- @param options.port (number) Port to listen on (default is 5077)
   -- @param options.path (string) Route path ('/' string by default)
 function bot:startWebHook(options)
   local http_server = require('http.server')
   local host = options.host or '0.0.0.0'
-  local port = options.port or 8081
+  local port = options.port or 5077
   local httpd = http_server.new(host, port)
 
   local route = {
@@ -158,7 +167,9 @@ function bot:startWebHook(options)
     method = 'POST',
   }
 
-  local function callback(req)
+  -- Bot route setup
+  --
+  local function default_callback(req)
     local data = req:json()
 
     if self.response_handler then
@@ -174,10 +185,18 @@ function bot:startWebHook(options)
     }
   end
 
-  httpd
-    :route(route, callback)
-    :start()
+  httpd:route(route, default_callback)
+  --
 
+  -- Declaration custom routes
+  if options.routes then
+    for i = 1, #options.routes do
+      local route = options.routes[i]
+      httpd:route({ path = route.path, method = route.method }, route.callback)
+    end
+  end
+
+  httpd:start()
   log.info('[Success] HTTP Server listening at %s:%d', host, port)
 
   if options.maintenance_mode ~= 'maint' then

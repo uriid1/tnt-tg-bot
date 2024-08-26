@@ -390,12 +390,35 @@ end
 -- Enable long polling
 bot:startLongPolling()
 
--- Setup Web Hook
--- bot:startWebHook({
---   host = '0.0.0.0',
---   port = 5505,
---   url = 'https://mysite.ru/myBotUrl',
---   certificate = '/etc/cert/myBotName/public.pem',
---   drop_pending_updates = true,
---   allowed_updates = '["message", "my_chat_member", "callback_query"]'
--- })
+--[[ Setup Web Hook
+bot:startWebHook({
+  -- Server setup
+  host = '0.0.0.0',
+  port = 5505,
+  -- Bot setup
+  url = 'https://mysite.ru/myBotUrl',
+  certificate = '/etc/cert/myBotName/public.pem',
+  drop_pending_updates = true,
+  allowed_updates = {
+    "message",
+    "my_chat_member",
+    "callback_query"
+  },
+
+  -- Custom routes (array of routes)
+  routes = {
+    -- Example
+    {
+      path = '/bot/v1/payments',
+      method = 'GET',
+      callback = function(req)
+        return {
+          status = 200,
+          headers = { ['content-type'] = 'text/plain' },
+          body = "Payments: no data"
+        }
+      end
+    }
+  },
+})
+]]
