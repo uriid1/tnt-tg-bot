@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 echo "
  _________ _       _________  _________ _______    ______   _______ _________
@@ -62,13 +62,27 @@ for ((i = 0; i < ${#optional_programs[*]}; ++i)); do
 done
 
 # Install all rocks
+echo
 install "http"
 tarantoolctl rocks install --server=https://rocks.tarantool.org/ --local http
 install "lua-multipart-post"
 tarantoolctl rocks install --server=https://luarocks.org lua-multipart-post 1.0-0
 
-# Optional
-if [[ "$1" -eq "-o" ]]; then
-  install "pimp"
-  tarantoolctl rocks install --server=https://luarocks.org pimp
-fi
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    -o | --optional)
+      install "pimp"
+      tarantoolctl rocks install --server=https://luarocks.org pimp
+      shift 1
+    ;;
+
+    -hp | --http-patch)
+      install "escape"
+      tarantoolctl rocks install --only-server=https://rocks.antibot.ru escape
+      install "http-patch"
+      tarantool scripts/http_patch.lua
+      shift 1
+    ;;
+  esac
+done
+

@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+ldoc -s '!new' -d doc/ core/

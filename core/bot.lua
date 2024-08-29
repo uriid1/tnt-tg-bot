@@ -4,7 +4,7 @@
 --- Licence GPL V2
 ---
 -- @module bot
-local bot = { _version = '0.8.2' }
+local bot = { _version = '0.8.3' }
 
 local log = require('log')
 local fio = require('fio')

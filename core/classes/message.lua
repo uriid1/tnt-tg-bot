@@ -233,8 +233,8 @@ end
 --- Trim the command
 -- @return (text)
 function message:trimCommand()
-  if self.message and self.message.text and self.message.__command then
-    return self.message.text:gsub(self.message.__command..' ', '', 1)
+  if self.message and self.message.text and self.__command then
+    return self.message.text:gsub(self.__command..' ', '', 1)
   end
 end
 
