@@ -132,7 +132,6 @@ function callback:getReplyToMessage()
   end
 end
 
-
 --- Checks if the user who sent the callback query
 -- is the same as the one who replied to the associated message
 -- @return (boolean) true or false
@@ -179,8 +178,9 @@ end
 --- Trim the command
 -- @return (text)
 function callback:trimCommand()
-  if self.message and self.message.text and self.__command then
-    return self.message.text:gsub(self.__command..' ', '', 1)
+  if self.callback_query and self.callback_query.data and self.__command then
+    local res = self.callback_query.data:gsub(self.__command..' ', '', 1)
+    return res
   end
 end
 
