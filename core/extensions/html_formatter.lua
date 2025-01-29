@@ -88,11 +88,11 @@ function M.code(lang, text)
 end
 
 --- Generate an HTML hyperlink
--- @param source (string) URL
+-- @param url (string) URL
 -- @param name   (string) Link text
 -- @return (string) Formatted hyperlink
-function M.url(source, name)
-  return ('<a href="%s">%s</a>'):format(source, M.format(name))
+function M.url(url, name)
+  return ('<a href="%s">%s</a>'):format(url, M.format(name))
 end
 
 --- Generate a Telegram user mention link
@@ -110,7 +110,7 @@ local MAX_USERNAME_LENGHT = 25
 
 function M.user(user, opts)
   local name = user.first_name or user.username or 'Аноним'
-  name = utf8.sub(name, 1, MAX_USERNAME_LENGHT)
+  name = utf8.sub(name, 1, opts and opts.len or MAX_USERNAME_LENGHT)
 
   if opts then
     if opts.no_link then
@@ -124,14 +124,27 @@ end
 --- Convert a Telegram Chat object to a mention link
 -- @param Chat (table) Chat object
 -- @return (string) Formatted chat mention link
-function M.chat(Chat)
+local MAX_CHAT_TITLE_LENGHT = 32
+
+function M.chat(Chat, opts)
   if not Chat or not Chat.id or not Chat.title then
     return 'Nil'
   end
-  if Chat.invite_link then
-    return ('<a href="%s">%s</a>'):format(Chat.invite_link, M.format(Chat.title))
+
+  local title = utf8.sub(Chat.title, 1, opts and opts.len or MAX_CHAT_TITLE_LENGHT)
+
+  if opts and opts.no_link then
+    return M.format(title)
   end
-  return ('<a href="https://t.me/%s">%s</a>'):format(Chat.username, M.format(Chat.title))
+
+  -- if Chat.invite_link then
+  --   return ('<a href="%s">%s</a>'):format(Chat.invite_link, M.format(title))
+  -- end
+  if Chat.username then
+    return ('<a href="https://t.me/%s">%s</a>'):format(Chat.username, M.format(title))
+  end
+
+  return M.mono(title)
 end
 
 --- Generate a Telegram message URL

@@ -1,9 +1,7 @@
---- https://core.telegram.org/bots/api#inputmediaanimation
-
-local InputMediaAnimation
---- Function InputMediaAnimation
--- @function InputMediaAnimation
-function InputMediaAnimation(data)
+-- Input Media Animation
+-- https://core.telegram.org/bots/api#inputmediaanimation
+--
+local function InputMediaAnimation(data)
   if not data then
     return nil
   end

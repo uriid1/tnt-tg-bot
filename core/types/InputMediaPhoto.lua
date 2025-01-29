@@ -1,9 +1,7 @@
---- https://core.telegram.org/bots/api#inputmediaphoto
-
-local InputMediaPhoto
---- Function InputMediaPhoto
--- @function InputMediaPhoto
-function InputMediaPhoto(data)
+-- Input Media Photo
+-- https://core.telegram.org/bots/api#inputmediaphoto
+--
+local function InputMediaPhoto(data)
   if not data then
     return nil
   end

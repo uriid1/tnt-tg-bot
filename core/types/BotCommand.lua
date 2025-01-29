@@ -1,9 +1,5 @@
---- https://core.telegram.org/bots/api#botcommand
-
-local BotCommand
---- Type BotCommand
--- @function BotCommand
-function BotCommand(data)
+-- https://core.telegram.org/bots/api#botcommand
+local function BotCommand(data)
   if not data then
     return nil
   end

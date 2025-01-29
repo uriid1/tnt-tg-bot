@@ -1,12 +1,8 @@
---- Input file
+-- Input file
+--
 local fio = require('fio')
 
-local inputFile
---- Function inputFile
--- @function inputFile
--- @param filename (string)
--- @return (table)
-function inputFile(filename)
+local function inputFile(filename)
   if type(filename) ~= 'string' then
     return nil
   end

@@ -4,7 +4,7 @@
 --- Licence GPL V2
 ---
 -- @module bot
-local bot = { _version = '0.8.3' }
+local bot = { _version = '0.8.0' }
 
 local log = require('log')
 local fio = require('fio')
@@ -50,6 +50,7 @@ end
 --
 -- @return (table) Response from the Telegram Bot API
 -- @return (table) Error object
+-- luacheck: ignore self
 function bot:call(method, options, request_param)
   local params = {
     method = method,
@@ -143,7 +144,7 @@ function bot.send_certificate(options)
 
   -- Set webhook
   return bot:call('setWebhook', {
-    url = options.url,
+    url = options.bot_url,
     certificate = data,
     drop_pending_updates = options.drop_pending_updates or false,
     allowed_updates = options.allowed_updates
@@ -170,13 +171,14 @@ function bot:startWebHook(options)
   -- Bot route setup
   --
   local function default_callback(req)
-    local data = req:json()
-
-    if self.response_handler then
-      self.response_handler(switch.call_event, data)
-    else
-      switch:call_event(data)
-    end
+    fiber.create(function ()
+      local data = req:json()
+      if self.response_handler then
+        self.response_handler(data)
+      else
+        switch:call_event(data)
+      end
+    end)
 
     return {
       status = 200,
@@ -230,7 +232,7 @@ getUpdates = function(first_start, offset, timeout, token, client)
 
       fiber.create(function ()
         if bot.response_handler then
-          bot.response_handler(switch.call_event, data)
+          bot.response_handler(data)
         else
           switch:call_event(data)
         end

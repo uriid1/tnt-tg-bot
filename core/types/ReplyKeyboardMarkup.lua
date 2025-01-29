@@ -1,10 +1,9 @@
---- https://core.telegram.org/bots/api#replykeyboardmarkup
+-- Reply Keyboard Markup
+-- https://core.telegram.org/bots/api#replykeyboardmarkup
+--
 local json = require('json')
 
-local ReplyKeyboardMarkup
---- Function ReplyKeyboardMarkup
--- @function ReplyKeyboardMarkup
-function ReplyKeyboardMarkup(data)
+local function ReplyKeyboardMarkup(data)
   if not data then
     return { keyboard = {} }
   end

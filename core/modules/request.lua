@@ -1,25 +1,31 @@
---- Module for making HTTP requests to the Telegram Bot API
--- @module modules.request
+---
+-- Module for making HTTP requests to the Telegram Bot API.
+-- @module request
 local request = {}
 
 local json = require('json')
 local http = require('http.client')
 local mpEncode = require('multipart-post')
+local Error = require('core.middlewares.error')
 
---- Initialize the request module with a bot instance and maximum connections
--- @param bot Bot instance
--- @param max_connections Maximum number of connections (optional, default is 40)
--- @return (table) Request module
+---
+-- Initialize the request module with a bot instance and maximum connections.
+-- @param bot The bot instance.
+-- @param max_connections The maximum number of connections (optional, default is 100).
+-- @return The initialized request module.
 function request:init(bot, max_connections)
   self.bot = bot
-  self.client = http.new { max_connections = max_connections or 40 }
+  self.client = http.new { max_connections = max_connections or 100 }
+
+  Error = Error:init(bot)
 
   return self
 end
 
---- Send an HTTP request to the Telegram Bot API
--- @param params (table) Request parameters
--- @return (table) Response from the API, or nil if there was an error
+---
+-- Send an HTTP request to the Telegram Bot API.
+-- @param params The request parameters.
+-- @return The response from the API, or nil if there was an error.
 function request:send(params)
   local opts
   local body
@@ -59,18 +65,15 @@ function request:send(params)
   ::req_send::
 
   -- Request
-  local data = client:request(
-    'POST',
-    'https://api.telegram.org/bot'..bot.token..'/'..params.method,
-    body,
-    opts
-  )
+  local urlFmt = 'https://api.telegram.org/bot%s/%s'
+  local data = client:request('POST', urlFmt:format(bot.token, params.method), body, opts)
 
   -- Handle error
   if data.body == nil then
     local err
-    if data then
+    if data and data.ok == false then
       err = data
+      err.__method = params.method
     else
       err = 'Empty data received'
     end
@@ -86,12 +89,30 @@ function request:send(params)
     local err
     if data then
       err = data
+      err.__method = params.method
     else
       err = 'Empty data received'
     end
 
     return nil, err
   end
+
+  setmetatable(data, {
+    __index = function(t, key)
+      if key == nil then
+        return rawget(t, 'result')
+      end
+
+      local _raw_t = rawget(t, 'result')
+      if _raw_t and _raw_t[key] then
+        return _raw_t[key]
+      end
+    end,
+
+    __newindex = function(tbl, key, value)
+      rawget(tbl, 'result')[key] = value
+    end
+  })
 
   return data, nil
 end

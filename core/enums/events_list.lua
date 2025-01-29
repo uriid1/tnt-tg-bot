@@ -1,4 +1,3 @@
--- Enum events list
 local events_list = {
   -- Update events
   'onChosenInlineResult',

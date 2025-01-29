@@ -5,9 +5,16 @@ local fiber = require('fiber')
 local log = require('log')
 local bot = require('core.bot')
 local parse_mode = require('core.enums.parse_mode')
--- Optional
--- local p = require('pimp')
--- _G.p = p
+
+-- Optional pretty-print
+--
+_G.p = require('pimp')
+p:matchPath('tnt%-tg%-bot/(.+)')
+  :disableTableAddr()
+  :enableVisibility()
+  :enableFullCallStack()
+  :enableCallStackLadder()
+--
 
 -- Setup
 bot:cfg {
@@ -72,9 +79,9 @@ local function processCommand(data, opts)
 end
 
 -- Command /start
-bot.commands['/start'] = function(message)
+bot.commands['/start'] = function(data)
   -- Get bot information
-  local data, err = bot:call('getMe')
+  local dataGetMe, err = bot:call('getMe')
 
   if err then
     log.error(err)
@@ -86,7 +93,7 @@ bot.commands['/start'] = function(message)
   --
   local infoText = dec.bold('Bot Info:\n')
 
-  for paramName, value in pairs(data.result) do
+  for paramName, value in pairs(dataGetMe.result) do
     paramName = dec.bold(paramName)
     value = dec.monospaced(value)
 
@@ -96,12 +103,12 @@ bot.commands['/start'] = function(message)
   -- Send text message
   bot:call('sendMessage', {
     text = infoText,
-    chat_id = message:getChatId(),
+    chat_id = data:getChatId(),
   })
 end
 
 -- Set bot commands
-bot.commands['/set_commands'] = function(message)
+bot.commands['/set_commands'] = function(data)
   local _, err = bot:call('setMyCommands', {
     commands = {
       BotCommand({ '/start', 'Start the bot' }),
@@ -119,12 +126,12 @@ bot.commands['/set_commands'] = function(message)
 
   bot:call('sendMessage', {
     text = 'Commands installed',
-    chat_id = message:getChatId(),
+    chat_id = data:getChatId(),
   })
 end
 
 -- Delete bot commands
-bot.commands['/delete_commands'] = function(message)
+bot.commands['/delete_commands'] = function(data)
   local _, err = bot:call('deleteMyCommands', {
     scope = BotCommandScope(bot_command_scope.DEFAULT)
   })
@@ -137,16 +144,16 @@ bot.commands['/delete_commands'] = function(message)
 
   bot:call('sendMessage', {
     text = 'Commands removed',
-    chat_id = message:getChatId(),
+    chat_id = data:getChatId(),
   })
 end
 
 -- Test timer
-bot.commands['/timer'] = function(message)
+bot.commands['/timer'] = function(data)
   for i = 1, 3 do
     bot:call('sendMessage', {
       text = 'timeout: ' .. i,
-      chat_id = message:getChatId(),
+      chat_id = data:getChatId(),
     })
 
     fiber.sleep(1)
@@ -155,11 +162,11 @@ end
 
 -- Command /args_test
 -- Paring argumnts
-bot.commands['/args_test'] = function(message)
+bot.commands['/args_test'] = function(data)
   -- arguments[1] -- Command name
   -- arguments[2] -- Argument 1
   -- arguments[3] -- Argument 2
-  local arguments = message:getArguments({ count = 3 })
+  local arguments = data:getArguments({ count = 3 })
   local arg1 = arguments[1] or 'nil'
   local arg2 = arguments[2] or 'nil'
   local arg3 = arguments[3] or 'nil'
@@ -169,7 +176,7 @@ bot.commands['/args_test'] = function(message)
 
   bot:call('sendMessage', {
     text = text,
-    chat_id = message:getChatId(),
+    chat_id = data:getChatId(),
   })
 end
 
@@ -196,11 +203,11 @@ end
 
 -- Command /send_photo
 -- Method sendPhoto
-bot.commands['/send_photo'] = function(message)
+bot.commands['/send_photo'] = function(data)
   local data, err = bot:call('sendPhoto', {
     photo = InputFile('image.jpg'),
     caption = 'Omg! It\'s photo from disk!',
-    chat_id = message:getChatId(),
+    chat_id = data:getChatId(),
   }, { multipart_post = true })
 
   if err then
@@ -218,10 +225,10 @@ end
 
 -- Command /send_reply_buttons_1
 -- Method sendMessage with reply_markup
-bot.commands['/send_reply_buttons_1'] = function(message)
+bot.commands['/send_reply_buttons_1'] = function(data)
   bot:call('sendMessage', {
     text = 'Reply keyboard buttons test 1',
-    chat_id = message:getChatId(),
+    chat_id = data:getChatId(),
     reply_markup = ReplyKeyboardMarkup({
       keyboard = {
         { KeyboardButton(nil, { text = 'Apple' }), KeyboardButton(nil, { text = 'Banana' }) },
@@ -235,7 +242,7 @@ end
 
 -- Command /send_reply_buttons_2
 -- Method sendMessage with reply_markup and keyboard buttons
-bot.commands['/send_reply_buttons_2'] = function(message)
+bot.commands['/send_reply_buttons_2'] = function(data)
   -- Another option for building buttons
   local keyboard = ReplyKeyboardMarkup({ one_time_keyboard = false })
   KeyboardButton(keyboard, { text = 'Apple' })
@@ -244,7 +251,7 @@ bot.commands['/send_reply_buttons_2'] = function(message)
 
   bot:call('sendMessage', {
     text = 'Reply keyboard buttons test 2',
-    chat_id = message:getChatId(),
+    chat_id = data:getChatId(),
     reply_markup = keyboard,
   })
 end
@@ -252,20 +259,20 @@ end
 -- Command remove_reply_keyboard
 -- Work only in private chat type
 -- see https://core.telegram.org/bots/api#replykeyboardremove
-bot.commands['/remove_reply_keyboard'] = function(message)
+bot.commands['/remove_reply_keyboard'] = function(data)
   bot:call('sendMessage', {
     text = 'Removed reply keyboard',
-    chat_id = message:getChatId(),
+    chat_id = data:getChatId(),
     reply_markup = ReplyKeyboardRemove({ selective = true }),
   })
 end
 
 -- Command send_inline_buttons_1
 -- Method sendMessage with reply_markup
-bot.commands['/send_inline_buttons_1'] = function(message)
+bot.commands['/send_inline_buttons_1'] = function(data)
   bot:call('sendMessage', {
     text = 'Inline keyboard buttons test 1',
-    chat_id = message:getChatId(),
+    chat_id = data:getChatId(),
     reply_markup = InlineKeyboardMarkup({
       inline_keyboard = {
         {
@@ -280,7 +287,7 @@ end
 
 -- Command send_inline_buttons_2
 -- Method sendMessage with reply_markup and inline buttons
-bot.commands['/send_inline_buttons_2'] = function(message)
+bot.commands['/send_inline_buttons_2'] = function(data)
   -- Another option for building buttons
   local keyboard = InlineKeyboardMarkup()
   InlineKeyboardButton(keyboard, { text = 'Button 1', callback_data = 'cb_button 1' })
@@ -289,15 +296,15 @@ bot.commands['/send_inline_buttons_2'] = function(message)
 
   bot:call('sendMessage', {
     text = 'Inline keyboard buttons test 2',
-    chat_id = message:getChatId(),
+    chat_id = data:getChatId(),
     reply_markup = keyboard,
   })
 end
 
 -- Command /send_media_group
 -- Method sendMediaGroup
-bot.commands['/send_media_group'] = function(message)
-  local data = InputMedia({
+bot.commands['/send_media_group'] = function(data)
+  local mediaData = InputMedia({
     -- For file id
     -- InputMediaPhoto({
     --   media = 'AgACAgIAAxkDAAIJ52RX2qzt6oCMY5P9Ge9uVuZgTDH_AAL-yTEb9gABuEp-yXhmUY3rfAEAAwIAA3MAAy8E',
@@ -313,20 +320,21 @@ bot.commands['/send_media_group'] = function(message)
     }),
   })
 
-  data.chat_id = message:getChatId()
+  mediaData.chat_id = data:getChatId()
 
-  bot:call('sendMediaGroup', data, {
+  bot:call('sendMediaGroup', mediaData, {
     multipart_post = true
   })
 end
 
 -- Event of getting entities
-bot.events.onGetEntities = function(message)
-  local entities = message:getEntities()
+-- https://core.telegram.org/bots/api#messageentity
+bot.events.onGetEntities = function(data)
+  local entities = data:getEntities()
 
   if entities[1] and entities[1].type == 'bot_command' then
     -- Call bot command
-    processCommand(message)
+    processCommand(data)
   end
 end
 
@@ -336,9 +344,23 @@ bot.events.onCallbackQuery = function(callback)
   processCommand(callback, { is_callback = true })
 end
 
+bot.events.onGetMessage = function(data)
+  if not data.message then
+    return
+  end
+
+  if data.message.entities then
+    return bot.events.onGetEntities(data)
+
+  elseif data.message.text then
+    return bot.events.onGetMessageText(data)
+
+  end
+end
+
 -- Event of getting any message
-bot.events.onGetMessageText = function(message)
-  local text = message:getText()
+bot.events.onGetMessageText = function(data)
+  local text = data.message.text
 
   local result
   if text == 'Apple' then
@@ -352,15 +374,15 @@ bot.events.onGetMessageText = function(message)
   if result then
     bot:call('sendMessage', {
       text = result,
-      chat_id = message:getChatId(),
+      chat_id = data.message.chat.id,
     })
     return
   end
 
   -- Send message
   bot:call('sendMessage', {
-    text = dec.bold(message:getText()),
-    chat_id = message:getChatId(),
+    text = dec.bold(data.message.text),
+    chat_id = data.message.chat.id,
   })
 end
 

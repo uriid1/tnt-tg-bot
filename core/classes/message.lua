@@ -1,11 +1,16 @@
---- Message module for handling message data
--- @module classes.message
+---
+-- Message module for handling message data.
+-- @module message
 local message = {}
 message.__index = message
 
---- Creates a new message object
--- @param data (table) Message data
--- @return (message) Message object
+---
+-- Creates a new message object.
+-- @param data (table) The message data.
+--   - update_id (number): The update ID.
+--   - message (table): The message data.
+--
+-- @return (message) The message object.
 function message:new(data)
   local obj = {}
   obj.update_id = data.update_id
@@ -14,26 +19,29 @@ function message:new(data)
   return setmetatable(obj, self)
 end
 
---- Gets the update ID
--- @return (number) Update ID
+---
+-- Gets the update ID.
+-- @return (number) The update ID.
 function message:getUpdateId()
   if self.update_id then
     return self.update_id
   end
 end
 
---- Gets the message data
--- @return (table) Message object
+---
+-- Gets the message data.
+-- @return (table) The message data.
 function message:getMessage()
   return self.message
 end
 
---- Gets the arguments from the callback query data
--- @param opts (table) Options table
-  -- @param[opt] opts.separator Separator to split the data (default is ' ')
-  -- @param[opt] opts.count Maximum number of arguments to retrieve (default is 10)
+---
+-- Gets the arguments from the message text.
+-- @param opts (table) Options table.
+--   - separator (string, optional): The separator to split the text (default is ' ').
+--   - count (number, optional): The maximum number of arguments to retrieve (default is 10).
 --
--- @return (table) Arguments as a table
+-- @return (table) The arguments as a table.
 function message:getArguments(opts)
   if self.message and self.message.text then
     local separator = opts.separator or ' '
@@ -42,200 +50,225 @@ function message:getArguments(opts)
   end
 end
 
---- Get the chat information from the message object
--- @return (table) Chat object
+---
+-- Get the chat information from the message object.
+-- @return The chat information.
 function message:getChat()
   if self.message and self.message.chat then
     return self.message.chat
   end
 end
 
---- Gets the chat ID from the message data
--- @return (number) Chat ID
+---
+-- Gets the chat ID from the message data.
+-- @return (number) The chat ID.
 function message:getChatId()
   if self.message and self.message.chat then
     return self.message.chat.id
   end
 end
 
---- Gets the chat type from the message data
--- @return (string) Chat type
+---
+-- Gets the chat type from the message data.
+-- @return (string) The chat type.
 function message:getChatType()
   if self.message and self.message.chat then
     return self.message.chat.type
   end
 end
 
---- Gets the message ID from the message data
--- @return (number) Message ID
+---
+-- Gets the message ID from the message data.
+-- @return (number) The message ID.
 function message:getMessageId()
   if self.message and self.message.message_id then
     return self.message.message_id
   end
 end
 
---- Gets the text from the message data
--- @return (string) Message text
+---
+-- Gets the text from the message data.
+-- @return (string) The message text.
 function message:getText()
   if self.message and self.message.text then
     return self.message.text
   end
 end
 
---- Gets the user data from the message data
--- @return (table) User object
+---
+-- Gets the user data from the message data.
+-- @return (table) The user data.
 function message:getUserFrom()
   if self.message and self.message.from then
     return self.message.from
   end
 end
 
---- Gets the user ID from the message data
--- @return (number) User ID
+---
+-- Gets the user ID from the message data.
+-- @return (number) The user ID.
 function message:getUserFromId()
   if self.message and self.message.from then
     return self.message.from.id
   end
 end
 
---- Gets the user who replied to the message
--- @return (table) User object
+---
+-- Gets the user who replied to the message.
+-- @return (table) The user data of the reply.
 function message:getUserReply()
   if self.message and self.message.reply_to_message and self.message.reply_to_message.from then
     return self.message.reply_to_message.from
   end
 end
 
---- Gets the user ID reply to the message
--- @return (number) User ID
+---
+--
+function message:getExternalReply()
+  if self.message and self.message.external_reply and self.message.external_reply.origin then
+    return self.message.external_reply.origin
+  end
+end
+
+---
+-- message.reply_to_message
+-- @return (number)
 function message:getUserReplyId()
   if self.message and self.message.reply_to_message and self.message.reply_to_message.from then
     return self.message.reply_to_message.from.id
   end
 end
 
---- Gets the reply to message data
--- @return (table) Reply to message object
+---
+-- message.reply_to_message
+-- @return (table)
 function message:getReplyToMessage()
   if self.message and self.message.reply_to_message then
     return self.message.reply_to_message
   end
 end
 
---- Gets the reply to message id
--- @return (number) Reply to message id
+---
+-- reply_to_message.message_id
+-- @return (number)
 function message:getReplyToMessageId()
   if self.message and self.message.reply_to_message then
     return self.message.reply_to_message.message_id
   end
 end
 
---- Gets the entities from the message data
--- @return (table) Message entities
+---
+-- Gets the entities from the message data.
+-- @return (table) The message entities.
 function message:getEntities()
   if self.message and self.message.entities then
     return self.message.entities
   end
 end
 
---- Gets the dice
--- @return (table) Dice object
+---
+-- message.dice
+-- @return (string)
 function message:getDice()
   if self.message and self.message.dice then
     return self.message.dice
   end
 end
 
---- Gets the date
--- @return (number) Date
+---
+-- message.date
+-- @return (table)
 function message:getDate()
   if self.message and self.message.date then
     return self.message.date
   end
 end
 
---- Gets the left chat member data from the message data
--- @return (table) Left chat member object
+---
+-- Gets the left chat member data from the message data.
+-- @return (table) The left chat member data.
 function message:getLeftChatMember()
   if self.message and self.message.left_chat_member then
     return self.message.left_chat_member
   end
 end
 
---- Gets the new chat member data from the message data
--- @return (table) New chat member object
+---
+-- Gets the new chat member data from the message data.
+-- @return (table) The new chat member data.
 function message:getNewChatMember()
   if self.message and self.message.new_chat_member then
     return self.message.new_chat_member
   end
 end
 
---- Gets the new chat members data from the message data
--- @return (table) New chat members object
+---
+-- Gets the new chat members data from the message data.
+-- @return (table) The new chat members data.
 function message:getNewChatMembers()
   if self.message and self.message.new_chat_members then
     return self.message.new_chat_members
   end
 end
 
---- Checks if the message sender is a new chat member
--- True if the sender is a new chat member, false otherwise
--- @return (boolean) true or false
+---
+-- Checks if the message sender is a new chat member.
+-- @return (boolean) True if the sender is a new chat member, false otherwise.
 function message:isNewChatMember()
   if self.message and self.message.new_chat_members then
     return self.message.new_chat_members[1].id == self.message.from.id
   end
 end
 
---- Checks if the message sender added a new chat member
--- True if the sender added a new chat member, false otherwise
--- @return (boolean) true or false
+---
+-- Checks if the message sender added a new chat member.
+-- @return (boolean) True if the sender added a new chat member, false otherwise.
 function message:isAddNewChatMember()
   if self.message and self.message.new_chat_members then
     return self.message.new_chat_members[1].id ~= self.message.from.id
   end
 end
 
---- Checks if the message sender is a left chat member
--- True if the sender is a left chat member, false otherwise
--- @return (boolean) true or false
+---
+-- Checks if the message sender is a left chat member.
+-- @return (boolean) True if the sender is a left chat member, false otherwise.
 function message:isLeftMember()
   if self.message and self.message.left_chat_member then
     return self.message.left_chat_member.id == self.message.from.id
   end
 end
 
---- Checks if the message sender removed a chat member
--- True if the sender removed a chat member, false otherwise
--- @return (boolean) true or false
+---
+-- Checks if the message sender removed a chat member.
+-- @return (boolean) True if the sender removed a chat member, false otherwise.
 function message:isRemoveMember()
   if self.message and self.message.left_chat_member then
     return self.message.left_chat_member.id ~= self.message.from.id
   end
 end
 
---- Gets the sender chat
--- @return (table) Sender chat object
+---
+-- @return (test)
 function message:getSenderChat()
   if self.message and self.message.sender_chat then
     return self.message.sender_chat
   end
 end
 
---- Gets the sender chat id
--- @return (number) Sender chat id
+---
+-- @return (test)
 function message:getSenderChatId()
   if self.message and self.message.sender_chat then
     return self.message.sender_chat.id
   end
 end
 
---- Trim the command
--- @return (text)
+---
+-- @return (test)
 function message:trimCommand()
   if self.message and self.message.text and self.__command then
-    local res = self.message.text:gsub(self.__command..' ', '', 1)
-    return res
+    local res, count = self.message.text:gsub(self.__command..' ', '', 1)
+    return res, count
   end
 end
 

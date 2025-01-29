@@ -1,9 +1,7 @@
---- https://core.telegram.org/bots/api#inputmediaaudio
-
-local InputMediaAudio
---- Function InputMediaAudio
--- @function InputMediaAudio
-function InputMediaAudio(data)
+-- Input Media Audio
+-- https://core.telegram.org/bots/api#inputmediaaudio
+--
+local function InputMediaAudio(data)
   if not data then
     return nil
   end

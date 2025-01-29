@@ -1,10 +1,8 @@
---- https://core.telegram.org/bots/api#replykeyboardmarkup
+-- Inline Keyboard Markup
+-- https://core.telegram.org/bots/api#replykeyboardmarkup
 local json = require 'json'
 
-local InlineKeyboardMarkup
---- Type InlineKeyboardMarkup
--- @function InlineKeyboardMarkup
-function InlineKeyboardMarkup(data)
+local function InlineKeyboardMarkup(data)
   if data and type(data) ~= 'table' then
     return nil
   end

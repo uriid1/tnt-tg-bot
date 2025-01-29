@@ -1,13 +1,9 @@
---- Input media
+-- Input media
+--
 local json = require('json')
 local InputFile = require('core.types.InputFile')
 
-local InputMedia
---- Function InputMedia
--- @function InputMedia
--- @param data (table) Array of media
--- @return (table)
-function InputMedia(data)
+local function InputMedia(data)
   if not data then
     return nil
   end

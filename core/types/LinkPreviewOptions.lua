@@ -1,9 +1,5 @@
---- https://core.telegram.org/bots/api#linkpreviewoptions
-
-local LinkPreviewOptions
---- Function LinkPreviewOptions
--- @function LinkPreviewOptions
-function LinkPreviewOptions(data)
+-- https://core.telegram.org/bots/api#linkpreviewoptions
+local function LinkPreviewOptions(data)
   if not data then
     return nil
   end

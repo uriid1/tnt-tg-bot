@@ -1,24 +1,21 @@
---- Process incoming data and create corresponding objects
---
-local Message = require('core.classes.message')
-local Callback = require('core.classes.callback')
-local ChatMember = require('core.classes.chatMember')
-local MyChatMember = require('core.classes.myChatMember')
-
-local processMessage
-
 ---
--- @function processMessage
--- @param data (table) Response from the Telegram Bot API
-function processMessage(data)
+-- Process incoming data and create corresponding objects.
+-- @module processMessage
+
+local message = require('core.classes.message')
+local callback = require('core.classes.callback')
+local chatMember = require('core.classes.chatMember')
+local myChatMember = require('core.classes.myChatMember')
+
+local function processMessage(data)
   if data.message then
-    return Message(data)
+    return message(data)
   elseif data.callback_query then
-    return Callback(data)
+    return callback(data)
   elseif data.chat_member then
-    return ChatMember(data)
+    return chatMember(data)
   elseif data.my_chat_member then
-    return MyChatMember(data)
+    return myChatMember(data)
   end
 
   return data

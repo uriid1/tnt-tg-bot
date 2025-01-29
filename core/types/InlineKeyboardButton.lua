@@ -1,9 +1,6 @@
---- https://core.telegram.org/bots/api#inlinekeyboardbutton
-
-local inlineKeyboardButton
---- Type inlineKeyboardButton
--- @function inlineKeyboardButton
-function inlineKeyboardButton(keyboard, data)
+-- Inline Keyboard Button
+-- https://core.telegram.org/bots/api#inlinekeyboardbutton
+local function inlineKeyboardButton(keyboard, data)
   if type(data) ~= 'table' then
     return nil
   end
