@@ -39,22 +39,39 @@
 
 <h2>Modules</h2>
 <ul class="nowrap">
-  <li><a href="../modules/bot.html">bot</a></li>
   <li><a href="../modules/callback.html">callback</a></li>
   <li><a href="../modules/chatMember.html">chatMember</a></li>
   <li><strong>message</strong></li>
   <li><a href="../modules/myChatMember.html">myChatMember</a></li>
+  <li><a href="../modules/enums.bot_command_scope.html">enums.bot_command_scope</a></li>
   <li><a href="../modules/enums.chat_member_status.html">enums.chat_member_status</a></li>
+  <li><a href="../modules/enums.chat_permissions.html">enums.chat_permissions</a></li>
   <li><a href="../modules/enums.chat_type.html">enums.chat_type</a></li>
   <li><a href="../modules/enums.entity_type.html">enums.entity_type</a></li>
   <li><a href="../modules/enums.errors.html">enums.errors</a></li>
+  <li><a href="../modules/enums.methods.html">enums.methods</a></li>
   <li><a href="../modules/enums.parse_mode.html">enums.parse_mode</a></li>
   <li><a href="../modules/extensions.html_formatter.html">extensions.html_formatter</a></li>
-  <li><a href="../modules/Error.html">Error</a></li>
-  <li><a href="../modules/events.html">events</a></li>
+  <li><a href="../modules/bot.html">bot</a></li>
+  <li><a href="../modules/libs.parse_tg_init_data.html">libs.parse_tg_init_data</a></li>
   <li><a href="../modules/processMessage.html">processMessage</a></li>
   <li><a href="../modules/request.html">request</a></li>
   <li><a href="../modules/switch.html">switch</a></li>
+  <li><a href="../modules/types.BotCommand.html">types.BotCommand</a></li>
+  <li><a href="../modules/types.BotCommandScope.html">types.BotCommandScope</a></li>
+  <li><a href="../modules/types.ForceReply.html">types.ForceReply</a></li>
+  <li><a href="../modules/types.InlineKeyboardButton.html">types.InlineKeyboardButton</a></li>
+  <li><a href="../modules/types.InputFile.html">types.InputFile</a></li>
+  <li><a href="../modules/types.InputMedia.html">types.InputMedia</a></li>
+  <li><a href="../modules/types.InputMediaAnimation.html">types.InputMediaAnimation</a></li>
+  <li><a href="../modules/types.InputMediaAudio.html">types.InputMediaAudio</a></li>
+  <li><a href="../modules/types.InputMediaDocument.html">types.InputMediaDocument</a></li>
+  <li><a href="../modules/types.InputMediaPhoto.html">types.InputMediaPhoto</a></li>
+  <li><a href="../modules/types.InputMediaVideo.html">types.InputMediaVideo</a></li>
+  <li><a href="../modules/types.KeyboardButton.html">types.KeyboardButton</a></li>
+  <li><a href="../modules/types.LinkPreviewOptions.html">types.LinkPreviewOptions</a></li>
+  <li><a href="../modules/types.ReplyKeyboardMarkup.html">types.ReplyKeyboardMarkup</a></li>
+  <li><a href="../modules/types.ReplyKeyboardRemove.html">types.ReplyKeyboardRemove</a></li>
 </ul>
 
 </div>
@@ -62,23 +79,23 @@
 <div id="content">
 
 <h1>Module <code>message</code></h1>
-<p>Message module for handling message data.</p>
+<p>Message module for handling message data</p>
 <p></p>
 
 
 <h2><a href="#Functions">Functions</a></h2>
 <table class="function_list">
 	<tr>
-	<td class="name" nowrap><a href="#new">new (data)</a></td>
-	<td class="summary">Creates a new message object.</td>
+	<td class="name" nowrap><a href="#new">new (ctx, opts)</a></td>
+	<td class="summary">Creates a new message object</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#getUpdateId">getUpdateId ()</a></td>
-	<td class="summary">Gets the update ID.</td>
+	<td class="summary">Gets the update ID</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#getMessage">getMessage ()</a></td>
-	<td class="summary">Gets the message data.</td>
+	<td class="summary">Gets the message data</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#getArguments">getArguments (opts)</a></td>
@@ -86,35 +103,39 @@
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#getChat">getChat ()</a></td>
-	<td class="summary">Get the chat information from the message object.</td>
+	<td class="summary">Get the chat information from the message object</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#getChatId">getChatId ()</a></td>
-	<td class="summary">Gets the chat ID from the message data.</td>
+	<td class="summary">Gets the chat ID from the message data</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#getChatType">getChatType ()</a></td>
-	<td class="summary">Gets the chat type from the message data.</td>
+	<td class="summary">Gets the chat type from the message data</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#getMessageId">getMessageId ()</a></td>
-	<td class="summary">Gets the message ID from the message data.</td>
+	<td class="summary">Gets the message ID from the message data</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#getText">getText ()</a></td>
-	<td class="summary">Gets the text from the message data.</td>
+	<td class="summary">Gets the text from the message data</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#getUserFrom">getUserFrom ()</a></td>
-	<td class="summary">Gets the user data from the message data.</td>
+	<td class="summary">Gets the user data from the message data</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#getUserFromId">getUserFromId ()</a></td>
-	<td class="summary">Gets the user ID from the message data.</td>
+	<td class="summary">Gets the user ID from the message data</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#getUserReply">getUserReply ()</a></td>
-	<td class="summary">Gets the user who replied to the message.</td>
+	<td class="summary">Gets the user who replied to the message</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#getExternalReply">getExternalReply ()</a></td>
+	<td class="summary">message.external_reply.origin</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#getUserReplyId">getUserReplyId ()</a></td>
@@ -130,7 +151,7 @@
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#getEntities">getEntities ()</a></td>
-	<td class="summary">Gets the entities from the message data.</td>
+	<td class="summary">Gets the entities from the message data</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#getDice">getDice ()</a></td>
@@ -142,43 +163,43 @@
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#getLeftChatMember">getLeftChatMember ()</a></td>
-	<td class="summary">Gets the left chat member data from the message data.</td>
+	<td class="summary">Gets the left chat member data from the message data</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#getNewChatMember">getNewChatMember ()</a></td>
-	<td class="summary">Gets the new chat member data from the message data.</td>
+	<td class="summary">Gets the new chat member data from the message data</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#getNewChatMembers">getNewChatMembers ()</a></td>
-	<td class="summary">Gets the new chat members data from the message data.</td>
+	<td class="summary">Gets the new chat members data from the message data</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#isNewChatMember">isNewChatMember ()</a></td>
-	<td class="summary">Checks if the message sender is a new chat member.</td>
+	<td class="summary">Checks if the message sender is a new chat member</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#isAddNewChatMember">isAddNewChatMember ()</a></td>
-	<td class="summary">Checks if the message sender added a new chat member.</td>
+	<td class="summary">Checks if the message sender added a new chat member</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#isLeftMember">isLeftMember ()</a></td>
-	<td class="summary">Checks if the message sender is a left chat member.</td>
+	<td class="summary">Checks if the message sender is a left chat member</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#isRemoveMember">isRemoveMember ()</a></td>
-	<td class="summary">Checks if the message sender removed a chat member.</td>
+	<td class="summary">Checks if the message sender removed a chat member</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#getSenderChat">getSenderChat ()</a></td>
-	<td class="summary"></td>
+	<td class="summary">message.sender_chat</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#getSenderChatId">getSenderChatId ()</a></td>
-	<td class="summary"></td>
+	<td class="summary">message.sender_chat.id</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#trimCommand">trimCommand ()</a></td>
-	<td class="summary"></td>
+	<td class="summary">Trim Command</td>
 	</tr>
 </table>
 
@@ -191,26 +212,28 @@
     <dl class="function">
     <dt>
     <a name = "new"></a>
-    <strong>new (data)</strong>
+    <strong>new (ctx, opts)</strong>
     </dt>
     <dd>
-    Creates a new message object.
+    Creates a new message object
 
 
     <h3>Parameters:</h3>
     <ul>
-        <li><span class="parameter">data</span>
-         (table) The message data.
+        <li><span class="parameter">ctx</span>
+         (table) The message data
    - update_id (number): The update ID.
-   - message (table): The message data.
-
+   - message (table): The message data
+        </li>
+        <li><span class="parameter">opts</span>
+         (table)
         </li>
     </ul>
 
     <h3>Returns:</h3>
     <ol>
 
-        (message) The message object.
+        (message) The message object
     </ol>
 
 
@@ -222,14 +245,14 @@
     <strong>getUpdateId ()</strong>
     </dt>
     <dd>
-    Gets the update ID.
+    Gets the update ID
 
 
 
     <h3>Returns:</h3>
     <ol>
 
-        (number) The update ID.
+        (number) The update ID
     </ol>
 
 
@@ -241,14 +264,14 @@
     <strong>getMessage ()</strong>
     </dt>
     <dd>
-    Gets the message data.
+    Gets the message data
 
 
 
     <h3>Returns:</h3>
     <ol>
 
-        (table) The message data.
+        (table) The message data
     </ol>
 
 
@@ -276,7 +299,7 @@
     <h3>Returns:</h3>
     <ol>
 
-        (table) The arguments as a table.
+        (table) The arguments as a table
     </ol>
 
 
@@ -288,14 +311,14 @@
     <strong>getChat ()</strong>
     </dt>
     <dd>
-    Get the chat information from the message object.
+    Get the chat information from the message object
 
 
 
     <h3>Returns:</h3>
     <ol>
 
-        The chat information.
+        The chat information
     </ol>
 
 
@@ -307,14 +330,14 @@
     <strong>getChatId ()</strong>
     </dt>
     <dd>
-    Gets the chat ID from the message data.
+    Gets the chat ID from the message data
 
 
 
     <h3>Returns:</h3>
     <ol>
 
-        (number) The chat ID.
+        (number) The chat ID
     </ol>
 
 
@@ -326,14 +349,14 @@
     <strong>getChatType ()</strong>
     </dt>
     <dd>
-    Gets the chat type from the message data.
+    Gets the chat type from the message data
 
 
 
     <h3>Returns:</h3>
     <ol>
 
-        (string) The chat type.
+        (string) The chat type
     </ol>
 
 
@@ -345,14 +368,14 @@
     <strong>getMessageId ()</strong>
     </dt>
     <dd>
-    Gets the message ID from the message data.
+    Gets the message ID from the message data
 
 
 
     <h3>Returns:</h3>
     <ol>
 
-        (number) The message ID.
+        (number) The message ID
     </ol>
 
 
@@ -364,14 +387,14 @@
     <strong>getText ()</strong>
     </dt>
     <dd>
-    Gets the text from the message data.
+    Gets the text from the message data
 
 
 
     <h3>Returns:</h3>
     <ol>
 
-        (string) The message text.
+        (string) The message text
     </ol>
 
 
@@ -383,14 +406,14 @@
     <strong>getUserFrom ()</strong>
     </dt>
     <dd>
-    Gets the user data from the message data.
+    Gets the user data from the message data
 
 
 
     <h3>Returns:</h3>
     <ol>
 
-        (table) The user data.
+        (table) The user data
     </ol>
 
 
@@ -402,14 +425,14 @@
     <strong>getUserFromId ()</strong>
     </dt>
     <dd>
-    Gets the user ID from the message data.
+    Gets the user ID from the message data
 
 
 
     <h3>Returns:</h3>
     <ol>
 
-        (number) The user ID.
+        (number) The user ID
     </ol>
 
 
@@ -421,14 +444,33 @@
     <strong>getUserReply ()</strong>
     </dt>
     <dd>
-    Gets the user who replied to the message.
+    Gets the user who replied to the message
 
 
 
     <h3>Returns:</h3>
     <ol>
 
-        (table) The user data of the reply.
+        (table) The user data of the reply
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "getExternalReply"></a>
+    <strong>getExternalReply ()</strong>
+    </dt>
+    <dd>
+    message.external_reply.origin
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+        message.external_reply.origin
     </ol>
 
 
@@ -497,14 +539,14 @@
     <strong>getEntities ()</strong>
     </dt>
     <dd>
-    Gets the entities from the message data.
+    Gets the entities from the message data
 
 
 
     <h3>Returns:</h3>
     <ol>
 
-        (table) The message entities.
+        (table) The message entities
     </ol>
 
 
@@ -554,14 +596,14 @@
     <strong>getLeftChatMember ()</strong>
     </dt>
     <dd>
-    Gets the left chat member data from the message data.
+    Gets the left chat member data from the message data
 
 
 
     <h3>Returns:</h3>
     <ol>
 
-        (table) The left chat member data.
+        (table) The left chat member data
     </ol>
 
 
@@ -573,14 +615,14 @@
     <strong>getNewChatMember ()</strong>
     </dt>
     <dd>
-    Gets the new chat member data from the message data.
+    Gets the new chat member data from the message data
 
 
 
     <h3>Returns:</h3>
     <ol>
 
-        (table) The new chat member data.
+        (table) The new chat member data
     </ol>
 
 
@@ -592,14 +634,14 @@
     <strong>getNewChatMembers ()</strong>
     </dt>
     <dd>
-    Gets the new chat members data from the message data.
+    Gets the new chat members data from the message data
 
 
 
     <h3>Returns:</h3>
     <ol>
 
-        (table) The new chat members data.
+        (table) The new chat members data
     </ol>
 
 
@@ -611,14 +653,14 @@
     <strong>isNewChatMember ()</strong>
     </dt>
     <dd>
-    Checks if the message sender is a new chat member.
+    Checks if the message sender is a new chat member
 
 
 
     <h3>Returns:</h3>
     <ol>
 
-        (boolean) True if the sender is a new chat member, false otherwise.
+        (boolean) True if the sender is a new chat member, false otherwise
     </ol>
 
 
@@ -630,14 +672,14 @@
     <strong>isAddNewChatMember ()</strong>
     </dt>
     <dd>
-    Checks if the message sender added a new chat member.
+    Checks if the message sender added a new chat member
 
 
 
     <h3>Returns:</h3>
     <ol>
 
-        (boolean) True if the sender added a new chat member, false otherwise.
+        (boolean) True if the sender added a new chat member, false otherwise
     </ol>
 
 
@@ -649,14 +691,14 @@
     <strong>isLeftMember ()</strong>
     </dt>
     <dd>
-    Checks if the message sender is a left chat member.
+    Checks if the message sender is a left chat member
 
 
 
     <h3>Returns:</h3>
     <ol>
 
-        (boolean) True if the sender is a left chat member, false otherwise.
+        (boolean) True if the sender is a left chat member, false otherwise
     </ol>
 
 
@@ -668,14 +710,14 @@
     <strong>isRemoveMember ()</strong>
     </dt>
     <dd>
-    Checks if the message sender removed a chat member.
+    Checks if the message sender removed a chat member
 
 
 
     <h3>Returns:</h3>
     <ol>
 
-        (boolean) True if the sender removed a chat member, false otherwise.
+        (boolean) True if the sender removed a chat member, false otherwise
     </ol>
 
 
@@ -687,14 +729,14 @@
     <strong>getSenderChat ()</strong>
     </dt>
     <dd>
-
+    message.sender_chat
 
 
 
     <h3>Returns:</h3>
     <ol>
 
-        (test)
+        message.sender_chat
     </ol>
 
 
@@ -706,14 +748,14 @@
     <strong>getSenderChatId ()</strong>
     </dt>
     <dd>
-
+    message.sender_chat.id
 
 
 
     <h3>Returns:</h3>
     <ol>
 
-        (test)
+        message.sender_chat.id
     </ol>
 
 
@@ -725,14 +767,14 @@
     <strong>trimCommand ()</strong>
     </dt>
     <dd>
-
+    Trim Command
 
 
 
     <h3>Returns:</h3>
     <ol>
 
-        (test)
+        trimCommand
     </ol>
 
 
@@ -746,7 +788,7 @@
 </div> <!-- id="main" -->
 <div id="about">
 <i>generated by <a href="http://github.com/lunarmodules/LDoc">LDoc 1.5.0</a></i>
-<i style="float:right;">Last updated 2025-01-30 00:55:50 </i>
+<i style="float:right;">Last updated 2025-04-15 23:21:11 </i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>

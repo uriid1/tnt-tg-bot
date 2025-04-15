@@ -39,22 +39,39 @@
 
 <h2>Modules</h2>
 <ul class="nowrap">
-  <li><a href="../modules/bot.html">bot</a></li>
   <li><a href="../modules/callback.html">callback</a></li>
   <li><a href="../modules/chatMember.html">chatMember</a></li>
   <li><a href="../modules/message.html">message</a></li>
   <li><strong>myChatMember</strong></li>
+  <li><a href="../modules/enums.bot_command_scope.html">enums.bot_command_scope</a></li>
   <li><a href="../modules/enums.chat_member_status.html">enums.chat_member_status</a></li>
+  <li><a href="../modules/enums.chat_permissions.html">enums.chat_permissions</a></li>
   <li><a href="../modules/enums.chat_type.html">enums.chat_type</a></li>
   <li><a href="../modules/enums.entity_type.html">enums.entity_type</a></li>
   <li><a href="../modules/enums.errors.html">enums.errors</a></li>
+  <li><a href="../modules/enums.methods.html">enums.methods</a></li>
   <li><a href="../modules/enums.parse_mode.html">enums.parse_mode</a></li>
   <li><a href="../modules/extensions.html_formatter.html">extensions.html_formatter</a></li>
-  <li><a href="../modules/Error.html">Error</a></li>
-  <li><a href="../modules/events.html">events</a></li>
+  <li><a href="../modules/bot.html">bot</a></li>
+  <li><a href="../modules/libs.parse_tg_init_data.html">libs.parse_tg_init_data</a></li>
   <li><a href="../modules/processMessage.html">processMessage</a></li>
   <li><a href="../modules/request.html">request</a></li>
   <li><a href="../modules/switch.html">switch</a></li>
+  <li><a href="../modules/types.BotCommand.html">types.BotCommand</a></li>
+  <li><a href="../modules/types.BotCommandScope.html">types.BotCommandScope</a></li>
+  <li><a href="../modules/types.ForceReply.html">types.ForceReply</a></li>
+  <li><a href="../modules/types.InlineKeyboardButton.html">types.InlineKeyboardButton</a></li>
+  <li><a href="../modules/types.InputFile.html">types.InputFile</a></li>
+  <li><a href="../modules/types.InputMedia.html">types.InputMedia</a></li>
+  <li><a href="../modules/types.InputMediaAnimation.html">types.InputMediaAnimation</a></li>
+  <li><a href="../modules/types.InputMediaAudio.html">types.InputMediaAudio</a></li>
+  <li><a href="../modules/types.InputMediaDocument.html">types.InputMediaDocument</a></li>
+  <li><a href="../modules/types.InputMediaPhoto.html">types.InputMediaPhoto</a></li>
+  <li><a href="../modules/types.InputMediaVideo.html">types.InputMediaVideo</a></li>
+  <li><a href="../modules/types.KeyboardButton.html">types.KeyboardButton</a></li>
+  <li><a href="../modules/types.LinkPreviewOptions.html">types.LinkPreviewOptions</a></li>
+  <li><a href="../modules/types.ReplyKeyboardMarkup.html">types.ReplyKeyboardMarkup</a></li>
+  <li><a href="../modules/types.ReplyKeyboardRemove.html">types.ReplyKeyboardRemove</a></li>
 </ul>
 
 </div>
@@ -69,52 +86,52 @@
 <h2><a href="#Functions">Functions</a></h2>
 <table class="function_list">
 	<tr>
-	<td class="name" nowrap><a href="#new">new (data)</a></td>
-	<td class="summary">Creates a new myChatMember object.</td>
+	<td class="name" nowrap><a href="#new">new (ctx)</a></td>
+	<td class="summary">Creates a new myChatMember object</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#getUpdateId">getUpdateId ()</a></td>
-	<td class="summary">Get the update ID from the myChatMember object.</td>
+	<td class="summary">Get the update ID from the myChatMember object</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#getChat">getChat ()</a></td>
-	<td class="summary">Get the chat information from the myChatMember object.</td>
+	<td class="summary">Get the chat information from the myChatMember object</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#getChatId">getChatId ()</a></td>
-	<td class="summary">Get the chat ID from the myChatMember object.</td>
+	<td class="summary">Get the chat ID from the myChatMember object</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#getChatType">getChatType ()</a></td>
-	<td class="summary">Get the chat type from the myChatMember object.</td>
+	<td class="summary">Get the chat type from the myChatMember object</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#getUserFrom">getUserFrom ()</a></td>
-	<td class="summary">Get the user information from the myChatMember object.</td>
+	<td class="summary">Get the user information from the myChatMember object</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#getUserFromId">getUserFromId ()</a></td>
-	<td class="summary">Get the user ID from the myChatMember object.</td>
+	<td class="summary">Get the user ID from the myChatMember object</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#getDate">getDate ()</a></td>
-	<td class="summary">Get the date from the myChatMember object.</td>
+	<td class="summary">Get the date from the myChatMember object</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#getOldChatMember">getOldChatMember ()</a></td>
-	<td class="summary">Get the old chat member information from the myChatMember object.</td>
+	<td class="summary">Get the old chat member information from the myChatMember object</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#getNewChatMember">getNewChatMember ()</a></td>
-	<td class="summary">Get the new chat member information from the myChatMember object.</td>
+	<td class="summary">Get the new chat member information from the myChatMember object</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#getNewChatMemberStatus">getNewChatMemberStatus ()</a></td>
-	<td class="summary">Get the status of the new chat member from the myChatMember object.</td>
+	<td class="summary">Get the status of the new chat member from the myChatMember object</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#getOldChatMemberStatus">getOldChatMemberStatus ()</a></td>
-	<td class="summary">Get the status of the old chat member from the myChatMember object.</td>
+	<td class="summary">Get the status of the old chat member from the myChatMember object</td>
 	</tr>
 </table>
 
@@ -127,23 +144,23 @@
     <dl class="function">
     <dt>
     <a name = "new"></a>
-    <strong>new (data)</strong>
+    <strong>new (ctx)</strong>
     </dt>
     <dd>
-    Creates a new myChatMember object.
+    Creates a new myChatMember object
 
 
     <h3>Parameters:</h3>
     <ul>
-        <li><span class="parameter">data</span>
-         The data for initializing the object.
+        <li><span class="parameter">ctx</span>
+         The data for initializing the object
         </li>
     </ul>
 
     <h3>Returns:</h3>
     <ol>
 
-        The created myChatMember object.
+        The created myChatMember object
     </ol>
 
 
@@ -155,14 +172,14 @@
     <strong>getUpdateId ()</strong>
     </dt>
     <dd>
-    Get the update ID from the myChatMember object.
+    Get the update ID from the myChatMember object
 
 
 
     <h3>Returns:</h3>
     <ol>
 
-        The update ID.
+        The update ID
     </ol>
 
 
@@ -174,14 +191,14 @@
     <strong>getChat ()</strong>
     </dt>
     <dd>
-    Get the chat information from the myChatMember object.
+    Get the chat information from the myChatMember object
 
 
 
     <h3>Returns:</h3>
     <ol>
 
-        The chat information.
+        The chat information
     </ol>
 
 
@@ -193,14 +210,14 @@
     <strong>getChatId ()</strong>
     </dt>
     <dd>
-    Get the chat ID from the myChatMember object.
+    Get the chat ID from the myChatMember object
 
 
 
     <h3>Returns:</h3>
     <ol>
 
-        The chat ID.
+        The chat ID
     </ol>
 
 
@@ -212,14 +229,14 @@
     <strong>getChatType ()</strong>
     </dt>
     <dd>
-    Get the chat type from the myChatMember object.
+    Get the chat type from the myChatMember object
 
 
 
     <h3>Returns:</h3>
     <ol>
 
-        The chat type.
+        The chat type
     </ol>
 
 
@@ -231,14 +248,14 @@
     <strong>getUserFrom ()</strong>
     </dt>
     <dd>
-    Get the user information from the myChatMember object.
+    Get the user information from the myChatMember object
 
 
 
     <h3>Returns:</h3>
     <ol>
 
-        The user information.
+        The user information
     </ol>
 
 
@@ -250,14 +267,14 @@
     <strong>getUserFromId ()</strong>
     </dt>
     <dd>
-    Get the user ID from the myChatMember object.
+    Get the user ID from the myChatMember object
 
 
 
     <h3>Returns:</h3>
     <ol>
 
-        The user ID.
+        The user ID
     </ol>
 
 
@@ -269,14 +286,14 @@
     <strong>getDate ()</strong>
     </dt>
     <dd>
-    Get the date from the myChatMember object.
+    Get the date from the myChatMember object
 
 
 
     <h3>Returns:</h3>
     <ol>
 
-        The date.
+        The date
     </ol>
 
 
@@ -288,14 +305,14 @@
     <strong>getOldChatMember ()</strong>
     </dt>
     <dd>
-    Get the old chat member information from the myChatMember object.
+    Get the old chat member information from the myChatMember object
 
 
 
     <h3>Returns:</h3>
     <ol>
 
-        The old chat member information.
+        The old chat member information
     </ol>
 
 
@@ -307,14 +324,14 @@
     <strong>getNewChatMember ()</strong>
     </dt>
     <dd>
-    Get the new chat member information from the myChatMember object.
+    Get the new chat member information from the myChatMember object
 
 
 
     <h3>Returns:</h3>
     <ol>
 
-        The new chat member information.
+        The new chat member information
     </ol>
 
 
@@ -326,14 +343,14 @@
     <strong>getNewChatMemberStatus ()</strong>
     </dt>
     <dd>
-    Get the status of the new chat member from the myChatMember object.
+    Get the status of the new chat member from the myChatMember object
 
 
 
     <h3>Returns:</h3>
     <ol>
 
-        The status of the new chat member.
+        The status of the new chat member
     </ol>
 
 
@@ -345,14 +362,14 @@
     <strong>getOldChatMemberStatus ()</strong>
     </dt>
     <dd>
-    Get the status of the old chat member from the myChatMember object.
+    Get the status of the old chat member from the myChatMember object
 
 
 
     <h3>Returns:</h3>
     <ol>
 
-        The status of the old chat member.
+        The status of the old chat member
     </ol>
 
 
@@ -366,7 +383,7 @@
 </div> <!-- id="main" -->
 <div id="about">
 <i>generated by <a href="http://github.com/lunarmodules/LDoc">LDoc 1.5.0</a></i>
-<i style="float:right;">Last updated 2025-01-30 00:55:50 </i>
+<i style="float:right;">Last updated 2025-04-15 23:21:11 </i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>
