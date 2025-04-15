@@ -18,7 +18,7 @@ local function url_decode(str)
   end))
 end
 
-local function parse_tg_init_data(init_data, bot_token)
+local function parseInitData(init_data, bot_token)
   -- Парсинг исходной строки
   local parsed = parse_query(init_data)
   local received_hash = parsed.hash or ""
@@ -66,4 +66,4 @@ local function parse_tg_init_data(init_data, bot_token)
   }
 end
 
-return parse_tg_init_data
+return parseInitData
