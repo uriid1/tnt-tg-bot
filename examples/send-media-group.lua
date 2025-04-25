@@ -1,4 +1,4 @@
--- Example of send image
+-- Example of send media group
 --
 local log = require('log')
 local bot = require('bot')
