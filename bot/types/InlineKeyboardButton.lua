@@ -25,6 +25,8 @@ local function inlineKeyboardButton(keyboard, data)
   -- Optional. Data to be sent in a callback query to the bot when button is pressed, 1-64 bytes
   if data.callback_data then
     button.callback_data = tostring(data.callback_data):sub(1, 64)
+  elseif data.callback then
+    button.callback_data = tostring(data.callback):sub(1, 64)
   end
 
   -- Optional. Description of the Web App that will be launched when the user presses the button

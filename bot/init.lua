@@ -33,6 +33,7 @@ function bot:cfg(options)
   self.events = {}
   self.api_url = options.api_url or 'https://api.telegram.org/bot'
   self.parse_mode = options.parse_mode or parse_mode.HTML
+  self.username = options.username
 
   _G.bot = bot
 
@@ -53,8 +54,7 @@ end
 --
 -- @return (table) Response from the Telegram Bot API
 -- @return (table) Error object
--- luacheck: ignore self
-function bot:call(method, options, request_param)
+function bot.call(method, options, request_param)
   local params = {
     method = method,
     options = options,

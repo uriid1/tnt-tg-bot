@@ -1,4 +1,4 @@
---- Process incoming data and create corresponding objects.
+--- Process incoming data and create corresponding objects
 -- @module processMessage
 
 local Message = require('bot.classes.Message')
