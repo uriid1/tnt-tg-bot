@@ -1,6 +1,5 @@
 --- Input media
 --
-local json = require('json')
 local InputFile = require('bot.types.InputFile')
 
 local function InputMedia(data)
@@ -23,7 +22,7 @@ local function InputMedia(data)
     table.insert(jsonData.media, data[i])
   end
 
-  jsonData.media = json.encode(jsonData.media)
+  jsonData.media = jsonData.media
 
   return jsonData
 end

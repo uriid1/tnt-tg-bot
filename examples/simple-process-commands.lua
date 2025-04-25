@@ -1,4 +1,4 @@
--- Example simple process commans
+-- Example simple process command
 --
 local bot = require('bot')
 local parse_mode = require('bot.enums.parse_mode')

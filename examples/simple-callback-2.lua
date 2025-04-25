@@ -1,4 +1,4 @@
--- Example simple callback button
+-- Example simple callback button 2
 --
 local bot = require('bot')
 local parse_mode = require('bot.enums.parse_mode')

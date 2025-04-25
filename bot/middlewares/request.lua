@@ -5,6 +5,7 @@ local request = {}
 local json = require('json')
 local http = require('http.client')
 local mpEncode = require('multipart-post')
+local methods = require('bot.enums.methods')
 
 -- luacheck: ignore bot
 --- Send an HTTP request to the Telegram Bot API.
@@ -29,6 +30,16 @@ function request.send(params)
   opts = {}
 
   if params.is_multipart then
+    -- https://core.telegram.org/bots/api#sendmediagroup
+    -- A JSON-serialized array describing messages to be sent, must include 2-10 items
+    if params.method == methods.sendMediaGroup then
+      local media = params.options.media
+
+      if media then
+        params.options.media = json.encode(media)
+      end
+    end
+
     -- Make multipart-data
     local boundary
     body, boundary = mpEncode(params.options)

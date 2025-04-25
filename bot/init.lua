@@ -13,6 +13,8 @@ local fiber = require('fiber')
 local switch = require('bot.modules.switch')
 local request = require('bot.middlewares.request')
 local parse_mode = require('bot.enums.parse_mode')
+local InputFile = require('bot.types.InputFile')
+local methods = require('bot.enums.methods')
 
 --- Initializes the bot with options
 --
@@ -54,17 +56,34 @@ end
 --
 -- @return (table) Response from the Telegram Bot API
 -- @return (table) Error object
-function bot.call(method, options, request_param)
+function bot.call(method, options, opts)
   local params = {
     method = method,
     options = options,
   }
 
-  if request_param and request_param.multipart_post then
+  if opts and opts.multipart_post then
     params.is_multipart = true
   end
 
   return request.send(params)
+end
+
+--- A simplified version of the sendPhoto method
+--
+-- @param data (table) Method options
+-- @param data.filepath Path to image
+-- @param data.url URL to image
+function bot.sendImage(data)
+  if data.filepath then
+    data.photo = InputFile(data.filepath)
+    data.filepath = nil
+  elseif data.url then
+    data.photo = data.url
+    data.url = nil
+  end
+
+  bot.call(methods.sendPhoto, data, { multipart_post = true })
 end
 
 --- Handles a command message
@@ -200,15 +219,18 @@ function bot:startWebHook(options)
   if options.routes then
     for i = 1, #options.routes do
       local route = options.routes[i]
+
       httpd:route({ path = route.path, method = route.method }, route.callback)
     end
   end
 
   httpd:start()
+
   log.info('[Success] HTTP Server listening at %s:%d', host, port)
 
   if options.maintenance_mode ~= 'maint' then
     local res = bot.send_certificate(options)
+
     if res and not res.ok then
       log.error('[%s] description: %s', res.ok, res.description)
 

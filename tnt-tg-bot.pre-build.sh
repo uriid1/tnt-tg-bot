@@ -12,6 +12,7 @@ echo "
 
  BY URIID1
  GITHUB github.com/uriid1/tnt-tg-bot
+ VERSION 1.0.0 RELEASE
 "
 
 readonly C_RESET="\033[0m"
@@ -64,19 +65,18 @@ done
 # Install all rocks
 echo
 install "OpenSSL"
-tarantoolctl rocks install --server=https://luarocks.org luaossl
+tt rocks install --server=https://luarocks.org luaossl
 install "http"
-tarantoolctl rocks install --server=https://rocks.tarantool.org/ --local http
+tt rocks install --server=https://rocks.tarantool.org/ --local http
 install "lua-multipart-post"
-tarantoolctl rocks install --server=https://luarocks.org lua-multipart-post 1.0-0
+tt rocks install --server=https://luarocks.org lua-multipart-post 1.0-0
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
     -o | --optional)
       install "pimp"
-      tarantoolctl rocks install --server=https://luarocks.org pimp
+      tt rocks install --server=https://luarocks.org pimp
       shift 1
     ;;
   esac
 done
-

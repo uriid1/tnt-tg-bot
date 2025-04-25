@@ -1,4 +1,4 @@
--- Example of Echo bot
+-- Example of echo bot
 --
 local log = require('log')
 local bot = require('bot')
