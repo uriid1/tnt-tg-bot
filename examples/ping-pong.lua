@@ -12,7 +12,7 @@ bot:cfg({
 })
 
 bot.commands['/ping'] = function(ctx)
-  local _, err = bot:call(methods.sendMessage, {
+  local _, err = bot.call(methods.sendMessage, {
     text = 'pong',
     chat_id = ctx:getChatId()
   })

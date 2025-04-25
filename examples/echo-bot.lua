@@ -14,7 +14,7 @@ function bot.events.onGetUpdate(ctx)
   local text = ctx:getText()
   local chatId = ctx:getChatId()
 
-  local _, err = bot:call(methods.sendMessage, {
+  local _, err = bot.call(methods.sendMessage, {
     text = text,
     chat_id = chatId
   })

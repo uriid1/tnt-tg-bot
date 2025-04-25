@@ -31,7 +31,7 @@ end
 
 -- Bot command /send_callback
 bot.commands['/send_callback'] = function(ctx)
-  bot:call(methods.sendMessage, {
+  bot.call(methods.sendMessage, {
     text = 'Test Callback Button',
     chat_id = ctx:getChatId(),
     reply_markup = makeKeyboard()
@@ -42,7 +42,7 @@ end
 bot.commands['cb_button_press'] = function(ctx)
   local callbackId = ctx:getQueryId()
 
-  bot:call(methods.answerCallbackQuery, {
+  bot.call(methods.answerCallbackQuery, {
     text = 'Hello!',
     callback_query_id = callbackId
   })
@@ -53,7 +53,7 @@ bot.commands['cb_send_apple'] = function(ctx)
   local message = ctx:getMessage()
   local chatId = message:getChatId()
 
-  bot:call(methods.sendMessage, {
+  bot.call(methods.sendMessage, {
     text = '🍎',
     chat_id = chatId,
   })
@@ -61,7 +61,7 @@ end
 
 -- Text commad - hello
 bot.commands['hello'] = function(ctx)
-  bot:call(methods.sendMessage, {
+  bot.call(methods.sendMessage, {
     text = 'Hi!',
     chat_id = ctx:getChatId()
   })
