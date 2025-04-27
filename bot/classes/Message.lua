@@ -29,8 +29,10 @@ function message:new(ctx, opts)
   obj.update_id = update_id
   obj.message = message
 
-  if ctx.message.successful_payment then
-    obj.message.successful_payment = SuccessfulPayment(ctx.message.successful_payment)
+  if ctx.message then
+    if ctx.message.successful_payment then
+      obj.message.successful_payment = SuccessfulPayment(ctx.message.successful_payment)
+    end
   end
 
   return setmetatable(obj, self)
