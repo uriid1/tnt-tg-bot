@@ -49,7 +49,7 @@ end
 -- @param[optchain] request_param (table) { multipart_post = true }
 --
 -- @usage
--- bot:call("sendMessage", {
+-- bot.call("sendMessage", {
 --  text = 'Hello!',
 --  chat_id = 123456789,
 -- })
@@ -173,7 +173,7 @@ function bot.send_certificate(options)
   end
 
   -- Set webhook
-  return bot:call('setWebhook', {
+  return bot.call('setWebhook', {
     url = options.bot_url,
     certificate = data,
     drop_pending_updates = options.drop_pending_updates or false,
