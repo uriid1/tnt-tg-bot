@@ -57,6 +57,10 @@ end
 -- @return (table) Response from the Telegram Bot API
 -- @return (table) Error object
 function bot.call(method, options, opts)
+  if method == nil then
+    error('bot.call method is nil.')
+  end
+
   local params = {
     method = method,
     options = options,

@@ -1,5 +1,8 @@
 --- Message module for handling message data
 -- @module message
+
+local SuccessfulPayment = require('bot.classes.SuccessfulPayment')
+
 local message = {}
 message.__index = message
 
@@ -25,6 +28,10 @@ function message:new(ctx, opts)
 
   obj.update_id = update_id
   obj.message = message
+
+  if ctx.message.successful_payment then
+    obj.message.successful_payment = SuccessfulPayment(ctx.message.successful_payment)
+  end
 
   return setmetatable(obj, self)
 end
@@ -177,6 +184,13 @@ function message:getDate()
   end
 end
 
+-- START DEPRECATED BLOCK
+--
+-- Этот блок, стоило бы не делать, так как -
+-- left_chat_member и new_chat_member должны быть отдельными классами.
+-- Но оставим ради поддержки старой версии библиотеки.
+--
+
 --- Gets the left chat member data from the message data
 -- @return (table) The left chat member data
 function message:getLeftChatMember()
@@ -232,6 +246,8 @@ function message:isRemoveMember()
     return self.message.left_chat_member.id ~= self.message.from.id
   end
 end
+--
+-- END DEPRECATED BLOCK
 
 --- message.sender_chat
 -- @return message.sender_chat
@@ -247,6 +263,10 @@ function message:getSenderChatId()
   if self.message and self.message.sender_chat then
     return self.message.sender_chat.id
   end
+end
+
+function message:getSuccessfulPayment()
+  return self.message.successful_payment
 end
 
 --- Trim Command

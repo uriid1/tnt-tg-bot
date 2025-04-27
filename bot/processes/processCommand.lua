@@ -16,22 +16,24 @@ local function processCommand(ctx)
     return true
   end
 
-  local entities = ctx:getEntities()
+  if ctx.getEntities then
+    local entities = ctx:getEntities()
 
-  if entities[1].type == entity_type.BOT_COMMAND then
-    local command, botUserName = bot.Command(ctx)
+    if entities and entities[1].type == entity_type.BOT_COMMAND then
+      local command, botUserName = bot.Command(ctx)
 
-    if botUserName ~= bot.username then
-      return false
+      if botUserName ~= bot.username then
+        return false
+      end
+
+      if not command then
+        return false
+      end
+
+      command(ctx)
+
+      return true
     end
-
-    if not command then
-      return false
-    end
-
-    command(ctx)
-
-    return true
   end
 end
 

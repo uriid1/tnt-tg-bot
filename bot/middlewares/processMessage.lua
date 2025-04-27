@@ -5,6 +5,7 @@ local Message = require('bot.classes.Message')
 local CallbackQuery = require('bot.classes.CallbackQuery')
 local ChatMember = require('bot.classes.ChatMember')
 local MyChatMember = require('bot.classes.MyChatMember')
+local PreCheckoutQuery = require('bot.classes.PreCheckoutQuery')
 
 local function processMessage(data)
   if data.message then
@@ -15,6 +16,8 @@ local function processMessage(data)
     return ChatMember(data)
   elseif data.my_chat_member then
     return MyChatMember(data)
+  elseif data.pre_checkout_query then
+    return PreCheckoutQuery(data)
   end
 
   return data

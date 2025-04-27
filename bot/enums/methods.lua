@@ -1,6 +1,16 @@
----
--- See: <a href=https://core.telegram.org/bots/api#available-methods">Available Methods</a>
+-- See: <a href="https://core.telegram.org/bots/api">All Methods</a>
 local methods = {
+  --
+  -- Getting updates
+  --
+  getUpdates = 'getUpdates',
+  setWebhook = 'setWebhook',
+  deleteWebhook = 'deleteWebhook',
+  getWebhookInfo = 'getWebhookInfo',
+
+  --
+  -- Available methods
+  --
   getMe = 'getMe',
   logOut = 'logOut',
   close = 'close',
@@ -80,39 +90,16 @@ local methods = {
   getChatMenuButton = 'getChatMenuButton',
   setMyDefaultAdministratorRights = 'setMyDefaultAdministratorRights',
   getMyDefaultAdministratorRights = 'getMyDefaultAdministratorRights',
-  editMessageText = 'editMessageText',
-  editMessageCaption = 'editMessageCaption',
-  editMessageMedia = 'editMessageMedia',
-  editMessageReplyMarkup = 'editMessageReplyMarkup',
-  stopPoll = 'stopPoll',
-  deleteMessage = 'deleteMessage',
-  sendSticker = 'sendSticker',
-  getStickerSet = 'getStickerSet',
-  getCustomEmojiStickers = 'getCustomEmojiStickers',
-  uploadStickerFile = 'uploadStickerFile',
-  createNewStickerSet = 'createNewStickerSet',
-  addStickerToSet = 'addStickerToSet',
-  setStickerPositionInSet = 'setStickerPositionInSet',
-  deleteStickerFromSet = 'deleteStickerFromSet',
-  setStickerEmojiList = 'setStickerEmojiList',
-  setStickerKeywords = 'setStickerKeywords',
-  setStickerMaskPosition = 'setStickerMaskPosition',
-  setStickerSetTitle = 'setStickerSetTitle',
-  setStickerSetThumbnail = 'setStickerSetThumbnail',
-  setCustomEmojiStickerSetThumbnail = 'setCustomEmojiStickerSetThumbnail',
-  deleteStickerSet = 'deleteStickerSet',
-  answerInlineQuery = 'answerInlineQuery',
-  answerWebAppQuery = 'answerWebAppQuery',
-  sendInvoice = 'sendInvoice',
-  createInvoiceLink = 'createInvoiceLink',
-  answerShippingQuery = 'answerShippingQuery',
-  answerPreCheckoutQuery = 'answerPreCheckoutQuery',
-  setPassportDataErrors = 'setPassportDataErrors',
-  sendGame = 'sendGame',
-  setGameScore = 'setGameScore',
-  getGameHighScores = 'getGameHighScores',
-  setChatBackground = 'setChatBackground',
-  deleteChatBackground = 'deleteChatBackground',
+
+  --
+  -- Chat Boost
+  --
+  getChatBoostStatus = 'getChatBoostStatus',
+  getChatBoostList = 'getChatBoostList',
+
+  --
+  -- Business
+  --
   getBusinessConnection = 'getBusinessConnection',
   getBusinessConnections = 'getBusinessConnections',
   setBusinessConnectionMenuButton = 'setBusinessConnectionMenuButton',
@@ -129,10 +116,82 @@ local methods = {
   convertGiftToStars = 'convertGiftToStars',
   upgradeGift = 'upgradeGift',
   transferGift = 'transferGift',
+
+  --
+  -- Stories
+  --
   postStory = 'postStory',
   editStory = 'editStory',
   deleteStory = 'deleteStory',
-  giftPremiumSubscription = 'giftPremiumSubscription'
+
+  --
+  -- Updating messages
+  --
+  editMessageText = 'editMessageText',
+  editMessageCaption = 'editMessageCaption',
+  editMessageMedia = 'editMessageMedia',
+  editMessageReplyMarkup = 'editMessageReplyMarkup',
+  stopPoll = 'stopPoll',
+  deleteMessage = 'deleteMessage',
+
+  --
+  -- Stickers
+  --
+  sendSticker = 'sendSticker',
+  getStickerSet = 'getStickerSet',
+  getCustomEmojiStickers = 'getCustomEmojiStickers',
+  uploadStickerFile = 'uploadStickerFile',
+  createNewStickerSet = 'createNewStickerSet',
+  addStickerToSet = 'addStickerToSet',
+  setStickerPositionInSet = 'setStickerPositionInSet',
+  deleteStickerFromSet = 'deleteStickerFromSet',
+  setStickerEmojiList = 'setStickerEmojiList',
+  setStickerKeywords = 'setStickerKeywords',
+  setStickerMaskPosition = 'setStickerMaskPosition',
+  setStickerSetTitle = 'setStickerSetTitle',
+  setStickerSetThumbnail = 'setStickerSetThumbnail',
+  setCustomEmojiStickerSetThumbnail = 'setCustomEmojiStickerSetThumbnail',
+  deleteStickerSet = 'deleteStickerSet',
+
+  --
+  -- Inline mode
+  --
+  answerInlineQuery = 'answerInlineQuery',
+  answerWebAppQuery = 'answerWebAppQuery',
+
+  --
+  -- Payments
+  --
+  sendInvoice = 'sendInvoice',
+  createInvoiceLink = 'createInvoiceLink',
+  answerShippingQuery = 'answerShippingQuery',
+  answerPreCheckoutQuery = 'answerPreCheckoutQuery',
+  getStarTransactions = 'getStarTransactions',
+  refundStarPayment = 'refundStarPayment',
+  editUserStarSubscription = 'editUserStarSubscription',
+
+  --
+  -- Telegram Passport
+  --
+  setPassportDataErrors = 'setPassportDataErrors',
+
+  --
+  -- Games
+  --
+  sendGame = 'sendGame',
+  setGameScore = 'setGameScore',
+  getGameHighScores = 'getGameHighScores',
+
+  --
+  -- Chat Background
+  --
+  setChatBackground = 'setChatBackground',
+  deleteChatBackground = 'deleteChatBackground',
+
+  --
+  -- Premium
+  --
+  giftPremiumSubscription = 'giftPremiumSubscription',
 }
 
 return methods
