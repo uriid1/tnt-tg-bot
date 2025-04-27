@@ -1,7 +1,5 @@
 --- Reply Keyboard Markup https://core.telegram.org/bots/api#replykeyboardmarkup
 --
-local json = require('json')
-
 local function ReplyKeyboardMarkup(data)
   if not data then
     return { keyboard = {} }
@@ -14,15 +12,6 @@ local function ReplyKeyboardMarkup(data)
     obj.keyboard = data.keyboard
   else
     obj.keyboard = {}
-
-    local keyboard = {}
-    keyboard.__index = keyboard
-
-    function keyboard:toJson()
-      return json.encode(self)
-    end
-
-    setmetatable(obj, keyboard)
   end
 
   -- Optional. Requests clients to always show the keyboard when the regular keyboard is hidden.
@@ -55,10 +44,6 @@ local function ReplyKeyboardMarkup(data)
   -- sender of the original message.
   if data.selective ~= nil then
     obj.selective = data.selective and true or false
-  end
-
-  if data.keyboard then
-    return json.encode(obj)
   end
 
   return obj

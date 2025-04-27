@@ -2,11 +2,11 @@
   -- https://core.telegram.org/bots/api#keyboardbutton
 --
 local function KeyboardButton(keyboard, data)
-  if data and type(data) ~= 'table' then
+  if keyboard and type(keyboard) ~= 'table' then
     return nil
   end
 
-  if keyboard and type(keyboard) ~= 'table' then
+  if data and type(data) ~= 'table' then
     return nil
   end
 
