@@ -42,9 +42,9 @@
   <li><a href="../modules/callback.html">callback</a></li>
   <li><a href="../modules/chatMember.html">chatMember</a></li>
   <li><a href="../modules/message.html">message</a></li>
-  <li><strong>myChatMember</strong></li>
+  <li><a href="../modules/myChatMember.html">myChatMember</a></li>
   <li><a href="../modules/PreCheckoutQuery.html">PreCheckoutQuery</a></li>
-  <li><a href="../modules/SuccessfulPayment.html">SuccessfulPayment</a></li>
+  <li><strong>SuccessfulPayment</strong></li>
   <li><a href="../modules/enums.bot_command_scope.html">enums.bot_command_scope</a></li>
   <li><a href="../modules/enums.chat_member_status.html">enums.chat_member_status</a></li>
   <li><a href="../modules/enums.chat_permissions.html">enums.chat_permissions</a></li>
@@ -81,60 +81,60 @@
 
 <div id="content">
 
-<h1>Module <code>myChatMember</code></h1>
-<p>Module myChatMember</p>
+<h1>Module <code>SuccessfulPayment</code></h1>
+<p>Module SuccessfulPayment</p>
 <p></p>
 
 
 <h2><a href="#Functions">Functions</a></h2>
 <table class="function_list">
 	<tr>
-	<td class="name" nowrap><a href="#new">new (ctx)</a></td>
-	<td class="summary">Creates a new myChatMember object</td>
+	<td class="name" nowrap><a href="#new">new (successful_payment)</a></td>
+	<td class="summary">Creates a new SuccessfulPayment object</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#getUpdateId">getUpdateId ()</a></td>
-	<td class="summary">Get the update ID from the myChatMember object</td>
+	<td class="name" nowrap><a href="#getSelf">getSelf ()</a></td>
+	<td class="summary">Returns SuccessfulPayment object</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#getChat">getChat ()</a></td>
-	<td class="summary">Get the chat information from the myChatMember object</td>
+	<td class="name" nowrap><a href="#getCurrency">getCurrency ()</a></td>
+	<td class="summary">Three-letter ISO 4217 currency code, or “XTR” for payments in Telegram Stars</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#getChatId">getChatId ()</a></td>
-	<td class="summary">Get the chat ID from the myChatMember object</td>
+	<td class="name" nowrap><a href="#getTotalAmount">getTotalAmount ()</a></td>
+	<td class="summary">Get total amount</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#getChatType">getChatType ()</a></td>
-	<td class="summary">Get the chat type from the myChatMember object</td>
+	<td class="name" nowrap><a href="#getInvoicePayload">getInvoicePayload ()</a></td>
+	<td class="summary">Bot-specified invoice payload</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#getUserFrom">getUserFrom ()</a></td>
-	<td class="summary">Get the user information from the myChatMember object</td>
+	<td class="name" nowrap><a href="#getSubscriptionExpirationDate">getSubscriptionExpirationDate ()</a></td>
+	<td class="summary">Optional.</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#getUserFromId">getUserFromId ()</a></td>
-	<td class="summary">Get the user ID from the myChatMember object</td>
+	<td class="name" nowrap><a href="#isRecurring">isRecurring ()</a></td>
+	<td class="summary">Optional.</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#getDate">getDate ()</a></td>
-	<td class="summary">Get the date from the myChatMember object</td>
+	<td class="name" nowrap><a href="#isFirstRecurring">isFirstRecurring ()</a></td>
+	<td class="summary">Optional.</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#getOldChatMember">getOldChatMember ()</a></td>
-	<td class="summary">Get the old chat member information from the myChatMember object</td>
+	<td class="name" nowrap><a href="#getShippingOptionId">getShippingOptionId ()</a></td>
+	<td class="summary">Optional.</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#getNewChatMember">getNewChatMember ()</a></td>
-	<td class="summary">Get the new chat member information from the myChatMember object</td>
+	<td class="name" nowrap><a href="#getOrderInfo">getOrderInfo ()</a></td>
+	<td class="summary">Optional.</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#getNewChatMemberStatus">getNewChatMemberStatus ()</a></td>
-	<td class="summary">Get the status of the new chat member from the myChatMember object</td>
+	<td class="name" nowrap><a href="#getTelegramPaymentChargeId">getTelegramPaymentChargeId ()</a></td>
+	<td class="summary">Telegram payment identifier</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#getOldChatMemberStatus">getOldChatMemberStatus ()</a></td>
-	<td class="summary">Get the status of the old chat member from the myChatMember object</td>
+	<td class="name" nowrap><a href="#getProviderPaymentChargeId">getProviderPaymentChargeId ()</a></td>
+	<td class="summary">Provider payment identifier</td>
 	</tr>
 </table>
 
@@ -147,15 +147,15 @@
     <dl class="function">
     <dt>
     <a name = "new"></a>
-    <strong>new (ctx)</strong>
+    <strong>new (successful_payment)</strong>
     </dt>
     <dd>
-    Creates a new myChatMember object
+    Creates a new SuccessfulPayment object
 
 
     <h3>Parameters:</h3>
     <ul>
-        <li><span class="parameter">ctx</span>
+        <li><span class="parameter">successful_payment</span>
          The data for initializing the object
         </li>
     </ul>
@@ -163,7 +163,7 @@
     <h3>Returns:</h3>
     <ol>
 
-        The created myChatMember object
+        The created SuccessfulPayment object
     </ol>
 
 
@@ -171,18 +171,19 @@
 
 </dd>
     <dt>
-    <a name = "getUpdateId"></a>
-    <strong>getUpdateId ()</strong>
+    <a name = "getSelf"></a>
+    <strong>getSelf ()</strong>
     </dt>
     <dd>
-    Get the update ID from the myChatMember object
+    Returns SuccessfulPayment object
 
 
 
     <h3>Returns:</h3>
     <ol>
 
-        The update ID
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.6">(table)</a></span>
+
     </ol>
 
 
@@ -190,18 +191,19 @@
 
 </dd>
     <dt>
-    <a name = "getChat"></a>
-    <strong>getChat ()</strong>
+    <a name = "getCurrency"></a>
+    <strong>getCurrency ()</strong>
     </dt>
     <dd>
-    Get the chat information from the myChatMember object
+    Three-letter ISO 4217 currency code, or “XTR” for payments in Telegram Stars
 
 
 
     <h3>Returns:</h3>
     <ol>
 
-        The chat information
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">(string)</a></span>
+
     </ol>
 
 
@@ -209,18 +211,19 @@
 
 </dd>
     <dt>
-    <a name = "getChatId"></a>
-    <strong>getChatId ()</strong>
+    <a name = "getTotalAmount"></a>
+    <strong>getTotalAmount ()</strong>
     </dt>
     <dd>
-    Get the chat ID from the myChatMember object
+    Get total amount
 
 
 
     <h3>Returns:</h3>
     <ol>
 
-        The chat ID
+           <span class="types"><span class="type">(number)</span></span>
+
     </ol>
 
 
@@ -228,18 +231,19 @@
 
 </dd>
     <dt>
-    <a name = "getChatType"></a>
-    <strong>getChatType ()</strong>
+    <a name = "getInvoicePayload"></a>
+    <strong>getInvoicePayload ()</strong>
     </dt>
     <dd>
-    Get the chat type from the myChatMember object
+    Bot-specified invoice payload
 
 
 
     <h3>Returns:</h3>
     <ol>
 
-        The chat type
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.4/manual.html#6.4">(string)</a></span>
+
     </ol>
 
 
@@ -247,18 +251,19 @@
 
 </dd>
     <dt>
-    <a name = "getUserFrom"></a>
-    <strong>getUserFrom ()</strong>
+    <a name = "getSubscriptionExpirationDate"></a>
+    <strong>getSubscriptionExpirationDate ()</strong>
     </dt>
     <dd>
-    Get the user information from the myChatMember object
+    Optional.  Expiration date of the subscription, in Unix time; for recurring payments only
 
 
 
     <h3>Returns:</h3>
     <ol>
 
-        The user information
+           <span class="types"><span class="type">(number)</span></span>
+
     </ol>
 
 
@@ -266,18 +271,19 @@
 
 </dd>
     <dt>
-    <a name = "getUserFromId"></a>
-    <strong>getUserFromId ()</strong>
+    <a name = "isRecurring"></a>
+    <strong>isRecurring ()</strong>
     </dt>
     <dd>
-    Get the user ID from the myChatMember object
+    Optional.  True, if the payment is a recurring payment for a subscription
 
 
 
     <h3>Returns:</h3>
     <ol>
 
-        The user ID
+           <span class="types"><span class="type">(True)</span></span>
+
     </ol>
 
 
@@ -285,18 +291,19 @@
 
 </dd>
     <dt>
-    <a name = "getDate"></a>
-    <strong>getDate ()</strong>
+    <a name = "isFirstRecurring"></a>
+    <strong>isFirstRecurring ()</strong>
     </dt>
     <dd>
-    Get the date from the myChatMember object
+    Optional.  True, if the payment is the first payment for a subscription
 
 
 
     <h3>Returns:</h3>
     <ol>
 
-        The date
+           <span class="types"><span class="type">(True)</span></span>
+
     </ol>
 
 
@@ -304,18 +311,18 @@
 
 </dd>
     <dt>
-    <a name = "getOldChatMember"></a>
-    <strong>getOldChatMember ()</strong>
+    <a name = "getShippingOptionId"></a>
+    <strong>getShippingOptionId ()</strong>
     </dt>
     <dd>
-    Get the old chat member information from the myChatMember object
+    Optional.  Identifier of the shipping option chosen by the user
 
 
 
     <h3>Returns:</h3>
     <ol>
 
-        The old chat member information
+        (string)
     </ol>
 
 
@@ -323,18 +330,18 @@
 
 </dd>
     <dt>
-    <a name = "getNewChatMember"></a>
-    <strong>getNewChatMember ()</strong>
+    <a name = "getOrderInfo"></a>
+    <strong>getOrderInfo ()</strong>
     </dt>
     <dd>
-    Get the new chat member information from the myChatMember object
+    Optional.  Order information provided by the user
 
 
 
     <h3>Returns:</h3>
     <ol>
 
-        The new chat member information
+        (OrderInfo)
     </ol>
 
 
@@ -342,18 +349,18 @@
 
 </dd>
     <dt>
-    <a name = "getNewChatMemberStatus"></a>
-    <strong>getNewChatMemberStatus ()</strong>
+    <a name = "getTelegramPaymentChargeId"></a>
+    <strong>getTelegramPaymentChargeId ()</strong>
     </dt>
     <dd>
-    Get the status of the new chat member from the myChatMember object
+    Telegram payment identifier
 
 
 
     <h3>Returns:</h3>
     <ol>
 
-        The status of the new chat member
+        (string)
     </ol>
 
 
@@ -361,18 +368,18 @@
 
 </dd>
     <dt>
-    <a name = "getOldChatMemberStatus"></a>
-    <strong>getOldChatMemberStatus ()</strong>
+    <a name = "getProviderPaymentChargeId"></a>
+    <strong>getProviderPaymentChargeId ()</strong>
     </dt>
     <dd>
-    Get the status of the old chat member from the myChatMember object
+    Provider payment identifier
 
 
 
     <h3>Returns:</h3>
     <ol>
 
-        The status of the old chat member
+        (string)
     </ol>
 
 

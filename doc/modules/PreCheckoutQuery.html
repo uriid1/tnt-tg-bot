@@ -31,6 +31,10 @@
   <li><a href="../index.html">Index</a></li>
 </ul>
 
+<h2>Contents</h2>
+<ul>
+<li><a href="#Functions">Functions</a></li>
+</ul>
 
 
 <h2>Modules</h2>
@@ -39,7 +43,7 @@
   <li><a href="../modules/chatMember.html">chatMember</a></li>
   <li><a href="../modules/message.html">message</a></li>
   <li><a href="../modules/myChatMember.html">myChatMember</a></li>
-  <li><a href="../modules/PreCheckoutQuery.html">PreCheckoutQuery</a></li>
+  <li><strong>PreCheckoutQuery</strong></li>
   <li><a href="../modules/SuccessfulPayment.html">SuccessfulPayment</a></li>
   <li><a href="../modules/enums.bot_command_scope.html">enums.bot_command_scope</a></li>
   <li><a href="../modules/enums.chat_member_status.html">enums.chat_member_status</a></li>
@@ -59,7 +63,7 @@
   <li><a href="../modules/types.BotCommand.html">types.BotCommand</a></li>
   <li><a href="../modules/types.BotCommandScope.html">types.BotCommandScope</a></li>
   <li><a href="../modules/types.ForceReply.html">types.ForceReply</a></li>
-  <li><strong>types.InlineKeyboardButton</strong></li>
+  <li><a href="../modules/types.InlineKeyboardButton.html">types.InlineKeyboardButton</a></li>
   <li><a href="../modules/types.InputFile.html">types.InputFile</a></li>
   <li><a href="../modules/types.InputMedia.html">types.InputMedia</a></li>
   <li><a href="../modules/types.InputMediaAnimation.html">types.InputMediaAnimation</a></li>
@@ -77,17 +81,190 @@
 
 <div id="content">
 
-<h1>Module <code>types.InlineKeyboardButton</code></h1>
-<p>Inline Keyboard Button
- https://core.telegram.org/bots/api#inlinekeyboardbutton</p>
+<h1>Module <code>PreCheckoutQuery</code></h1>
+<p>Module PreCheckoutQuery</p>
 <p></p>
 
 
+<h2><a href="#Functions">Functions</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#new">new (ctx)</a></td>
+	<td class="summary">Creates a new PreCheckoutQuery object</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#getUpdateId">getUpdateId ()</a></td>
+	<td class="summary">Gets the update ID</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#getInvoicePayload">getInvoicePayload ()</a></td>
+	<td class="summary">Bot-specified invoice payload</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#getId">getId ()</a></td>
+	<td class="summary">Unique query identifier</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#getCurrency">getCurrency ()</a></td>
+	<td class="summary">Three-letter ISO 4217 currency code, or “XTR” for payments in Telegram Stars</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#getUserFrom">getUserFrom ()</a></td>
+	<td class="summary">User who sent the query</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#getTotalAmount">getTotalAmount ()</a></td>
+	<td class="summary">price in the smallest units of the currency (integer, not float/double)</td>
+	</tr>
+</table>
 
 <br/>
 <br/>
 
 
+    <h2 class="section-header "><a name="Functions"></a>Functions</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "new"></a>
+    <strong>new (ctx)</strong>
+    </dt>
+    <dd>
+    Creates a new PreCheckoutQuery object
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">ctx</span>
+         The data for initializing the object
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        The created PreCheckoutQuery object
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "getUpdateId"></a>
+    <strong>getUpdateId ()</strong>
+    </dt>
+    <dd>
+    Gets the update ID
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+        (number) The update ID
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "getInvoicePayload"></a>
+    <strong>getInvoicePayload ()</strong>
+    </dt>
+    <dd>
+    Bot-specified invoice payload
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+        (string)
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "getId"></a>
+    <strong>getId ()</strong>
+    </dt>
+    <dd>
+    Unique query identifier
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+        (string)
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "getCurrency"></a>
+    <strong>getCurrency ()</strong>
+    </dt>
+    <dd>
+    Three-letter ISO 4217 currency code, or “XTR” for payments in Telegram Stars
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+        (string)
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "getUserFrom"></a>
+    <strong>getUserFrom ()</strong>
+    </dt>
+    <dd>
+    User who sent the query
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+        (User)
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "getTotalAmount"></a>
+    <strong>getTotalAmount ()</strong>
+    </dt>
+    <dd>
+    price in the smallest units of the currency (integer, not float/double)
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+        (Integer)
+    </ol>
+
+
+
+
+</dd>
+</dl>
 
 
 </div> <!-- id="content" -->

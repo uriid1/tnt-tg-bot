@@ -22,34 +22,40 @@ function PreCheckoutQuery:getUpdateId()
   end
 end
 
-function PreCheckoutQuery:getSelf()
-  return self.pre_checkout_query
-end
-
+--- Bot-specified invoice payload
+-- @return (string)
 function PreCheckoutQuery:getInvoicePayload()
   if self.pre_checkout_query then
     return self.pre_checkout_query.invoice_payload
   end
 end
 
+--- Unique query identifier
+-- @return (string)
 function PreCheckoutQuery:getId()
   if self.pre_checkout_query then
     return self.pre_checkout_query.id
   end
 end
 
+--- Three-letter ISO 4217 currency code, or “XTR” for payments in Telegram Stars
+-- @return (string)
 function PreCheckoutQuery:getCurrency()
   if self.pre_checkout_query then
     return self.pre_checkout_query.currency
   end
 end
 
+--- User who sent the query
+-- @return (User)
 function PreCheckoutQuery:getUserFrom()
   if self.pre_checkout_query then
     return self.pre_checkout_query.from
   end
 end
 
+--- price in the smallest units of the currency (integer, not float/double)
+-- @return (Integer)
 function PreCheckoutQuery:getTotalAmount()
   if self.pre_checkout_query then
     return self.pre_checkout_query.total_amount
