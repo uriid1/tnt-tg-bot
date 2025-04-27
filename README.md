@@ -1,74 +1,74 @@
-Russian | [English](README_EN.md)</br>
+Russian | [English](README.md)</br>
 
-## Description
-tnt-tg-bot is a library written in Lua for the Tarantool platform that provides a minimalist interface for working with the Telegram Bot API.
+## Описание
+tnt-tg-bot - это библиотека, написанная на Lua для платформы Tarantool, которая предоставляет минималистичный интерфейс для работы с Telegram Bot API.
 
-## Features
-  + Nearly complete support for Telegram Bot API
-  + Simple interface
-  + Asynchronous request processing
-  + Built-in support for Telegram Stars payments
-  + Built-in methods for easy command handling, including callbacks
-  + You name your own events, with only `bot.events.onGetUpdate(ctx)` available out of the box
-  + Easy Web App integration (example not provided)
-  + LDoc support (partial)
-  + More than 10 examples with more to come
-  + Easy integration with Tarantool
+## Особенности
+  + Практически полная поддержка Telegram Bot API
+  + Простой интерфейс
+  + Асинхронная обработка запросов
+  + Встроенная поддержка работы с платежами в Telegram Stars
+  + Встроенные методы для простой обработки команд, в том числе callback
+  + Вы сами даёте названия событиям, из коробки у вас только - `bot.events.onGetUpdate(ctx)`
+  + Простая работа с Web App (не сделан пример)
+  + Поддержка LDoc (не полная)
+  + Больше 10-ти примеров и они будут пополняться
+  + Легкая интеграция с Tarantool
 
-Due to the simple and clear architecture, adding missing functionality is straightforward.
+Из-за простой и понятной архитектуры, отсутствующий функционал добавлять несложно.
 
-## Installation
+## Установка
 
-### Pre-build
+### Предварительная сборка
 ```bash
 bash tnt-tg-bot.pre-build.sh
 ```
 
-## Examples
-  + `examples/echo-bot.lua` - Simple echo bot
-  + `examples/ping-pong.lua` - Response to /ping command
-  + `examples/send-animation.lua` - Sending a gif via /get_animation command
-  + `examples/send-document.lua` - Sending a document via /get_document command
-  + `examples/send-image.lua` - Sending an image via /get_image command
-  + `examples/send-image-2.lua` - Simplified example of sending an image using `bot.sendImage`
-  + `examples/send-media-group.lua` - Sending a media group
-  + `examples/simple-callback.lua` - Example of callback handling - /send_callback
-  + `examples/simple-callback-2.lua` - Simplified example of callback command handling
-  + `examples/simple-process-commands.lua` - Example of simple command processing
-  + `examples/routes-example/init.lua` - Example of bot handlers
-  + `examples/stars-payment/init.lua` - Example of handling payments in stars
+## Примеры
+  + `examples/echo-bot.lua` - Простой эхо-бот
+  + `examples/ping-pong.lua` - Реакция на команду /ping
+  + `examples/send-animation.lua` - Отправка gif по команде /get_animation
+  + `examples/send-document.lua` - Отправка документа по команде /get_document
+  + `examples/send-image.lua` - Отправка изображения по команде /get_image
+  + `examples/send-image-2.lua` - Упрощенный пример отправки изображения через `bot.sendImage`
+  + `examples/send-media-group.lua` - Отправка группы медиа-файлов
+  + `examples/simple-callback.lua` - Пример обработки callback - /send_callback
+  + `examples/simple-callback-2.lua` - Упрощенный пример обработки callback команд
+  + `examples/simple-process-commands.lua` - Пример простого процессинга команд
+  + `examples/routes-example/init.lua` - Пример работы ручек в боте
+  + `examples/stars-payment/init.lua` - Пример обработки платежей в звездах
 
-### Running an example
-`BOT_TOKEN` - your bot token
+### Запуск примера
+`BOT_TOKEN` - токен вашего бота
 ```bash
 BOT_TOKEN="1348551682:AAFK3iZwBqEHwSrPKyi-hKyAtRgUwXrTiWW" tarantool examples/echo-bot.lua
 ```
 
-## Project Structure
-  + `bot/init.lua` - Entry point
-  + `bot/libs` - Helper libraries
-  + `bot/enums` - Enums
-  + `bot/classes` - Classes for Telegram objects
-  + `bot/middlewares` - Middlewares
-  + `bot/processes` - Processes. Example: processCommand - command processing
-  + `bot/types` - Models/validators for Telegram types
-  + `bot/ext` - Built-in extensions
+## Структура проекта
+  + `bot/init.lua` - Точка входа
+  + `bot/libs` - Вспомогательные библиотеки
+  + `bot/enums` - Инамы
+  + `bot/classes` - Классы для объектов телеграмма
+  + `bot/middlewares` - Посредники
+  + `bot/processes` - Процессы. Пример processCommand - процессинг команд
+  + `bot/types` - Модели/валидаторы для типов телеграмма
+  + `bot/ext` - Встроенные экстеншины
 
-## Library Interface
+## Интерфейс библиотеки
 
-| Method/Property | Description | Usage Example |
+| Метод/Свойство | Описание | Пример использования |
 |---------------|---------|---------------------|
-| bot:cfg | Initialize settings | `bot:cfg { token = "123468:foobarBAZ" }` |
-| bot.call | Execute request to Telegram API | `bot.call('sendMessage', {chat_id = 123, text = 'Hello!'})` |
-| bot.events | Table with custom events | `function bot.events.onPoll(ctx) ... end` |
-| bot.events.onGetUpdate | Event for processing updates from Telegram | `function bot.events.onGetUpdate(ctx) ... end` |
-| bot.sendImage | Simplified image sending | `examples/send-image-2.lua`  |
-| bot.Command | Minimal command handler | `bot.Command(ctx)` |
-| bot.CallbackCommand | Minimal callback command handler | `bot.CallbackCommand(ctx)`
-| bot:startWebHook | Start bot on remote server | (example coming later) |
-| bot:startLongPolling | Start bot in long polling mode | Any example from `examples/*` |
+| bot:cfg | Инициализация настроек | `bot:cfg { token = "123468:foobarBAZ" }` |
+| bot.call | Выполнение запроса к Telegram API | `bot.call('sendMessage', {chat_id = 123, text = 'Привет!'})` |
+| bot.events | Таблица с пользовательскими событиями | `function bot.events.onPoll(ctx) ... end` |
+| bot.events.onGetUpdate | Событие обработки обновлений от Telegram | `function bot.events.onGetUpdate(ctx) ... end` |
+| bot.sendImage | Упрощенная отправка картинки | `examples/send-image-2.lua`  |
+| bot.Command | Минимальный обработчик команд | `bot.Command(ctx)` |
+| bot.CallbackCommand | Минимальный обработчик callback команд | `bot.CallbackCommand(ctx)`
+| bot:startWebHook | Запуск бота на удаленном сервере | (позже будет пример) |
+| bot:startLongPolling | Запуск бота в режиме long polling | Любой пример из `examples/*` |
 
-For argument details, see ldoc - `doc/index.html`
+По наличию аргументов см. ldoc - `doc/index.html`
 
-## Contributing
-Through repository fork and Pull Request
+## Вклад в проект
+Через форк репозитория и открытия Pull Request
