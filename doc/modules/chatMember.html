@@ -1,0 +1,396 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Reference</title>
+    <link rel="stylesheet" href="../ldoc_new.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>ldoc</h1>
+
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Functions">Functions</a></li>
+</ul>
+
+
+<h2>Modules</h2>
+<ul class="nowrap">
+  <li><a href="../modules/callback.html">callback</a></li>
+  <li><strong>chatMember</strong></li>
+  <li><a href="../modules/message.html">message</a></li>
+  <li><a href="../modules/myChatMember.html">myChatMember</a></li>
+  <li><a href="../modules/PreCheckoutQuery.html">PreCheckoutQuery</a></li>
+  <li><a href="../modules/SuccessfulPayment.html">SuccessfulPayment</a></li>
+  <li><a href="../modules/enums.bot_command_scope.html">enums.bot_command_scope</a></li>
+  <li><a href="../modules/enums.chat_member_status.html">enums.chat_member_status</a></li>
+  <li><a href="../modules/enums.chat_permissions.html">enums.chat_permissions</a></li>
+  <li><a href="../modules/enums.chat_type.html">enums.chat_type</a></li>
+  <li><a href="../modules/enums.entity_type.html">enums.entity_type</a></li>
+  <li><a href="../modules/enums.errors.html">enums.errors</a></li>
+  <li><a href="../modules/enums.parse_mode.html">enums.parse_mode</a></li>
+  <li><a href="../modules/ext.fstring.html">ext.fstring</a></li>
+  <li><a href="../modules/extensions.html_formatter.html">extensions.html_formatter</a></li>
+  <li><a href="../modules/bot.html">bot</a></li>
+  <li><a href="../modules/libs.parseInitData.html">libs.parseInitData</a></li>
+  <li><a href="../modules/inlineKeyoard.html">inlineKeyoard</a></li>
+  <li><a href="../modules/processMessage.html">processMessage</a></li>
+  <li><a href="../modules/request.html">request</a></li>
+  <li><a href="../modules/switch.html">switch</a></li>
+  <li><a href="../modules/processCommand.html">processCommand</a></li>
+  <li><a href="../modules/types.BotCommand.html">types.BotCommand</a></li>
+  <li><a href="../modules/types.BotCommandScope.html">types.BotCommandScope</a></li>
+  <li><a href="../modules/types.ForceReply.html">types.ForceReply</a></li>
+  <li><a href="../modules/types.InlineKeyboardButton.html">types.InlineKeyboardButton</a></li>
+  <li><a href="../modules/types.InputFile.html">types.InputFile</a></li>
+  <li><a href="../modules/types.InputMedia.html">types.InputMedia</a></li>
+  <li><a href="../modules/types.InputMediaAnimation.html">types.InputMediaAnimation</a></li>
+  <li><a href="../modules/types.InputMediaAudio.html">types.InputMediaAudio</a></li>
+  <li><a href="../modules/types.InputMediaDocument.html">types.InputMediaDocument</a></li>
+  <li><a href="../modules/types.InputMediaPhoto.html">types.InputMediaPhoto</a></li>
+  <li><a href="../modules/types.InputMediaVideo.html">types.InputMediaVideo</a></li>
+  <li><a href="../modules/types.KeyboardButton.html">types.KeyboardButton</a></li>
+  <li><a href="../modules/types.LinkPreviewOptions.html">types.LinkPreviewOptions</a></li>
+  <li><a href="../modules/types.ReplyKeyboardMarkup.html">types.ReplyKeyboardMarkup</a></li>
+  <li><a href="../modules/types.ReplyKeyboardRemove.html">types.ReplyKeyboardRemove</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>chatMember</code></h1>
+<p>ChatMember module for handling chat member data</p>
+<p></p>
+
+
+<h2><a href="#Functions">Functions</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#new">new (ctx)</a></td>
+	<td class="summary">Creates a new chatMember object</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#getUpdateId">getUpdateId ()</a></td>
+	<td class="summary">Gets the update ID</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#getChat">getChat ()</a></td>
+	<td class="summary">Gets the associated chat.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#getChatId">getChatId ()</a></td>
+	<td class="summary">Gets the chat ID from the associated chat data</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#getChatType">getChatType ()</a></td>
+	<td class="summary">Gets the chat type from the associated chat data</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#getUserFrom">getUserFrom ()</a></td>
+	<td class="summary">Gets the user data from the chat member data</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#getUserFromId">getUserFromId ()</a></td>
+	<td class="summary">Gets the user ID from the chat member data</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#getDate">getDate ()</a></td>
+	<td class="summary">Gets the date from the chat member data</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#getOldChatMember">getOldChatMember ()</a></td>
+	<td class="summary">Gets the old chat member data</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#getOldChatMemberStatus">getOldChatMemberStatus ()</a></td>
+	<td class="summary">Gets the status of the old chat member</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#getNewChatMember">getNewChatMember ()</a></td>
+	<td class="summary">Gets the new chat member data</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#getNewChatMemberStatus">getNewChatMemberStatus ()</a></td>
+	<td class="summary">Gets the status of the new chat member</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Functions"></a>Functions</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "new"></a>
+    <strong>new (ctx)</strong>
+    </dt>
+    <dd>
+    Creates a new chatMember object
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">ctx</span>
+         (table) The chat member data
+   - update_id (number): The update ID.
+   - chat_member (table): The chat member data
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        (chatMember) The chatMember object
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "getUpdateId"></a>
+    <strong>getUpdateId ()</strong>
+    </dt>
+    <dd>
+    Gets the update ID
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+        (number) The update ID
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "getChat"></a>
+    <strong>getChat ()</strong>
+    </dt>
+    <dd>
+    Gets the associated chat.
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+        (table) The associated chat data
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "getChatId"></a>
+    <strong>getChatId ()</strong>
+    </dt>
+    <dd>
+    Gets the chat ID from the associated chat data
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+        (number) The chat ID
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "getChatType"></a>
+    <strong>getChatType ()</strong>
+    </dt>
+    <dd>
+    Gets the chat type from the associated chat data
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+        (string) The chat type
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "getUserFrom"></a>
+    <strong>getUserFrom ()</strong>
+    </dt>
+    <dd>
+    Gets the user data from the chat member data
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+        (table) The user data
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "getUserFromId"></a>
+    <strong>getUserFromId ()</strong>
+    </dt>
+    <dd>
+    Gets the user ID from the chat member data
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+        (number) The user ID
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "getDate"></a>
+    <strong>getDate ()</strong>
+    </dt>
+    <dd>
+    Gets the date from the chat member data
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+        (number) The date
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "getOldChatMember"></a>
+    <strong>getOldChatMember ()</strong>
+    </dt>
+    <dd>
+    Gets the old chat member data
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+        (table) The old chat member data
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "getOldChatMemberStatus"></a>
+    <strong>getOldChatMemberStatus ()</strong>
+    </dt>
+    <dd>
+    Gets the status of the old chat member
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+        (string) The status of the old chat member
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "getNewChatMember"></a>
+    <strong>getNewChatMember ()</strong>
+    </dt>
+    <dd>
+    Gets the new chat member data
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+        (table) The new chat member data
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "getNewChatMemberStatus"></a>
+    <strong>getNewChatMemberStatus ()</strong>
+    </dt>
+    <dd>
+    Gets the status of the new chat member
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+        (string) The status of the new chat member
+    </ol>
+
+
+
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/lunarmodules/LDoc">LDoc 1.5.0</a></i>
+<i style="float:right;">Last updated 2025-04-27 19:49:15 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>

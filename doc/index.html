@@ -32,20 +32,32 @@
 
 <h2>Modules</h2>
 <ul class="nowrap">
-  <li><a href="modules/bot.html">bot</a></li>
-  <li><a href="modules/classes.callback.html">classes.callback</a></li>
-  <li><a href="modules/classes.chatMember.html">classes.chatMember</a></li>
-  <li><a href="modules/classes.message.html">classes.message</a></li>
-  <li><a href="modules/classes.myChatMember.html">classes.myChatMember</a></li>
+  <li><a href="modules/callback.html">callback</a></li>
+  <li><a href="modules/chatMember.html">chatMember</a></li>
+  <li><a href="modules/message.html">message</a></li>
+  <li><a href="modules/myChatMember.html">myChatMember</a></li>
+  <li><a href="modules/PreCheckoutQuery.html">PreCheckoutQuery</a></li>
+  <li><a href="modules/SuccessfulPayment.html">SuccessfulPayment</a></li>
+  <li><a href="modules/enums.bot_command_scope.html">enums.bot_command_scope</a></li>
+  <li><a href="modules/enums.chat_member_status.html">enums.chat_member_status</a></li>
+  <li><a href="modules/enums.chat_permissions.html">enums.chat_permissions</a></li>
+  <li><a href="modules/enums.chat_type.html">enums.chat_type</a></li>
+  <li><a href="modules/enums.entity_type.html">enums.entity_type</a></li>
+  <li><a href="modules/enums.errors.html">enums.errors</a></li>
+  <li><a href="modules/enums.parse_mode.html">enums.parse_mode</a></li>
+  <li><a href="modules/ext.fstring.html">ext.fstring</a></li>
   <li><a href="modules/extensions.html_formatter.html">extensions.html_formatter</a></li>
-  <li><a href="modules/middlewares.events.html">middlewares.events</a></li>
-  <li><a href="modules/middlewares.processMessage.html">middlewares.processMessage</a></li>
-  <li><a href="modules/modules.request.html">modules.request</a></li>
-  <li><a href="modules/modules.switch.html">modules.switch</a></li>
+  <li><a href="modules/bot.html">bot</a></li>
+  <li><a href="modules/libs.parseInitData.html">libs.parseInitData</a></li>
+  <li><a href="modules/inlineKeyoard.html">inlineKeyoard</a></li>
+  <li><a href="modules/processMessage.html">processMessage</a></li>
+  <li><a href="modules/request.html">request</a></li>
+  <li><a href="modules/switch.html">switch</a></li>
+  <li><a href="modules/processCommand.html">processCommand</a></li>
   <li><a href="modules/types.BotCommand.html">types.BotCommand</a></li>
   <li><a href="modules/types.BotCommandScope.html">types.BotCommandScope</a></li>
+  <li><a href="modules/types.ForceReply.html">types.ForceReply</a></li>
   <li><a href="modules/types.InlineKeyboardButton.html">types.InlineKeyboardButton</a></li>
-  <li><a href="modules/types.InlineKeyboardMarkup.html">types.InlineKeyboardMarkup</a></li>
   <li><a href="modules/types.InputFile.html">types.InputFile</a></li>
   <li><a href="modules/types.InputMedia.html">types.InputMedia</a></li>
   <li><a href="modules/types.InputMediaAnimation.html">types.InputMediaAnimation</a></li>
@@ -68,46 +80,94 @@
 <h2>Modules</h2>
 <table class="module_list">
 	<tr>
-		<td class="name"  nowrap><a href="modules/bot.html">bot</a></td>
-		<td class="summary">Tarantool Telegram Bot API
- By uriid1
- Licence GPL V2</td>
-	</tr>
-	<tr>
-		<td class="name"  nowrap><a href="modules/classes.callback.html">classes.callback</a></td>
+		<td class="name"  nowrap><a href="modules/callback.html">callback</a></td>
 		<td class="summary">Callback class for handling callback queries</td>
 	</tr>
 	<tr>
-		<td class="name"  nowrap><a href="modules/classes.chatMember.html">classes.chatMember</a></td>
+		<td class="name"  nowrap><a href="modules/chatMember.html">chatMember</a></td>
 		<td class="summary">ChatMember module for handling chat member data</td>
 	</tr>
 	<tr>
-		<td class="name"  nowrap><a href="modules/classes.message.html">classes.message</a></td>
+		<td class="name"  nowrap><a href="modules/message.html">message</a></td>
 		<td class="summary">Message module for handling message data</td>
 	</tr>
 	<tr>
-		<td class="name"  nowrap><a href="modules/classes.myChatMember.html">classes.myChatMember</a></td>
+		<td class="name"  nowrap><a href="modules/myChatMember.html">myChatMember</a></td>
 		<td class="summary">Module myChatMember</td>
+	</tr>
+	<tr>
+		<td class="name"  nowrap><a href="modules/PreCheckoutQuery.html">PreCheckoutQuery</a></td>
+		<td class="summary">Module PreCheckoutQuery</td>
+	</tr>
+	<tr>
+		<td class="name"  nowrap><a href="modules/SuccessfulPayment.html">SuccessfulPayment</a></td>
+		<td class="summary">Module SuccessfulPayment</td>
+	</tr>
+	<tr>
+		<td class="name"  nowrap><a href="modules/enums.bot_command_scope.html">enums.bot_command_scope</a></td>
+		<td class="summary">Enum Bot Command Scope</td>
+	</tr>
+	<tr>
+		<td class="name"  nowrap><a href="modules/enums.chat_member_status.html">enums.chat_member_status</a></td>
+		<td class="summary">Enum Chat Member Status</td>
+	</tr>
+	<tr>
+		<td class="name"  nowrap><a href="modules/enums.chat_permissions.html">enums.chat_permissions</a></td>
+		<td class="summary">Enum Chat Permissions</td>
+	</tr>
+	<tr>
+		<td class="name"  nowrap><a href="modules/enums.chat_type.html">enums.chat_type</a></td>
+		<td class="summary">Enum Chat Type</td>
+	</tr>
+	<tr>
+		<td class="name"  nowrap><a href="modules/enums.entity_type.html">enums.entity_type</a></td>
+		<td class="summary">Enum Entity Type</td>
+	</tr>
+	<tr>
+		<td class="name"  nowrap><a href="modules/enums.errors.html">enums.errors</a></td>
+		<td class="summary">Enum errors</td>
+	</tr>
+	<tr>
+		<td class="name"  nowrap><a href="modules/enums.parse_mode.html">enums.parse_mode</a></td>
+		<td class="summary">Enum parse_mode</td>
+	</tr>
+	<tr>
+		<td class="name"  nowrap><a href="modules/ext.fstring.html">ext.fstring</a></td>
+		<td class="summary">Lua format string</td>
 	</tr>
 	<tr>
 		<td class="name"  nowrap><a href="modules/extensions.html_formatter.html">extensions.html_formatter</a></td>
 		<td class="summary">HTML formatting functions.</td>
 	</tr>
 	<tr>
-		<td class="name"  nowrap><a href="modules/middlewares.events.html">middlewares.events</a></td>
-		<td class="summary">Event handling module</td>
+		<td class="name"  nowrap><a href="modules/bot.html">bot</a></td>
+		<td class="summary">Tarantool Telegram Bot API
+ By uriid1
+ Licence GPL V2</td>
 	</tr>
 	<tr>
-		<td class="name"  nowrap><a href="modules/middlewares.processMessage.html">middlewares.processMessage</a></td>
+		<td class="name"  nowrap><a href="modules/libs.parseInitData.html">libs.parseInitData</a></td>
+		<td class="summary">https://core.telegram.org/bots/webapps#validating-data-received-via-the-mini-app</td>
+	</tr>
+	<tr>
+		<td class="name"  nowrap><a href="modules/inlineKeyoard.html">inlineKeyoard</a></td>
+		<td class="summary">Inline keyboard middleware</td>
+	</tr>
+	<tr>
+		<td class="name"  nowrap><a href="modules/processMessage.html">processMessage</a></td>
 		<td class="summary">Process incoming data and create corresponding objects</td>
 	</tr>
 	<tr>
-		<td class="name"  nowrap><a href="modules/modules.request.html">modules.request</a></td>
-		<td class="summary">Module for making HTTP requests to the Telegram Bot API</td>
+		<td class="name"  nowrap><a href="modules/request.html">request</a></td>
+		<td class="summary">Module for making HTTP requests to the Telegram Bot API.</td>
 	</tr>
 	<tr>
-		<td class="name"  nowrap><a href="modules/modules.switch.html">modules.switch</a></td>
+		<td class="name"  nowrap><a href="modules/switch.html">switch</a></td>
 		<td class="summary">Event switching module</td>
+	</tr>
+	<tr>
+		<td class="name"  nowrap><a href="modules/processCommand.html">processCommand</a></td>
+		<td class="summary">Process for handling commands and callbacks</td>
 	</tr>
 	<tr>
 		<td class="name"  nowrap><a href="modules/types.BotCommand.html">types.BotCommand</a></td>
@@ -118,12 +178,14 @@
 		<td class="summary">https://core.telegram.org/bots/api#botcommandscope</td>
 	</tr>
 	<tr>
-		<td class="name"  nowrap><a href="modules/types.InlineKeyboardButton.html">types.InlineKeyboardButton</a></td>
-		<td class="summary">https://core.telegram.org/bots/api#inlinekeyboardbutton</td>
+		<td class="name"  nowrap><a href="modules/types.ForceReply.html">types.ForceReply</a></td>
+		<td class="summary">Force Reply
+ https://core.telegram.org/bots/api#forcereply</td>
 	</tr>
 	<tr>
-		<td class="name"  nowrap><a href="modules/types.InlineKeyboardMarkup.html">types.InlineKeyboardMarkup</a></td>
-		<td class="summary">https://core.telegram.org/bots/api#replykeyboardmarkup</td>
+		<td class="name"  nowrap><a href="modules/types.InlineKeyboardButton.html">types.InlineKeyboardButton</a></td>
+		<td class="summary">Inline Keyboard Button
+ https://core.telegram.org/bots/api#inlinekeyboardbutton</td>
 	</tr>
 	<tr>
 		<td class="name"  nowrap><a href="modules/types.InputFile.html">types.InputFile</a></td>
@@ -135,27 +197,33 @@
 	</tr>
 	<tr>
 		<td class="name"  nowrap><a href="modules/types.InputMediaAnimation.html">types.InputMediaAnimation</a></td>
-		<td class="summary">https://core.telegram.org/bots/api#inputmediaanimation</td>
+		<td class="summary">Input Media Animation
+ https://core.telegram.org/bots/api#inputmediaanimation</td>
 	</tr>
 	<tr>
 		<td class="name"  nowrap><a href="modules/types.InputMediaAudio.html">types.InputMediaAudio</a></td>
-		<td class="summary">https://core.telegram.org/bots/api#inputmediaaudio</td>
+		<td class="summary">Input Media Audio
+ https://core.telegram.org/bots/api#inputmediaaudio</td>
 	</tr>
 	<tr>
 		<td class="name"  nowrap><a href="modules/types.InputMediaDocument.html">types.InputMediaDocument</a></td>
-		<td class="summary">https://core.telegram.org/bots/api#inputmediadocument</td>
+		<td class="summary">Input Media Document
+ https://core.telegram.org/bots/api#inputmediadocument</td>
 	</tr>
 	<tr>
 		<td class="name"  nowrap><a href="modules/types.InputMediaPhoto.html">types.InputMediaPhoto</a></td>
-		<td class="summary">https://core.telegram.org/bots/api#inputmediaphoto</td>
+		<td class="summary">Input Media Photo
+ https://core.telegram.org/bots/api#inputmediaphoto</td>
 	</tr>
 	<tr>
 		<td class="name"  nowrap><a href="modules/types.InputMediaVideo.html">types.InputMediaVideo</a></td>
-		<td class="summary">https://core.telegram.org/bots/api#inputmediavideo</td>
+		<td class="summary">Input Media Video
+ https://core.telegram.org/bots/api#inputmediavideo</td>
 	</tr>
 	<tr>
 		<td class="name"  nowrap><a href="modules/types.KeyboardButton.html">types.KeyboardButton</a></td>
-		<td class="summary">https://core.telegram.org/bots/api#keyboardbutton</td>
+		<td class="summary">Keyboard Button
+ https://core.telegram.org/bots/api#keyboardbutton</td>
 	</tr>
 	<tr>
 		<td class="name"  nowrap><a href="modules/types.LinkPreviewOptions.html">types.LinkPreviewOptions</a></td>
@@ -163,11 +231,12 @@
 	</tr>
 	<tr>
 		<td class="name"  nowrap><a href="modules/types.ReplyKeyboardMarkup.html">types.ReplyKeyboardMarkup</a></td>
-		<td class="summary">https://core.telegram.org/bots/api#replykeyboardmarkup</td>
+		<td class="summary">Reply Keyboard Markup https://core.telegram.org/bots/api#replykeyboardmarkup</td>
 	</tr>
 	<tr>
 		<td class="name"  nowrap><a href="modules/types.ReplyKeyboardRemove.html">types.ReplyKeyboardRemove</a></td>
-		<td class="summary">https://core.telegram.org/bots/api#replykeyboardremove</td>
+		<td class="summary">Reply Keyboard Remove
+ https://core.telegram.org/bots/api#replykeyboardremove</td>
 	</tr>
 </table>
 
@@ -175,7 +244,7 @@
 </div> <!-- id="main" -->
 <div id="about">
 <i>generated by <a href="http://github.com/lunarmodules/LDoc">LDoc 1.5.0</a></i>
-<i style="float:right;">Last updated 2024-08-17 19:14:10 </i>
+<i style="float:right;">Last updated 2025-04-27 19:49:15 </i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>
