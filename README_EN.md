@@ -1,4 +1,4 @@
-Russian | [English](README_EN.md)</br>
+English | [Russian](README.md)
 
 ## Description
 tnt-tg-bot is a library written in Lua for the Tarantool platform that provides a minimalist interface for working with the Telegram Bot API.
