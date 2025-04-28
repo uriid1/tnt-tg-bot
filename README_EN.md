@@ -1,5 +1,8 @@
 English | [Russian](README.md)
 
+[![luacheck](https://github.com/uriid1/tnt-tg-bot/actions/workflows/luacheck.yml/badge.svg?branch=master&event=push)](https://github.com/uriid1/tnt-tg-bot/actions/workflows/luacheck.yml)
+[![License](https://img.shields.io/badge/License-MIT-brightgreen.svg)](LICENSE)
+
 ## Description
 tnt-tg-bot is a library written in Lua for the Tarantool platform that provides a minimalist interface for working with the Telegram Bot API.
 

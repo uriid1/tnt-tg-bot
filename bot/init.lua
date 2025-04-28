@@ -244,6 +244,8 @@ function bot:startWebHook(options)
       os.exit(1)
     end
   end
+
+  self.maintenance = options.maintenance_mode == 'maint'
 end
 
 local getUpdates
