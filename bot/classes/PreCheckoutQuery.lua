@@ -1,5 +1,6 @@
 --- Module PreCheckoutQuery
--- @module PreCheckoutQuery
+-- @module bot.classes.PreCheckoutQuery
+
 local PreCheckoutQuery = {}
 PreCheckoutQuery.__index = PreCheckoutQuery
 

@@ -1,7 +1,7 @@
 --- Enum Chat Type
 
 ---
--- @table chat_type
+-- @table bot.enums.chat_type
 -- @field SENDER
 -- @field PRIVATE
 -- @field GROUP

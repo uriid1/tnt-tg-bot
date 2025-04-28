@@ -1,5 +1,5 @@
 --- https://core.telegram.org/bots/webapps#validating-data-received-via-the-mini-app
---
+-- @module bot.libs.parseInitData
 local openssl_hmac = require('openssl.hmac')
 local json = require('json')
 
@@ -18,6 +18,9 @@ local function url_decode(str)
   end))
 end
 
+-- Validating data received via the mini app
+--- @param init_data (string)
+--- @param bot_token (string)
 local function parseInitData(init_data, bot_token)
   -- Парсинг исходной строки
   local parsed = parse_query(init_data)

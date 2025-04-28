@@ -2,7 +2,7 @@
 
 ---
 -- See: <a href="https://core.telegram.org/api/errors">Errors</a>
--- @table errors
+-- @table bot.enums.errors
 -- @field SEE_OTHER
 -- @field BAD_REQUEST
 -- @field UNAUTHORIZED

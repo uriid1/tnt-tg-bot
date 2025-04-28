@@ -1,5 +1,5 @@
 --- HTML formatting functions.
--- @module extensions.html_formatter
+-- @module bot.ext.extensions.html_formatter
 local utf8 = require('utf8')
 
 local M = {}

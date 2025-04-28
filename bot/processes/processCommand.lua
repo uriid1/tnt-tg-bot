@@ -1,5 +1,5 @@
 --- Process for handling commands and callbacks
--- @module processCommand
+-- @module bot.processes.processCommand
 local entity_type = require('bot.enums.entity_type')
 
 -- luacheck: ignore bot

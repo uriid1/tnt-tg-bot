@@ -1,6 +1,7 @@
 --- Inline Keyboard Button
   -- https://core.telegram.org/bots/api#inlinekeyboardbutton
---
+  --
+-- @module bot.types.inlineKeyboardButton
 local function inlineKeyboardButton(keyboard, data)
   if type(data) ~= 'table' then
     return nil

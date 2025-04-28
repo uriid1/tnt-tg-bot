@@ -46,7 +46,8 @@ end
 --
 -- @param method (string) TG API method to execute
 -- @param options (table) Method options
--- @param[optchain] request_param (table) { multipart_post = true }
+-- @param opts (table) Options
+-- @param[optchain] opts.request_param (table) { multipart_post = true }
 --
 -- @usage
 -- bot.call("sendMessage", {

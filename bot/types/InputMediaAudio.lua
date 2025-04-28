@@ -1,6 +1,7 @@
 --- Input Media Audio
   -- https://core.telegram.org/bots/api#inputmediaaudio
---
+  --
+-- @module bot.types.InputMediaAudio
 local function InputMediaAudio(data)
   if not data then
     return nil

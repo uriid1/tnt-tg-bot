@@ -1,5 +1,5 @@
 --- Input file
---
+-- @module bot.types.inputFile
 local fio = require('fio')
 local log = require('log')
 

@@ -1,5 +1,6 @@
---- Reply Keyboard Markup https://core.telegram.org/bots/api#replykeyboardmarkup
---
+--- Reply Keyboard Markup
+-- see https://core.telegram.org/bots/api#replykeyboardmarkup
+-- @module bot.types.ReplyKeyboardMarkup
 local function ReplyKeyboardMarkup(data)
   if not data then
     return { keyboard = {} }

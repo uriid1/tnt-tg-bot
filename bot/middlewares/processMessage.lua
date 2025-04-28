@@ -1,5 +1,5 @@
 --- Process incoming data and create corresponding objects
--- @module processMessage
+-- @module bot.middlewares.processMessage
 
 local Message = require('bot.classes.Message')
 local CallbackQuery = require('bot.classes.CallbackQuery')

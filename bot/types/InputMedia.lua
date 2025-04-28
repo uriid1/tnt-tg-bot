@@ -1,5 +1,5 @@
 --- Input media
---
+-- @module bot.types.InputMedia
 local InputFile = require('bot.types.InputFile')
 
 local function InputMedia(data)

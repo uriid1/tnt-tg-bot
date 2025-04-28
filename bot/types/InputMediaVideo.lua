@@ -1,6 +1,7 @@
 --- Input Media Video
   -- https://core.telegram.org/bots/api#inputmediavideo
---
+  --
+-- @module bot.types.InputMediaVideo
 local function InputMediaVideo(data)
   if not data then
     return nil

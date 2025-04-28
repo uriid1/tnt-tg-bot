@@ -2,7 +2,7 @@
 
 ---
 -- See: <a href="https://core.telegram.org/bots/api#botcommandscope">Bot Command Scope</a>
--- @table bot_command_scope
+-- @table bot.enums.bot_command_scope
 -- @field DEFAULT
 -- @field ALL_PRIVATE_CHATS
 -- @field ALL_GROUP_CHATS

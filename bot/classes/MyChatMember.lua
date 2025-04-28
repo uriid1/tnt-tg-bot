@@ -1,5 +1,6 @@
 --- Module myChatMember
--- @module myChatMember
+-- @module bot.classes.myChatMember
+
 local myChatMember = {}
 myChatMember.__index = myChatMember
 

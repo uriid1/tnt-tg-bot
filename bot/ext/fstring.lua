@@ -1,6 +1,7 @@
 --- Lua format string
--- @param text text
--- @param args table
+-- @module bot.ext.fstring
+-- @param text (string)
+-- @param args (table)
 -- @usage
   -- string.f = require('bot.ext.fstring')
   -- local str = '${name}, hello!'

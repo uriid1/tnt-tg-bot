@@ -1,6 +1,7 @@
 --- Input Media Photo
   -- https://core.telegram.org/bots/api#inputmediaphoto
---
+  --
+-- @module bot.types.InputMediaPhoto
 local function InputMediaPhoto(data)
   if not data then
     return nil

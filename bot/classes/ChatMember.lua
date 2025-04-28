@@ -1,5 +1,5 @@
 --- ChatMember module for handling chat member data
--- @module chatMember
+-- @module bot.classes.chatMember
 local chatMember = {}
 chatMember.__index = chatMember
 

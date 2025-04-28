@@ -1,5 +1,6 @@
 --- Module SuccessfulPayment
--- @module SuccessfulPayment
+-- @module bot.classes.SuccessfulPayment
+
 local SuccessfulPayment = {}
 SuccessfulPayment.__index = SuccessfulPayment
 

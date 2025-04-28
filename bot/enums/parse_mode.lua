@@ -1,7 +1,7 @@
 --- Enum parse_mode
 
 ---
--- @table parse_mode
+-- @table bot.enums.parse_mode
 -- @field HTML
 -- @field MARKDOWN
 -- @field MARKDOWN_V2

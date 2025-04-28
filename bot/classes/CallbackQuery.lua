@@ -1,5 +1,5 @@
 --- Callback class for handling callback queries
--- @module callback
+-- @module bot.classes.callback
 
 local Message = require('bot.classes.Message')
 

@@ -1,6 +1,7 @@
--- Inline Keyboard Markup
+--- Inline Keyboard Markup
   -- https://core.telegram.org/bots/api#replykeyboardmarkup
---
+  --
+-- @module bot.types.InlineKeyboardMarkup
 local json = require 'json'
 
 local function InlineKeyboardMarkup(data)

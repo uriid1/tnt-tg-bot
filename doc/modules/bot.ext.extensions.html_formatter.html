@@ -1,0 +1,508 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Reference</title>
+    <link rel="stylesheet" href="../ldoc_new.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>ldoc</h1>
+
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Functions">Functions</a></li>
+</ul>
+
+
+<h2>Modules</h2>
+<ul class="nowrap">
+  <li><a href="../modules/bot.classes.callback.html">bot.classes.callback</a></li>
+  <li><a href="../modules/bot.classes.chatMember.html">bot.classes.chatMember</a></li>
+  <li><a href="../modules/bot.classes.message.html">bot.classes.message</a></li>
+  <li><a href="../modules/bot.classes.myChatMember.html">bot.classes.myChatMember</a></li>
+  <li><a href="../modules/bot.classes.PreCheckoutQuery.html">bot.classes.PreCheckoutQuery</a></li>
+  <li><a href="../modules/bot.classes.SuccessfulPayment.html">bot.classes.SuccessfulPayment</a></li>
+  <li><a href="../modules/enums.bot_command_scope.html">enums.bot_command_scope</a></li>
+  <li><a href="../modules/enums.chat_member_status.html">enums.chat_member_status</a></li>
+  <li><a href="../modules/enums.chat_permissions.html">enums.chat_permissions</a></li>
+  <li><a href="../modules/enums.chat_type.html">enums.chat_type</a></li>
+  <li><a href="../modules/enums.entity_type.html">enums.entity_type</a></li>
+  <li><a href="../modules/enums.errors.html">enums.errors</a></li>
+  <li><a href="../modules/enums.parse_mode.html">enums.parse_mode</a></li>
+  <li><a href="../modules/bot.ext.fstring.html">bot.ext.fstring</a></li>
+  <li><strong>bot.ext.extensions.html_formatter</strong></li>
+  <li><a href="../modules/bot.html">bot</a></li>
+  <li><a href="../modules/bot.libs.parseInitData.html">bot.libs.parseInitData</a></li>
+  <li><a href="../modules/bot.middlewares.inlineKeyoard.html">bot.middlewares.inlineKeyoard</a></li>
+  <li><a href="../modules/bot.middlewares.processMessage.html">bot.middlewares.processMessage</a></li>
+  <li><a href="../modules/bot.middlewares.request.html">bot.middlewares.request</a></li>
+  <li><a href="../modules/bot.middlewares.switch.html">bot.middlewares.switch</a></li>
+  <li><a href="../modules/bot.processes.processCommand.html">bot.processes.processCommand</a></li>
+  <li><a href="../modules/bot.types.BotCommand.html">bot.types.BotCommand</a></li>
+  <li><a href="../modules/bot.types.BotCommandScope.html">bot.types.BotCommandScope</a></li>
+  <li><a href="../modules/bot.types.ForceReply.html">bot.types.ForceReply</a></li>
+  <li><a href="../modules/bot.types.inlineKeyboardButton.html">bot.types.inlineKeyboardButton</a></li>
+  <li><a href="../modules/bot.types.InlineKeyboardMarkup.html">bot.types.InlineKeyboardMarkup</a></li>
+  <li><a href="../modules/bot.types.inputFile.html">bot.types.inputFile</a></li>
+  <li><a href="../modules/bot.types.InputMedia.html">bot.types.InputMedia</a></li>
+  <li><a href="../modules/bot.types.InputMediaAnimation.html">bot.types.InputMediaAnimation</a></li>
+  <li><a href="../modules/bot.types.InputMediaAudio.html">bot.types.InputMediaAudio</a></li>
+  <li><a href="../modules/bot.types.InputMediaDocument.html">bot.types.InputMediaDocument</a></li>
+  <li><a href="../modules/bot.types.InputMediaPhoto.html">bot.types.InputMediaPhoto</a></li>
+  <li><a href="../modules/bot.types.InputMediaVideo.html">bot.types.InputMediaVideo</a></li>
+  <li><a href="../modules/bot.types.KeyboardButton.html">bot.types.KeyboardButton</a></li>
+  <li><a href="../modules/bot.types.LinkPreviewOptions.html">bot.types.LinkPreviewOptions</a></li>
+  <li><a href="../modules/bot.types.ReplyKeyboardMarkup.html">bot.types.ReplyKeyboardMarkup</a></li>
+  <li><a href="../modules/bot.types.ReplyKeyboardRemove.html">bot.types.ReplyKeyboardRemove</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>bot.ext.extensions.html_formatter</code></h1>
+<p>HTML formatting functions.</p>
+<p></p>
+
+
+<h2><a href="#Functions">Functions</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#format">format (text)</a></td>
+	<td class="summary">Format HTML-unsafe characters as HTML entities</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#bold">bold (text)</a></td>
+	<td class="summary">Wrap the input text in <b> tags for bold formatting.</b></td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#italic">italic (text)</a></td>
+	<td class="summary">Wrap the input text in <i> tags for italic formatting.</i></td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#bi">bi (text)</a></td>
+	<td class="summary">Wrap like <b><i>Text</i></b></td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#title">title (text_1, text_2)</a></td>
+	<td class="summary">TODO</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#monospaced">monospaced (text)</a></td>
+	<td class="summary">Wrap the input text in "code" tags for monospaced formatting</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#strike">strike (text)</a></td>
+	<td class="summary">Wrap the input text in <strike> tags for strike-through formatting.</strike></td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#underline">underline (text)</a></td>
+	<td class="summary">Wrap the input text in <u> tags for underline formatting.</u></td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#code">code (lang, text)</a></td>
+	<td class="summary">Generate a "pre" code block with a specified language for code formatting.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#url">url (url, name)</a></td>
+	<td class="summary">Generate an HTML hyperlink</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#user_url">user_url (id, link_name)</a></td>
+	<td class="summary">Generate a Telegram user mention link</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#message_url">message_url (username, id, link_name)</a></td>
+	<td class="summary">Generate a Telegram message URL</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#spoiler">spoiler (text)</a></td>
+	<td class="summary">Wrap the input text in "tg-spoiler" tags for spoiler formatting</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Functions"></a>Functions</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "format"></a>
+    <strong>format (text)</strong>
+    </dt>
+    <dd>
+    Format HTML-unsafe characters as HTML entities
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">text</span>
+         (string) text
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        (string) Formatted text
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "bold"></a>
+    <strong>bold (text)</strong>
+    </dt>
+    <dd>
+    Wrap the input text in <b> tags for bold formatting.</b>
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">text</span>
+         (string) text
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        (string) Formatted text
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "italic"></a>
+    <strong>italic (text)</strong>
+    </dt>
+    <dd>
+    Wrap the input text in <i> tags for italic formatting.</i>
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">text</span>
+         (string) text
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        (string) Formatted text
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "bi"></a>
+    <strong>bi (text)</strong>
+    </dt>
+    <dd>
+    Wrap like <b><i>Text</i></b>
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">text</span>
+         (string) text
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        (string) Formatted text
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "title"></a>
+    <strong>title (text_1, text_2)</strong>
+    </dt>
+    <dd>
+    TODO
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">text_1</span>
+         (string) text
+        </li>
+        <li><span class="parameter">text_2</span>
+         (string) text
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        (string) Formatted text
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "monospaced"></a>
+    <strong>monospaced (text)</strong>
+    </dt>
+    <dd>
+    Wrap the input text in "code" tags for monospaced formatting
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">text</span>
+         (string) text
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        (string) Formatted text
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "strike"></a>
+    <strong>strike (text)</strong>
+    </dt>
+    <dd>
+    Wrap the input text in <strike> tags for strike-through formatting.</strike>
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">text</span>
+         (string) text
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        (string) Formatted text
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "underline"></a>
+    <strong>underline (text)</strong>
+    </dt>
+    <dd>
+    Wrap the input text in <u> tags for underline formatting.</u>
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">text</span>
+         (string) text
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        (string) Formatted text
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "code"></a>
+    <strong>code (lang, text)</strong>
+    </dt>
+    <dd>
+    Generate a "pre" code block with a specified language for code formatting.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">lang</span>
+         (string) Programming language
+        </li>
+        <li><span class="parameter">text</span>
+         (string) Code text
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        (string) Formatted code block
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "url"></a>
+    <strong>url (url, name)</strong>
+    </dt>
+    <dd>
+    Generate an HTML hyperlink
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">url</span>
+         (string) URL
+        </li>
+        <li><span class="parameter">name</span>
+           (string) Link text
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        (string) Formatted hyperlink
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "user_url"></a>
+    <strong>user_url (id, link_name)</strong>
+    </dt>
+    <dd>
+    Generate a Telegram user mention link
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">id</span>
+                (number) User ID
+        </li>
+        <li><span class="parameter">link_name</span>
+         (string) Link text
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        (string) Formatted user mention link
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "message_url"></a>
+    <strong>message_url (username, id, link_name)</strong>
+    </dt>
+    <dd>
+    Generate a Telegram message URL
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">username</span>
+          (string) Username of the user or chat
+        </li>
+        <li><span class="parameter">id</span>
+                (number) Message ID
+        </li>
+        <li><span class="parameter">link_name</span>
+         (string) Link text
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        (string) Formatted message URL
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "spoiler"></a>
+    <strong>spoiler (text)</strong>
+    </dt>
+    <dd>
+    Wrap the input text in "tg-spoiler" tags for spoiler formatting
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">text</span>
+         (string) text
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        (string) Formatted text
+    </ol>
+
+
+
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/lunarmodules/LDoc">LDoc 1.5.0</a></i>
+<i style="float:right;">Last updated 2025-04-29 01:58:02 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>

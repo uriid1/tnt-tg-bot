@@ -2,7 +2,7 @@
 
 ---
 -- See: <a href="https://core.telegram.org/bots/api#chatpermissions">Chat Permissions</a>
--- @table chat_permissions
+-- @table bot.enums.chat_permissions
 -- @field can_send_messages
 -- @field can_send_audios
 -- @field can_send_documents

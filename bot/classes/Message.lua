@@ -1,5 +1,5 @@
 --- Message module for handling message data
--- @module message
+-- @module bot.classes.message
 
 local SuccessfulPayment = require('bot.classes.SuccessfulPayment')
 

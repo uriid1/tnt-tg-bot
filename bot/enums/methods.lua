@@ -1,4 +1,6 @@
 -- See: <a href="https://core.telegram.org/bots/api">All Methods</a>
+---
+-- @table bot.enums.methods
 local methods = {
   --
   -- Getting updates

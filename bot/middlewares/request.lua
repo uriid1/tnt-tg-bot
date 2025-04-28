@@ -1,5 +1,5 @@
 --- Module for making HTTP requests to the Telegram Bot API.
--- @module request
+-- @module bot.middlewares.request
 local request = {}
 
 local json = require('json')

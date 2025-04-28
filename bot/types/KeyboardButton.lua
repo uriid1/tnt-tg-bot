@@ -1,6 +1,7 @@
 --- Keyboard Button
   -- https://core.telegram.org/bots/api#keyboardbutton
---
+  --
+-- @module bot.types.KeyboardButton
 local function KeyboardButton(keyboard, data)
   if keyboard and type(keyboard) ~= 'table' then
     return nil

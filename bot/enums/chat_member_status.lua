@@ -1,7 +1,7 @@
 --- Enum Chat Member Status
 
 ---
--- @table chat_member_status
+-- @table bot.enums.chat_member_status
 -- @field CREATOR
 -- @field ADMINISTRATOR
 -- @field MEMBER

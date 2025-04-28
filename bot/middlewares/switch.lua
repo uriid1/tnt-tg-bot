@@ -1,5 +1,5 @@
 --- Event switching module
--- @module switch
+-- @module bot.middlewares.switch
 local processMessage = require('bot.middlewares.processMessage')
 
 local switch = {}

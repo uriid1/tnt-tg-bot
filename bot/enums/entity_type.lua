@@ -2,7 +2,7 @@
 
 ---
 -- See: <a href="https://core.telegram.org/bots/api#messageentity">Message Entity</a>
--- @table chat_permissions
+-- @table bot.enums.chat_permissions
 -- @field MENTION
 -- @field HASHTAG
 -- @field CASHTAG
