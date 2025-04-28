@@ -90,7 +90,7 @@ function bot.sendImage(data)
   bot.call(methods.sendPhoto, data, { multipart_post = true })
 end
 
---- Handles a command message
+--- Handles a command via text (ctx.message.text)
 --
 -- @param data (table) Message object
 --
@@ -187,6 +187,9 @@ end
   -- @param options.host (string) Host to bind to (default is '0.0.0.0')
   -- @param options.port (number) Port to listen on (default is 9091)
   -- @param options.path (string) Route path ('/' string by default)
+  -- @param options.routes (table) Routes table
+  -- @param options.maintenance_mode (string) Maintenance mode eq 'maint'
+  -- @param options.allowed_updates (array)
 function bot:startWebHook(options)
   local http_server = require('http.server')
   local host = options.host or '0.0.0.0'
@@ -315,7 +318,7 @@ end
   -- @param[opt] options.offset (number) Update offset (default is -1)
   -- @param[opt] options.timeout (number) Polling timeout in seconds (default is 60)
   -- @param[opt] options.max_connections (number) (default is 1)
-  -- @param[opt] options.allowed_updates (table)
+  -- @param[opt] options.allowed_updates (array)
   -- @param[opt] options.api_url (string)
 function bot:startLongPolling(options)
   options = options or {}

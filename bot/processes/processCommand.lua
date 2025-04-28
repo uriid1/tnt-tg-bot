@@ -14,9 +14,7 @@ local function processCommand(ctx)
     command(ctx)
 
     return true
-  end
-
-  if ctx.getEntities then
+  elseif ctx.getEntities then
     local entities = ctx:getEntities()
 
     if entities and entities[1].type == entity_type.BOT_COMMAND then
