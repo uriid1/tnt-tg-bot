@@ -17,17 +17,17 @@ function message:new(ctx, opts)
   local obj = {}
 
   local update_id
-  local message
+  local refMessage
 
   if opts and opts.direct then
-    message = ctx
+    refMessage = ctx
   else
     update_id = ctx.update_id
-    message = ctx.message
+    refMessage = ctx.message
   end
 
   obj.update_id = update_id
-  obj.message = message
+  obj.message = refMessage
 
   if ctx.message then
     if ctx.message.successful_payment then

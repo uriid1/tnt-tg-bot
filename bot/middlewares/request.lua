@@ -75,6 +75,7 @@ function request.send(params)
   end
 
   -- Decode JSON response
+  -- luacheck: ignore data
   local data = json.decode(data.body)
 
   -- Handle error

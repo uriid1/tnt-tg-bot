@@ -226,6 +226,7 @@ function bot:startWebHook(options)
   -- Declaration custom routes
   if options.routes then
     for i = 1, #options.routes do
+      -- luacheck: ignore route
       local route = options.routes[i]
 
       httpd:route({ path = route.path, method = route.method }, route.callback)
