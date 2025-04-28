@@ -1,6 +1,6 @@
 English | [Russian](README.md)
 
-[![luacheck](https://github.com/uriid1/tnt-tg-bot/actions/workflows/luacheck.yml/badge.svg?branch=master&event=push)](https://github.com/uriid1/tnt-tg-bot/actions/workflows/luacheck.yml)
+[![luacheck](https://github.com/uriid1/tnt-tg-bot/actions/workflows/luacheck.yml/badge.svg?branch=master)](https://github.com/uriid1/tnt-tg-bot/actions/workflows/luacheck.yml)
 [![License](https://img.shields.io/badge/License-MIT-brightgreen.svg)](LICENSE)
 
 ## Description
