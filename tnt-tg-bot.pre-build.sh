@@ -37,8 +37,8 @@ install() {
   printf "Install ${C_INSTALL}${1}${C_RESET}...\n"
 }
 
-basic_programs=(tarantool unzip lua git gcc)
-optional_programs=(ldoc luacheck luarocks tt tarantoolctl)
+basic_programs=(tarantool luarocks unzip lua git gcc)
+optional_programs=(ldoc luacheck curl openssl)
 errs=0
 
 for ((i = 0; i < ${#basic_programs[*]}; ++i)); do
@@ -56,54 +56,30 @@ if [ $errs -ge 1 ]; then
   exit 1
 fi
 
-# Проверяем наличие tt или tarantoolctl
-has_tt=false
-has_tarantoolctl=false
-
 for ((i = 0; i < ${#optional_programs[*]}; ++i)); do
   programm="${optional_programs[$i]}"
 
   if [ "$(which -a $programm . 2>/dev/null)" ]; then
     info "${programm} (optional)"
-    
-    if [ "$programm" == "tt" ]; then
-      has_tt=true
-    fi
-    
-    if [ "$programm" == "tarantoolctl" ]; then
-      has_tarantoolctl=true
-    fi
   else
     echo "Warning: ${programm} not found"
   fi
 done
 
-# Определяем, какую команду использовать для установки
-if [ "$has_tt" = true ]; then
-  ROCKS_CMD="tt rocks"
-  info "Using tt for package installation"
-elif [ "$has_tarantoolctl" = true ]; then
-  ROCKS_CMD="tarantoolctl rocks"
-  warning "tt not found, using tarantoolctl instead"
-else
-  error "Neither tt nor tarantoolctl found. Cannot install packages."
-  exit 1
-fi
-
 # Install all rocks
 echo
-install "OpenSSL"
-$ROCKS_CMD install --server=https://luarocks.org luaossl
 install "http"
-$ROCKS_CMD install --server=https://rocks.tarantool.org/ --local http
+luarocks install --local --tree=$PWD/.rocks --server=https://rocks.tarantool.org/ http
 install "lua-multipart-post"
-$ROCKS_CMD install --server=https://luarocks.org lua-multipart-post 1.0-0
+luarocks install --local --tree=$PWD/.rocks --lua-version 5.1 lua-multipart-post 1.0-0
+install "luaosll"
+luarocks install --local --tree=$PWD/.rocks --lua-version 5.1 luaossl
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
     -o | --optional)
       install "pimp"
-      $ROCKS_CMD install --server=https://luarocks.org pimp
+      luarocks install pimp
       shift 1
     ;;
   esac

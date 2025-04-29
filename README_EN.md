@@ -22,10 +22,44 @@ Due to the simple and clear architecture, adding missing functionality is straig
 
 ## Installation
 
-### Pre-build
+### Automated Installation
+1. Install `git`, `curl`, `lua 5.1` and `luarocks`.
+2. (Optional) If Web App support is needed: </br>
+    You’ll need the `luaossl` rock package. </br>
+    To build it, install development headers for `lua 5.1` and `openssl` from your distribution.
+2. Install [tarantool](https://www.tarantool.io/en/download/os-installation)
+3. Run the automatic setup script
 ```bash
 bash tnt-tg-bot.pre-build.sh
 ```
+5. If issues occur, proceed with the manual installation.
+
+> [!NOTE]
+> To successfully build luaossl (OpenSSL bindings), development headers for OpenSSL and Lua 5.1 are required.
+> On Ubuntu, install them with:
+> sudo apt install libssl-dev liblua5.1-0-dev
+> luaossl is required by the module bot/libs/parseInitData.lua, which handles Telegram Mini App initialization data.
+> https://core.telegram.org/bots/webapps#validating-data-received-via-the-mini-app
+
+### Manual Installationc
+1. Install `git`, `curl`, `lua 5.1` and `luarocks`.
+2. Install [tarantool](https://www.tarantool.io/en/download/os-installation)
+3. (Optional) If Web App support is needed: </br>
+    You’ll need the `luaossl` rock package. </br>
+    To build it, install development headers for `lua 5.1` and `openssl` from your distribution.
+4. Install required packages via `luarocks`
+  + **HTTP client/server (required)**
+    ```bash
+    luarocks install --local --tree=$PWD/.rocks --server=https://rocks.tarantool.org/ http
+    ```
+  + **Multipart Post обработчик (required)**
+    ```bash
+    luarocks install --local --tree=$PWD/.rocks --lua-version 5.1 lua-multipart-post 1.0-0
+    ```
+  + **OpenSSL bindings (optional)**
+    ```bash
+    luarocks install --local --tree=$PWD/.rocks --lua-version 5.1 luaossl
+    ```
 
 ## Examples
   + `examples/echo-bot.lua` - Simple echo bot

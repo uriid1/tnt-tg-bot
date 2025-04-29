@@ -6,6 +6,9 @@
 --- @module bot
 local bot = { _version = '1.0.0' }
 
+package.path = package.path .. ';.rocks/share/lua/5.1/?.lua'
+package.cpath = package.cpath .. ';.rocks/lib/lua/5.1/?.so'
+
 local log = require('log')
 local fio = require('fio')
 local json = require('json')
