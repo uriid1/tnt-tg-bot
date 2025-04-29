@@ -35,9 +35,8 @@ bash tnt-tg-bot.pre-build.sh
 5. If issues occur, proceed with the manual installation.
 
 > [!NOTE]
-> To successfully build luaossl (OpenSSL bindings), development headers for OpenSSL and Lua 5.1 are required.
-> On Ubuntu, install them with:
-> sudo apt install libssl-dev liblua5.1-0-dev
+> To successfully build luaossl (OpenSSL bindings), development headers for `OpenSSL` and `Lua 5.1` are required. </br>
+> On Ubuntu, install them with: `sudo apt install libssl-dev liblua5.1-0-dev` </br>
 > luaossl is required by the module bot/libs/parseInitData.lua, which handles Telegram Mini App initialization data.
 > https://core.telegram.org/bots/webapps#validating-data-received-via-the-mini-app
 
