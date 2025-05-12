@@ -46,10 +46,10 @@ function message:getUpdateId()
   end
 end
 
---- Gets the message data
--- @return (table) The message data
+--- Gets the self data
+-- @return (table) The self data
 function message:getMessage()
-  return self.message
+  return self
 end
 
 --- Gets the arguments from the message text.

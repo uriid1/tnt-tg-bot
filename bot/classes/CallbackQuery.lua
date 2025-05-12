@@ -15,13 +15,118 @@ function callback:new(ctx)
   local obj = {}
 
   obj.update_id = ctx.update_id
-  obj.message = Message(ctx.callback_query.message, { direct = true })
 
+  local t_message = Message(ctx.callback_query.message, { direct = true })
+
+  obj.message = t_message.message
   obj.callback_query = ctx.callback_query
   obj.is_callback_query = true
 
   return setmetatable(obj, self)
 end
+
+-- START DEPRECATED BLOCK
+--
+-- Этот блок, стоило бы не делать, так как -
+-- Но оставим ради поддержки старой версии библиотеки.
+--
+--- Gets the chat  from the associated message.
+-- @return (number) The chat.
+function callback:getChat()
+  if self.message and self.message.chat then
+    return self.message.chat
+  end
+end
+
+--- Gets the chat ID from the associated message.
+-- @return (number) The chat ID.
+function callback:getChatId()
+  if self.message and self.message.chat then
+    return self.message.chat.id
+  end
+end
+
+--- Gets the chat type from the associated message.
+-- @return (string) The chat type.
+function callback:getChatType()
+  if self.message and self.message.chat then
+    return self.message.chat.type
+  end
+end
+
+--- Gets the text from the associated message.
+-- @return (string) The message text.
+function callback:getText()
+  if self.message and self.message.text then
+    return self.message.text
+  end
+end
+
+--- Gets the message ID from the associated message.
+-- @return (number) The message ID.
+function callback:getMessageId()
+  if self.message and self.message.message_id then
+    return self.message.message_id
+  end
+end
+
+--- Gets the user data from the associated message.
+-- @return (table) The user data.
+function callback:getUserMessageFrom()
+  if self.message and self.message.from then
+    return self.message.from
+  end
+end
+
+--- Gets the user who replied to the associated message.
+-- @return (table) The user data of the reply.
+function callback:getUserReply()
+  if self.message and self.message.reply_to_message then
+    return self.message.reply_to_message.from
+  end
+end
+
+--- get reply to message
+-- @return (table)
+function callback:getReplyToMessage()
+  if self.message and self.message.reply_to_message then
+    return self.message.reply_to_message
+  end
+end
+
+--- Checks if the user who sent the callback query is the same as the one who replied to the associated message.
+-- @return (boolean) True if it's the same user, false otherwise.
+function callback:isSameUser()
+  if self.callback_query and self.callback_query.from and
+    self.message and self.message.reply_to_message
+  then
+    return self.callback_query.from.id == self.message.reply_to_message.from.id
+  end
+end
+
+--- Gets the inline keyboard
+-- @return (table) inline keyboard object
+function callback:getInlineKeyboard()
+  if self.message
+    and self.message.reply_markup
+    and self.message.reply_markup.inline_keyboard
+  then
+    return self.message.reply_markup.inline_keyboard
+  end
+end
+
+--- Gets the sender chat
+-- @return (table) Sender chat object
+function callback:getSenderChat()
+  if self.message
+    and self.message.reply_to_message
+    and self.message.reply_to_message.sender_chat
+  then
+    return self.message.reply_to_message.sender_chat
+  end
+end
+--
+-- END DEPRECATED BLOCK
 
 --- Gets the update ID
 -- @return (number) The update ID
