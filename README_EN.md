@@ -13,8 +13,8 @@ tnt-tg-bot is a library written in Lua for the Tarantool platform that provides 
   + Built-in support for Telegram Stars payments
   + Built-in methods for easy command handling, including callbacks
   + You name your own events, with only `bot.events.onGetUpdate(ctx)` available out of the box
-  + Easy Web App integration (example not provided)
-  + LDoc support (partial)
+  + Easy Web App integration
+  + LDoc support
   + More than 10 examples with more to come
   + Easy integration with Tarantool
 
@@ -101,7 +101,7 @@ BOT_TOKEN="1348551682:AAFK3iZwBqEHwSrPKyi-hKyAtRgUwXrTiWW" tarantool examples/ec
 | bot.sendImage | Simplified image sending | `examples/send-image-2.lua`  |
 | bot.Command | Minimal command handler | `bot.Command(ctx)` |
 | bot.CallbackCommand | Minimal callback command handler | `bot.CallbackCommand(ctx)`
-| bot:startWebHook | Start bot on remote server | (example coming later) |
+| bot:startWebHook | Start bot on remote server | Example `examples/echo-bot-webhook.lua` |
 | bot:startLongPolling | Start bot in long polling mode | Any example from `examples/*` |
 
 For argument details, see ldoc - `doc/index.html`

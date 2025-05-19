@@ -3,7 +3,10 @@
 set -e
 source "$(dirname "$0")/_conf.sh"
 
-curl --tlsv1.2 -v -k -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache" -d '{
+curl --tlsv1.2 -v -k -X POST \
+  -H "Content-Type: application/json" \
+  -H "Cache-Control: no-cache" \
+  -d '{
   "update_id":10000,
   "message":{
     "date":1441645532,

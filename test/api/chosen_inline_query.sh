@@ -3,7 +3,10 @@
 set -e
 source "$(dirname "$0")/_conf.sh"
  
-curl -v -k -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache"  -d '{
+curl -v -k -X POST \
+  -H "Content-Type: application/json" \
+  -H "Cache-Control: no-cache"  \
+  -d '{
   "update_id":10000,
   "chosen_inline_result":{
     "result_id": "12",

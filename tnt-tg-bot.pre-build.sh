@@ -66,12 +66,16 @@ for ((i = 0; i < ${#optional_programs[*]}; ++i)); do
   fi
 done
 
+#
 # Install all rocks
+#
 echo
 install "http"
 luarocks install --local --tree=$PWD/.rocks --server=https://rocks.tarantool.org/ http
+
 install "lua-multipart-post"
 luarocks install --local --tree=$PWD/.rocks --lua-version 5.1 lua-multipart-post 1.0-0
+
 install "luaosll"
 luarocks install --local --tree=$PWD/.rocks --lua-version 5.1 luaossl
 
