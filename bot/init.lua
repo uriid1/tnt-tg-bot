@@ -4,7 +4,7 @@
 --- Licence MIT
 -----------------------------------
 --- @module bot
-local bot = { _version = '1.0.0' }
+local bot = { _version = '1.0.2' }
 
 package.path = package.path .. ';.rocks/share/lua/5.1/?.lua'
 package.cpath = package.cpath .. ';.rocks/lib/lua/5.1/?.so'
