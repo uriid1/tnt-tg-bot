@@ -2,6 +2,8 @@
   -- https://core.telegram.org/bots/api#inlinekeyboardbutton
   --
 -- @module bot.types.inlineKeyboardButton
+local log = require('log')
+
 local function inlineKeyboardButton(keyboard, data)
   if type(data) ~= 'table' then
     return nil
@@ -25,9 +27,13 @@ local function inlineKeyboardButton(keyboard, data)
 
   -- Optional. Data to be sent in a callback query to the bot when button is pressed, 1-64 bytes
   if data.callback_data then
-    button.callback_data = tostring(data.callback_data):sub(1, 64)
+    button.callback_data = tostring(data.callback_data)
   elseif data.callback then
-    button.callback_data = tostring(data.callback):sub(1, 64)
+    button.callback_data = tostring(data.callback)
+  end
+
+  if button.callback_data and string.len(button.callback_data) > 64 then
+    log.error('Callback data > 64 bytes, data: %s', button.callback_data)
   end
 
   -- Optional. Description of the Web App that will be launched when the user presses the button
