@@ -14,11 +14,11 @@ bot:cfg({
 
 -- Command: get_image
 bot.commands['/get_image'] = function(ctx)
-  -- https://core.telegram.org/bots/api#sendphoto
+  -- @see https://core.telegram.org/bots/api#sendphoto
   local _, err = bot.call(methods.sendPhoto, {
     photo = InputFile('examples/img/image.jpg'),
     caption = 'Image from disk TEST-1!',
-    chat_id = ctx:getChatId(),
+    chat_id = ctx:getChatId()
   }, { multipart_post = true })
 
   if err then

@@ -20,7 +20,7 @@ local function makeKeyboard()
     {
       { text = 'Get Orange', callback = 'cb_get_fruit orange' },
       { text = 'Get lemon', callback = 'cb_get_fruit lemon' },
-      { text = 'Get Melon', callback = 'cb_get_fruit melon' },
+      { text = 'Get Melon', callback = 'cb_get_fruit melon' }
     }
   })
 

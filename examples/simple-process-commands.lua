@@ -55,7 +55,7 @@ bot.commands['cb_send_apple'] = function(ctx)
 
   bot.call(methods.sendMessage, {
     text = '🍎',
-    chat_id = chatId,
+    chat_id = chatId
   })
 end
 

@@ -37,17 +37,17 @@ data = {
 
 -- Command: get_image
 bot.commands['/get_media_group'] = function(ctx)
-  -- https://core.telegram.org/bots/api#sendmediagroup
+  -- @see https://core.telegram.org/bots/api#sendmediagroup
   local data = InputMedia({
     InputMediaPhoto({
       media = 'attach://examples/img/image.jpg',
-      caption = 'Photo from disk',
+      caption = 'Photo from disk'
     }),
 
     InputMediaPhoto({
       media = 'https://raw.githubusercontent.com/uriid1/scrfmp/main/perfect-arkanoid/arkanoid.png',
-      caption = 'Photo from url',
-    }),
+      caption = 'Photo from url'
+    })
   })
 
   data.chat_id = ctx:getChatId()

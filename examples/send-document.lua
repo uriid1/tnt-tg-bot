@@ -14,11 +14,11 @@ bot:cfg({
 
 -- Command: get_document
 bot.commands['/get_document'] = function(ctx)
-  -- https://core.telegram.org/bots/api#senddocument
+  --@see https://core.telegram.org/bots/api#senddocument
   local _, err = bot.call(methods.sendDocument, {
     document = InputFile('examples/img/image.jpg'),
     caption = 'Ducument from disk',
-    chat_id = ctx:getChatId(),
+    chat_id = ctx:getChatId()
   }, { multipart_post = true })
 
   if err then

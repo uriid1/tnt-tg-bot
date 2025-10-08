@@ -14,7 +14,7 @@ bot:cfg({
 
 -- Command: get_animation
 bot.commands['/get_animation'] = function(ctx)
-  -- https://core.telegram.org/bots/api#sendanimation
+  -- @see https://core.telegram.org/bots/api#sendanimation
   local _, err = bot.call(methods.sendAnimation, {
     animation = InputFile('examples/img/animation.gif'),
     caption = 'Animation from disk',

@@ -26,7 +26,7 @@ bot.commands['/send_reply_buttons'] = function(ctx)
         { { text = 'Orange 🍊' } },
       },
 
-      one_time_keyboard = true,
+      one_time_keyboard = true
     })
   })
 

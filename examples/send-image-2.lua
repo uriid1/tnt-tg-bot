@@ -15,7 +15,7 @@ bot.commands['/get_image'] = function(ctx)
   local _, err = bot.sendImage({
     filepath = 'examples/img/image.jpg',
     caption = 'Image from disk!',
-    chat_id = ctx:getChatId(),
+    chat_id = ctx:getChatId()
   })
 
   if err then
