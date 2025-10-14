@@ -2,7 +2,6 @@
 --
 local bot = require('bot')
 local parse_mode = require('bot.enums.parse_mode')
-local methods = require('bot.enums.methods')
 local processCommand = require('bot.processes.processCommand')
 local inlineKeyboard = require('bot.middlewares.inlineKeyboard')
 
@@ -48,19 +47,19 @@ bot.commands['cb_get_fruit'] = function(ctx)
 
   local callbackId = ctx:getQueryId()
 
-  bot.call(methods.answerCallbackQuery, {
+  bot:answerCallbackQuery {
     text = emoji,
     callback_query_id = callbackId
-  })
+  }
 end
 
 -- Command: send_callback
 bot.commands['/send_callback'] = function(ctx)
-  bot.call(methods.sendMessage, {
+  bot:sendMessage {
     text = 'Test Callback Button',
     chat_id = ctx:getChatId(),
     reply_markup = makeKeyboard()
-  })
+  }
 end
 
 function bot.events.onGetUpdate(ctx)

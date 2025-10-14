@@ -3,7 +3,6 @@
 local log = require('log')
 local bot = require('bot')
 local parse_mode = require('bot.enums.parse_mode')
-local methods = require('bot.enums.methods')
 local processCommand = require('bot.processes.processCommand')
 local hdec = require('bot.ext.hdec')
 
@@ -17,7 +16,7 @@ bot.commands['/buy'] = function(ctx)
   --
   -- https://core.telegram.org/bots/api#sendinvoice
   --
-  bot.call(methods.sendInvoice, {
+  bot:sendInvoice {
     title = '🍎 Awesome fuit! 🍎',
     description = 'You are buying to buy 1 apple.',
     chat_id = ctx:getChatId(),
@@ -26,7 +25,7 @@ bot.commands['/buy'] = function(ctx)
     prices = {
       { label = 'apple',  amount = 1 }
     }
-  })
+  }
 end
 
 -- Command: refund
@@ -39,10 +38,10 @@ bot.commands['/refund'] = function(ctx)
   local userId = arguments[2]
   local paymentId = arguments[3]
 
-  local _, err = bot.call(methods.refundStarPayment, {
+  local _, err = bot:refundStarPayment {
     user_id = tonumber(userId),
     telegram_payment_charge_id = paymentId
-  })
+  }
 
   if err then
     log.error(err)
@@ -56,10 +55,10 @@ function bot.events.preCheckoutQuery(ctx)
   -- local totalAmount = ctx:getTotalAmount()
   local id = ctx:getId()
 
-  local _, err = bot.call(methods.answerPreCheckoutQuery, {
+  local _, err = bot:answerPreCheckoutQuery {
     pre_checkout_query_id = id,
     ok = true
-  })
+  }
 
   if err then
     log.error(err)
@@ -72,14 +71,14 @@ function bot.events.successfulPayment(ctx)
   local totalAmount = payment:getTotalAmount()
   local PaymentChargeId = payment.telegram_payment_charge_id
 
-  local _, err = bot.call(methods.sendMessage, {
+  local _, err = bot:sendMessage {
     chat_id = ctx:getChatId(),
     text = 'Successful Payment!'
     .. '\n' .. 'Date: ' .. hdec.mono(os.date())
     .. '\n' .. 'Payload: ' .. hdec.mono(invoicePayload)
     .. '\n' .. 'Total amount: ' .. hdec.mono(totalAmount)
     .. '\n' .. 'Payment ID: ' .. hdec.mono(PaymentChargeId)
-  })
+  }
 
   if err then
     log.error(err)

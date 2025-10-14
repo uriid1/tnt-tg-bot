@@ -11,7 +11,7 @@ local function inputFile(filename)
   local fd = fio.open(filename, 'O_RDONLY')
 
   if fd == nil then
-    log.error('Error opening file: '..filename)
+    log.error('Cannot open file: ' .. filename)
 
     return nil
   end

@@ -18,6 +18,34 @@ local request = require('bot.middlewares.request')
 local parse_mode = require('bot.enums.parse_mode')
 local InputFile = require('bot.types.InputFile')
 local methods = require('bot.enums.methods')
+local colors = require('bot.ext.colors')
+
+local c_pref = {}
+
+c_pref.time = function ()
+  return os.date('[%X]')
+end
+
+c_pref.green = function (text)
+  if colors.xterm256color == false then
+    return text
+  end
+  return colors.brightGreen .. text .. colors.reset
+end
+
+c_pref.red = function (text)
+  if colors.xterm256color == false then
+    return text
+  end
+  return colors.brightRed .. text .. colors.reset
+end
+
+c_pref.command = function (text)
+  if colors.xterm256color == false then
+    return text
+  end
+  return colors.brightBlue .. text .. colors.reset
+end
 
 --- Initializes the bot with options
 --
@@ -39,6 +67,7 @@ function bot:cfg(options)
   self.api_url = options.api_url or 'https://api.telegram.org/bot'
   self.parse_mode = options.parse_mode or parse_mode.HTML
   self.username = options.username
+  self.methods = methods
 
   _G.bot = bot
 
@@ -77,6 +106,14 @@ function bot.call(method, options, opts)
   return request.send(params)
 end
 
+--- Wrap mehods
+--
+for method,_ in pairs(methods) do
+  bot[method] = function (_, options, opts)
+    return bot.call(method, options, opts)
+  end
+end
+
 --- A simplified version of the sendPhoto method
 --
 -- @param data (table) Method options
@@ -113,7 +150,12 @@ function bot.Command(data)
   end
 
   data.__command = command
-  log.info('[command] '..command)
+
+  log.info(table.concat({
+    c_pref.time(),
+    c_pref.command('[Command]'),
+    command
+  }, ' '))
 
   return bot.commands[command], username
 end
@@ -130,7 +172,12 @@ function bot.CallbackCommand(data)
   end
 
   data.__command = command
-  log.info('[callback] '..command)
+
+  log.info(table.concat({
+    c_pref.time(),
+    c_pref.command('[Callback]'),
+    command
+  }, ' '))
 
   return bot.commands[command]
 end
@@ -148,7 +195,11 @@ function bot.send_certificate(options)
   if type(options) ~= 'table' or
     type(options.bot_url) ~= 'string'
   then
-    log.error('Invalid options to start a webhook')
+    log.error(table.concat({
+      c_pref.time(),
+      c_pref.red('[WebHook]'),
+      'Invalid options'
+    }, ' '))
 
     return
   end
@@ -157,7 +208,11 @@ function bot.send_certificate(options)
   local data
   if options.certificate then
     if not fio.path.exists(options.certificate) then
-      log.error('Certificate not found: '..options.certificate)
+      log.error(table.concat({
+        c_pref.time(),
+        c_pref.red('[WebHook]'),
+        'Certificate not found: '..options.certificate
+      }, ' '))
 
       return
     end
@@ -238,13 +293,22 @@ function bot:startWebHook(options)
 
   httpd:start()
 
-  log.info('[Success] HTTP Server listening at %s:%d', host, port)
+  log.info(table.concat({
+    c_pref.time(),
+    c_pref.green('[HTTP Server]'),
+    'listening', host..':'..port
+  }, ' '))
 
   if options.maintenance_mode ~= 'maint' then
     local res = bot.send_certificate(options)
 
     if res and not res.ok then
-      log.error('[%s] description: %s', res.ok, res.description)
+      log.error(table.concat({
+        c_pref.time(),
+        c_pref.red('[Long Polling]'),
+        'Code', res.error_code,
+        'Description', res.description
+      }, ' '))
 
       os.exit(1)
     end
@@ -265,18 +329,18 @@ getUpdates = function(opts)
 
   local url
   if allowed_updates then
-      url = string.format(api_url..'%s/getUpdates?offset=%d&timeout=%d&allowed_updates=%s',
-      token,
-      offset,
-      timeout,
-      json.encode(allowed_updates)
-    )
+      url = string.format(
+        api_url..'%s/getUpdates?offset=%d&timeout=%d&allowed_updates=%s',
+        token,
+        offset,
+        timeout,
+        json.encode(allowed_updates))
   else
-    url = string.format(api_url..'%s/getUpdates?offset=%d&timeout=%d',
+    url = string.format(
+      api_url..'%s/getUpdates?offset=%d&timeout=%d',
       token,
       offset,
-      timeout
-    )
+      timeout)
   end
 
   local res = client:request('GET', url)
@@ -285,12 +349,21 @@ getUpdates = function(opts)
   -- First start
   if not first_start then
     if not body.ok then
-      log.error('Error code: %s | Description: %s', body.error_code, body.description)
+      log.error(table.concat({
+        c_pref.time(),
+        c_pref.red('[Long Polling]'),
+        'Code', body.error_code,
+        'Description', body.description
+      }, ' '))
 
       return
     end
 
-    log.info('Long polling work')
+    log.info(table.concat({
+      c_pref.time(),
+      c_pref.green('[Long Polling]'),
+      'Received updates'
+    }, ' '))
   end
 
   if body.ok and body.result then
@@ -305,7 +378,9 @@ getUpdates = function(opts)
     end
   else
     -- Debug
-    log.error('Long polling error')
+    log.error({
+      err = body.error
+    })
   end
 
   -- Get new updates
@@ -344,7 +419,11 @@ function bot:startLongPolling(options)
     polling_timeout = options.timeout or 60
   end
 
-  log.info('[Success] Getting Updates')
+  log.info(table.concat({
+      c_pref.time(),
+      c_pref.green('[Long Polling]'),
+      'Running'
+    }, ' '))
 
   getUpdates({
     fisrt_start = false,

@@ -61,6 +61,7 @@ bash tnt-tg-bot.pre-build.sh
     ```
 ## Примеры
   + `examples/echo-bot.lua` - Простой эхо-бот
+  + `examples/echo-bot-2.lua` - Ещё более простой эхо-бот 
   + `examples/ping-pong.lua` - Реакция на команду /ping
   + `examples/send-animation.lua` - Отправка gif по команде /get_animation
   + `examples/send-document.lua` - Отправка документа по команде /get_document
