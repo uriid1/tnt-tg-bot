@@ -37,7 +37,7 @@ install() {
   printf "Install ${C_INSTALL}${1}${C_RESET}...\n"
 }
 
-basic_programs=(tarantool luarocks unzip lua git gcc)
+basic_programs=(tarantool tt luarocks unzip lua git gcc)
 optional_programs=(ldoc luacheck curl openssl)
 errs=0
 
@@ -71,7 +71,7 @@ done
 #
 echo
 install "http"
-luarocks install --local --tree=$PWD/.rocks --server=https://rocks.tarantool.org/ http
+tt rocks install http
 
 install "lua-multipart-post"
 luarocks install --local --tree=$PWD/.rocks --lua-version 5.1 lua-multipart-post 1.0-0
