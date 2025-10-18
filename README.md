@@ -4,27 +4,23 @@ Russian | [English](README_EN.md)</br>
 [![License](https://img.shields.io/badge/License-MIT-brightgreen.svg)](LICENSE)
 
 ## Описание
-tnt-tg-bot - это библиотека, написанная на Lua для платформы Tarantool, которая предоставляет минималистичный интерфейс для работы с Telegram Bot API.
+tnt-tg-bot - это библиотека, написанная на Lua для платформы Tarantool, которая предоставляет интерфейсы для работы с Telegram Bot API.
 
 ## Особенности
-  + Практически полная поддержка Telegram Bot API
-  + Простой интерфейс
+  + Простата и ясность интерфейсов
   + Асинхронная обработка запросов
   + Встроенная поддержка работы с платежами в Telegram Stars
-  + Встроенные методы для простой обработки команд, в том числе callback
+  + Встроенные методы для обработки команд, в том числе callback
   + Вы сами даёте названия событиям, из коробки у вас только - `bot.events.onGetUpdate(ctx)`
-  + Простая работа с Web App (в будущем будет пример)
-  + Базовая поддержка LDoc
-  + Больше 10-ти примеров и они будут пополняться
-  + Легкая интеграция с Tarantool
-
-Из-за простой и понятной архитектуры, отсутствующий функционал добавлять несложно.
+  + Простая работа с WebApp
+  + Поддержка LDoc
+  + Большое колличество примеров
 
 ## Установка
 
 ### Автоматическая
 1. Установите `git`, `curl`, `lua 5.1` и `luarocks`.
-2. (опционально) если нужна работа с Web App: </br>
+2. (опционально) если нужна работа с WebApp: </br>
     Потребуется установить rock пакет `luaossl`, для него в вашем дистрибутиве - </br>
     установите заголовочные файлы для `lua 5.1` и `openssl`.
 2. Установите [tarantool](https://www.tarantool.io/ru/download/os-installation)
@@ -43,7 +39,7 @@ bash tnt-tg-bot.pre-build.sh
 ### Ручная
 1. Установите `git`, `curl`, `lua 5.1` и `luarocks`.
 2. Установите [tarantool](https://www.tarantool.io/ru/download/os-installation)
-3. (опционально) если нужна работа с Web App: </br>
+3. (опционально) если нужна работа с WebApp: </br>
     Потребуется установить rock пакет `luaossl`, для него в вашем дистрибутиве - </br>
     установите заголовочные файлы для `lua 5.1` и `openssl`.
 4. Установка необходимых пакетов с помощью `luarocks`
@@ -60,20 +56,24 @@ bash tnt-tg-bot.pre-build.sh
     luarocks install --local --tree=$PWD/.rocks --lua-version 5.1 luaossl
     ```
 ## Примеры
-  + `examples/echo-bot.lua` - Простой эхо-бот
-  + `examples/echo-bot-2.lua` - Ещё более простой эхо-бот 
+  +  [Mini Shop](examples/mini-shop) - Пример минимального проекта, показано как лучше всего структурировать проект
+  + [Star payments](examples/stars-payment) - Пример обработки платежей в звездах (покупка, возврат)
+  + `examples/echo-bot-webhook.lua` - Эхо-бот через WebHook
+  + `examples/echo-bot.lua` - Эхо-бот (старый API)
+  + `examples/echo-bot-2.lua` - Эхо-бот (новый API) 
   + `examples/ping-pong.lua` - Реакция на команду /ping
   + `examples/send-animation.lua` - Отправка gif по команде /get_animation
   + `examples/send-document.lua` - Отправка документа по команде /get_document
   + `examples/send-image.lua` - Отправка изображения по команде /get_image
   + `examples/send-image-2.lua` - Упрощенный пример отправки изображения через `bot.sendImage`
   + `examples/send-media-group.lua` - Отправка группы медиа-файлов
-  + `examples/simple-callback.lua` - Пример обработки callback - /send_callback
-  + `examples/simple-callback-2.lua` - Упрощенный пример обработки callback команд
+  + `examples/simple-callback.lua` - Пример обработки callback - /send_callback (старый API)
+  + `examples/simple-callback-2.lua` - Упрощенный пример обработки callback команд (новый API)
   + `examples/simple-process-commands.lua` - Пример простого процессинга команд
   + `examples/routes-example/init.lua` - Пример работы ручек в боте
-  + `examples/stars-payment/init.lua` - Пример обработки платежей в звездах
-  + `examples/stars-payment/echo-bot-webhook.lua` - Простой эхо бот через webhook
+
+> [!NOTE]
+> Рекомендуется использовать только новый API
 
 ### Запуск примера
 `BOT_TOKEN` - токен вашего бота
@@ -92,8 +92,7 @@ BOT_TOKEN="1348551682:AAFK3iZwBqEHwSrPKyi-hKyAtRgUwXrTiWW" tarantool examples/ec
   + `bot/ext` - Встроенные экстеншины
 
 ## Интерфейс библиотеки
-
-| Метод/Свойство | Описание | Пример использования |
+| Метод | Описание | Пример использования |
 |---------------|---------|---------------------|
 | bot:cfg | Инициализация настроек | `bot:cfg { token = "123468:foobarBAZ" }` |
 | bot.call | Выполнение запроса к Telegram API | `bot.call('sendMessage', {chat_id = 123, text = 'Привет!'})` |
@@ -104,6 +103,7 @@ BOT_TOKEN="1348551682:AAFK3iZwBqEHwSrPKyi-hKyAtRgUwXrTiWW" tarantool examples/ec
 | bot.CallbackCommand | Минимальный обработчик callback команд | `bot.CallbackCommand(ctx)`
 | bot:startWebHook | Запуск бота на удаленном сервере | Пример `examples/echo-bot-webhook.lua` |
 | bot:startLongPolling | Запуск бота в режиме long polling | Любой пример из `examples/*` |
+| bot:debugRoutes | Отладка ручек в режиме longPolling |  |
 
 По наличию аргументов см. ldoc - `doc/index.html`
 

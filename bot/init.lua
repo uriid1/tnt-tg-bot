@@ -240,6 +240,50 @@ function bot.send_certificate(options)
   }, { multipart_post = true })
 end
 
+--- Debug routes while Long Polling is running
+-- @param options (table) Options table
+  -- @param options.host (string) Host to bind to (default is '0.0.0.0')
+  -- @param options.port (number) Port to listen on (default is 9091)
+  -- @param options.routes (table) Routes table
+function bot:debugRoutes(options)
+  local http_server = require('http.server')
+  local host = options.host or '0.0.0.0'
+  local port = options.port or 9091
+  local httpd = http_server.new(host, port)
+
+  -- Declaration custom routes
+  if options.routes then
+    for i = 1, #options.routes do
+      local route = options.routes[i]
+
+      httpd:route(
+        {
+          path = route.path,
+          method = route.method
+        },
+        route.callback
+      )
+    end
+  end
+
+  httpd:start()
+
+  if not self.debug then
+    self.debug =  {}
+  end
+
+  self.debug = {
+    host = host,
+    port = port
+  }
+
+  log.info(table.concat({
+    c_pref.time(),
+    c_pref.green('[HTTP Server]'),
+    'listening', host..':'..port
+  }, ' '))
+end
+
 --- Start the webhook
 --
 -- @param options (table) Options table
