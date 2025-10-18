@@ -133,12 +133,12 @@ end
 
 --- Handles a command via text (ctx.message.text)
 --
--- @param data (table) Message object
+-- @param ctx (table) Message object
 --
 -- @return Command func
 -- @return Bot username
-function bot.Command(data)
-  local command = data:getArguments({ count = 1 })[1]
+function bot.Command(ctx)
+  local command = ctx:getArguments({ count = 1 })[1]
 
   local username
   if command:find('@') then
@@ -149,7 +149,7 @@ function bot.Command(data)
     return nil, nil
   end
 
-  data.__command = command
+  ctx.__command = command
 
   log.info(table.concat({
     c_pref.time(),
@@ -162,16 +162,16 @@ end
 
 --- Handles a callback query
 --
--- @param data (table) Callback query object
+-- @param ctx (table) Callback query object
 --
 -- @return Command func
-function bot.CallbackCommand(data)
-  local command = data:getArguments({ count = 1 })[1]
+function bot.CallbackCommand(ctx)
+  local command = ctx:getArguments({ count = 1 })[1]
   if not bot.commands[command] then
     return
   end
 
-  data.__command = command
+  ctx.__command = command
 
   log.info(table.concat({
     c_pref.time(),
