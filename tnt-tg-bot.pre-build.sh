@@ -77,7 +77,7 @@ install "lua-multipart-post"
 luarocks install --local --tree=$PWD/.rocks --lua-version 5.1 lua-multipart-post 1.0-0
 
 install "luaosll"
-luarocks install --local --tree=$PWD/.rocks --lua-version 5.1 luaossl
+CC="gcc -std=gnu99" luarocks install --local --tree=$PWD/.rocks --lua-version 5.1 luaossl
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
