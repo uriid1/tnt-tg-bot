@@ -11,8 +11,8 @@ echo "
     | |   | )  \  |   | |        | |   | (___) |  | )___) )| (___) |   | |
     )_(   |/    )_)   )_(        )_(   (_______)  |/ \___/ (_______)   )_(
 
- BY URIID1
- GITHUB github.com/uriid1/tnt-tg-bot
+ By uriid1
+ GitHub github.com/uriid1/tnt-tg-bot
 "
 
 readonly C_RESET="\033[0m"
