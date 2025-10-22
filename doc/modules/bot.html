@@ -53,8 +53,10 @@
   <li><a href="../modules/enums.errors.html">enums.errors</a></li>
   <li><a href="../modules/enums.parse_mode.html">enums.parse_mode</a></li>
   <li><a href="../modules/bot.ext.fstring.html">bot.ext.fstring</a></li>
-  <li><a href="../modules/bot.ext.extensions.html_formatter.html">bot.ext.extensions.html_formatter</a></li>
+  <li><a href="../modules/bot.ext.hdec.html">bot.ext.hdec</a></li>
+  <li><a href="../modules/bot.ext.sql.html">bot.ext.sql</a></li>
   <li><strong>bot</strong></li>
+  <li><a href="../modules/bot.libs.inputFile.html">bot.libs.inputFile</a></li>
   <li><a href="../modules/bot.libs.parseInitData.html">bot.libs.parseInitData</a></li>
   <li><a href="../modules/bot.middlewares.inlineKeyoard.html">bot.middlewares.inlineKeyoard</a></li>
   <li><a href="../modules/bot.middlewares.processMessage.html">bot.middlewares.processMessage</a></li>
@@ -66,7 +68,6 @@
   <li><a href="../modules/bot.types.ForceReply.html">bot.types.ForceReply</a></li>
   <li><a href="../modules/bot.types.inlineKeyboardButton.html">bot.types.inlineKeyboardButton</a></li>
   <li><a href="../modules/bot.types.InlineKeyboardMarkup.html">bot.types.InlineKeyboardMarkup</a></li>
-  <li><a href="../modules/bot.types.inputFile.html">bot.types.inputFile</a></li>
   <li><a href="../modules/bot.types.InputMedia.html">bot.types.InputMedia</a></li>
   <li><a href="../modules/bot.types.InputMediaAnimation.html">bot.types.InputMediaAnimation</a></li>
   <li><a href="../modules/bot.types.InputMediaAudio.html">bot.types.InputMediaAudio</a></li>
@@ -97,7 +98,7 @@
 	<td class="summary">Initializes the bot with options</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#call">call (method, options, opts)</a></td>
+	<td class="name" nowrap><a href="#call">call (method, fields, opts)</a></td>
 	<td class="summary">Executes a Telegram Bot API method.</td>
 	</tr>
 	<tr>
@@ -105,16 +106,20 @@
 	<td class="summary">A simplified version of the sendPhoto method</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Command">Command (data)</a></td>
+	<td class="name" nowrap><a href="#Command">Command (ctx)</a></td>
 	<td class="summary">Handles a command via text (ctx.message.text)</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#CallbackCommand">CallbackCommand (data)</a></td>
+	<td class="name" nowrap><a href="#CallbackCommand">CallbackCommand (ctx)</a></td>
 	<td class="summary">Handles a callback query</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#send_certificate">send_certificate (options)</a></td>
 	<td class="summary">Sends a certificate for webhook setup</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#debugRoutes">debugRoutes (options)</a></td>
+	<td class="summary">Debug routes while Long Polling is running</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#startWebHook">startWebHook (options)</a></td>
@@ -180,7 +185,7 @@
 </dd>
     <dt>
     <a name = "call"></a>
-    <strong>call (method, options, opts)</strong>
+    <strong>call (method, fields, opts)</strong>
     </dt>
     <dd>
     Executes a Telegram Bot API method.
@@ -192,8 +197,8 @@
         <li><span class="parameter">method</span>
          (string) TG API method to execute
         </li>
-        <li><span class="parameter">options</span>
-         (table) Method options
+        <li><span class="parameter">fields</span>
+         (table) Method fields
         </li>
         <li><span class="parameter">opts</span> (table) Options
         <ul>
@@ -252,7 +257,7 @@
 </dd>
     <dt>
     <a name = "Command"></a>
-    <strong>Command (data)</strong>
+    <strong>Command (ctx)</strong>
     </dt>
     <dd>
     Handles a command via text (ctx.message.text)
@@ -260,7 +265,7 @@
 
     <h3>Parameters:</h3>
     <ul>
-        <li><span class="parameter">data</span>
+        <li><span class="parameter">ctx</span>
          (table) Message object
         </li>
     </ul>
@@ -279,7 +284,7 @@
 </dd>
     <dt>
     <a name = "CallbackCommand"></a>
-    <strong>CallbackCommand (data)</strong>
+    <strong>CallbackCommand (ctx)</strong>
     </dt>
     <dd>
     Handles a callback query
@@ -287,7 +292,7 @@
 
     <h3>Parameters:</h3>
     <ul>
-        <li><span class="parameter">data</span>
+        <li><span class="parameter">ctx</span>
          (table) Callback query object
         </li>
     </ul>
@@ -334,6 +339,35 @@
 
         (table) Response data
     </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "debugRoutes"></a>
+    <strong>debugRoutes (options)</strong>
+    </dt>
+    <dd>
+    Debug routes while Long Polling is running
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">options</span> (table) Options table
+        <ul>
+        <li><span class="parameter">host</span>
+         (string) Host to bind to (default is '0.0.0.0')
+        </li>
+        <li><span class="parameter">port</span>
+         (number) Port to listen on (default is 9091)
+        </li>
+        <li><span class="parameter">routes</span>
+         (table) Routes table
+        </li>
+        </li></ul>
+    </ul>
+
 
 
 
@@ -424,7 +458,7 @@
 </div> <!-- id="main" -->
 <div id="about">
 <i>generated by <a href="http://github.com/lunarmodules/LDoc">LDoc 1.5.0</a></i>
-<i style="float:right;">Last updated 2025-04-29 01:58:02 </i>
+<i style="float:right;">Last updated 2025-10-22 22:53:36 </i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>

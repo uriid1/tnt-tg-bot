@@ -53,8 +53,10 @@
   <li><a href="../modules/enums.errors.html">enums.errors</a></li>
   <li><a href="../modules/enums.parse_mode.html">enums.parse_mode</a></li>
   <li><a href="../modules/bot.ext.fstring.html">bot.ext.fstring</a></li>
-  <li><a href="../modules/bot.ext.extensions.html_formatter.html">bot.ext.extensions.html_formatter</a></li>
+  <li><a href="../modules/bot.ext.hdec.html">bot.ext.hdec</a></li>
+  <li><a href="../modules/bot.ext.sql.html">bot.ext.sql</a></li>
   <li><a href="../modules/bot.html">bot</a></li>
+  <li><a href="../modules/bot.libs.inputFile.html">bot.libs.inputFile</a></li>
   <li><a href="../modules/bot.libs.parseInitData.html">bot.libs.parseInitData</a></li>
   <li><a href="../modules/bot.middlewares.inlineKeyoard.html">bot.middlewares.inlineKeyoard</a></li>
   <li><a href="../modules/bot.middlewares.processMessage.html">bot.middlewares.processMessage</a></li>
@@ -66,7 +68,6 @@
   <li><a href="../modules/bot.types.ForceReply.html">bot.types.ForceReply</a></li>
   <li><a href="../modules/bot.types.inlineKeyboardButton.html">bot.types.inlineKeyboardButton</a></li>
   <li><a href="../modules/bot.types.InlineKeyboardMarkup.html">bot.types.InlineKeyboardMarkup</a></li>
-  <li><a href="../modules/bot.types.inputFile.html">bot.types.inputFile</a></li>
   <li><a href="../modules/bot.types.InputMedia.html">bot.types.InputMedia</a></li>
   <li><a href="../modules/bot.types.InputMediaAnimation.html">bot.types.InputMediaAnimation</a></li>
   <li><a href="../modules/bot.types.InputMediaAudio.html">bot.types.InputMediaAudio</a></li>
@@ -93,6 +94,46 @@
 	<tr>
 	<td class="name" nowrap><a href="#new">new (ctx)</a></td>
 	<td class="summary">Creates a new callback object</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#getChatId">getChatId ()</a></td>
+	<td class="summary">Gets the chat ID from the associated message.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#getChatType">getChatType ()</a></td>
+	<td class="summary">Gets the chat type from the associated message.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#getText">getText ()</a></td>
+	<td class="summary">Gets the text from the associated message.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#getMessageId">getMessageId ()</a></td>
+	<td class="summary">Gets the message ID from the associated message.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#getUserMessageFrom">getUserMessageFrom ()</a></td>
+	<td class="summary">Gets the user data from the associated message.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#getUserReply">getUserReply ()</a></td>
+	<td class="summary">Gets the user who replied to the associated message.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#getReplyToMessage">getReplyToMessage ()</a></td>
+	<td class="summary">get reply to message</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#isSameUser">isSameUser ()</a></td>
+	<td class="summary">Checks if the user who sent the callback query is the same as the one who replied to the associated message.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#getInlineKeyboard">getInlineKeyboard ()</a></td>
+	<td class="summary">Gets the inline keyboard</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#getSenderChat">getSenderChat ()</a></td>
+	<td class="summary">Gets the sender chat</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#getUpdateId">getUpdateId ()</a></td>
@@ -156,6 +197,196 @@
     <ol>
 
         (callback) The callback object
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "getChatId"></a>
+    <strong>getChatId ()</strong>
+    </dt>
+    <dd>
+    Gets the chat ID from the associated message.
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+        (number) The chat ID.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "getChatType"></a>
+    <strong>getChatType ()</strong>
+    </dt>
+    <dd>
+    Gets the chat type from the associated message.
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+        (string) The chat type.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "getText"></a>
+    <strong>getText ()</strong>
+    </dt>
+    <dd>
+    Gets the text from the associated message.
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+        (string) The message text.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "getMessageId"></a>
+    <strong>getMessageId ()</strong>
+    </dt>
+    <dd>
+    Gets the message ID from the associated message.
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+        (number) The message ID.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "getUserMessageFrom"></a>
+    <strong>getUserMessageFrom ()</strong>
+    </dt>
+    <dd>
+    Gets the user data from the associated message.
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+        (table) The user data.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "getUserReply"></a>
+    <strong>getUserReply ()</strong>
+    </dt>
+    <dd>
+    Gets the user who replied to the associated message.
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+        (table) The user data of the reply.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "getReplyToMessage"></a>
+    <strong>getReplyToMessage ()</strong>
+    </dt>
+    <dd>
+    get reply to message
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+        (table)
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "isSameUser"></a>
+    <strong>isSameUser ()</strong>
+    </dt>
+    <dd>
+    Checks if the user who sent the callback query is the same as the one who replied to the associated message.
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+        (boolean) True if it's the same user, false otherwise.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "getInlineKeyboard"></a>
+    <strong>getInlineKeyboard ()</strong>
+    </dt>
+    <dd>
+    Gets the inline keyboard
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+        (table) inline keyboard object
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "getSenderChat"></a>
+    <strong>getSenderChat ()</strong>
+    </dt>
+    <dd>
+    Gets the sender chat
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+        (table) Sender chat object
     </ol>
 
 
@@ -334,7 +565,7 @@
 </div> <!-- id="main" -->
 <div id="about">
 <i>generated by <a href="http://github.com/lunarmodules/LDoc">LDoc 1.5.0</a></i>
-<i style="float:right;">Last updated 2025-04-29 01:58:02 </i>
+<i style="float:right;">Last updated 2025-10-22 22:53:36 </i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>

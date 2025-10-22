@@ -31,6 +31,10 @@
   <li><a href="../index.html">Index</a></li>
 </ul>
 
+<h2>Contents</h2>
+<ul>
+<li><a href="#Functions">Functions</a></li>
+</ul>
 
 
 <h2>Modules</h2>
@@ -50,7 +54,7 @@
   <li><a href="../modules/enums.parse_mode.html">enums.parse_mode</a></li>
   <li><a href="../modules/bot.ext.fstring.html">bot.ext.fstring</a></li>
   <li><a href="../modules/bot.ext.hdec.html">bot.ext.hdec</a></li>
-  <li><a href="../modules/bot.ext.sql.html">bot.ext.sql</a></li>
+  <li><strong>bot.ext.sql</strong></li>
   <li><a href="../modules/bot.html">bot</a></li>
   <li><a href="../modules/bot.libs.inputFile.html">bot.libs.inputFile</a></li>
   <li><a href="../modules/bot.libs.parseInitData.html">bot.libs.parseInitData</a></li>
@@ -71,7 +75,7 @@
   <li><a href="../modules/bot.types.InputMediaPhoto.html">bot.types.InputMediaPhoto</a></li>
   <li><a href="../modules/bot.types.InputMediaVideo.html">bot.types.InputMediaVideo</a></li>
   <li><a href="../modules/bot.types.KeyboardButton.html">bot.types.KeyboardButton</a></li>
-  <li><strong>bot.types.LinkPreviewOptions</strong></li>
+  <li><a href="../modules/bot.types.LinkPreviewOptions.html">bot.types.LinkPreviewOptions</a></li>
   <li><a href="../modules/bot.types.ReplyKeyboardMarkup.html">bot.types.ReplyKeyboardMarkup</a></li>
   <li><a href="../modules/bot.types.ReplyKeyboardRemove.html">bot.types.ReplyKeyboardRemove</a></li>
 </ul>
@@ -80,16 +84,50 @@
 
 <div id="content">
 
-<h1>Module <code>bot.types.LinkPreviewOptions</code></h1>
-<p>see https://core.telegram.org/bots/api#linkpreviewoptions</p>
+<h1>Module <code>bot.ext.sql</code></h1>
+<p>Wrapper for execute sql</p>
 <p></p>
 
 
+<h2><a href="#Functions">Functions</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#sql">sql (sql_query, values)</a></td>
+	<td class="summary">Execute sql query</td>
+	</tr>
+</table>
 
 <br/>
 <br/>
 
 
+    <h2 class="section-header "><a name="Functions"></a>Functions</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "sql"></a>
+    <strong>sql (sql_query, values)</strong>
+    </dt>
+    <dd>
+    Execute sql query
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">sql_query</span>
+         (string) SQL string
+        </li>
+        <li><span class="parameter">values</span>
+         (table) Table of values
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+</dl>
 
 
 </div> <!-- id="content" -->
