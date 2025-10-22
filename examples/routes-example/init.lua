@@ -3,8 +3,8 @@
 local bot = require('bot')
 local parse_mode = require('bot.enums.parse_mode')
 -- Routes
-local getPayments = require('routes/getPayments')
-local setScore = require('routes/setScore')
+local getPayments = require('routes.getPayments')
+local setScore = require('routes.setScore')
 
 bot:cfg({
   token = os.getenv('BOT_TOKEN'),
