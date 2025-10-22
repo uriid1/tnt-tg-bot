@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -euo pipefail
 
 echo "
  _________ _       _________  _________ _______    ______   _______ _________
@@ -12,7 +13,6 @@ echo "
 
  BY URIID1
  GITHUB github.com/uriid1/tnt-tg-bot
- VERSION 1.0.0 RELEASE
 "
 
 readonly C_RESET="\033[0m"
@@ -62,13 +62,11 @@ for ((i = 0; i < ${#optional_programs[*]}; ++i)); do
   if [ "$(which -a $programm . 2>/dev/null)" ]; then
     info "${programm} (optional)"
   else
-    echo "Warning: ${programm} not found"
+    warning "${programm} not found"
   fi
 done
 
-#
 # Install all rocks
-#
 echo
 install "http"
 tt rocks install http
