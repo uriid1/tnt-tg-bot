@@ -5,57 +5,38 @@ local request = {}
 local json = require('json')
 local http = require('http.client')
 local mpEncode = require('multipart-post')
-local methods = require('bot.enums.methods')
 
--- luacheck: ignore bot
 --- Send an HTTP request to the Telegram Bot API.
 -- @param params The request parameters.
 -- @return The response from the API, or nil if there was an error.
 function request.send(params)
-  local opts
+  local opts = {}
   local body
 
-  if not params.options then
-    goto req_send
-  end
-
-  -- Set parse mode
-  if params.options.text or params.options.caption then
-    if not params.options.parse_mode then
-      params.options.parse_mode = bot.parse_mode
-    end
-  end
-
-  -- Make headers
-  opts = {}
-
-  if params.is_multipart then
-    -- https://core.telegram.org/bots/api#sendmediagroup
-    -- A JSON-serialized array describing messages to be sent, must include 2-10 items
-    if params.method == methods.sendMediaGroup then
-      local media = params.options.media
-
-      if media then
-        params.options.media = json.encode(media)
+  if params.fields then
+    -- Set parse mode
+    if params.fields.text or params.fields.caption then
+      if not params.fields.parse_mode then
+        params.fields.parse_mode = bot.parse_mode
       end
     end
 
     -- Make multipart-data
-    local boundary
-    body, boundary = mpEncode(params.options)
+    if params.is_multipart or params.multipart then
+      local boundary
+      body, boundary = mpEncode(params.fields)
 
-    opts.headers = {
-      ['Content-Type'] = 'multipart/form-data; boundary=' .. boundary,
-    }
-  else
-    body = json.encode(params.options)
+      opts.headers = {
+        ['Content-Type'] = 'multipart/form-data; boundary=' .. boundary,
+      }
+    else
+      body = json.encode(params.fields)
 
-    opts.headers = {
-      ['Content-Type'] = 'application/json'
-    }
+      opts.headers = {
+        ['Content-Type'] = 'application/json'
+      }
+    end
   end
-
-  ::req_send::
 
   -- Request
   local urlFmt = bot.api_url..'%s/%s'

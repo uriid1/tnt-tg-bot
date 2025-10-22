@@ -19,10 +19,7 @@ local function inputFile(filename)
   local data = fd:read()
   fd:close()
 
-  return {
-    data = data,
-    filename = filename
-  }
+  return data
 end
 
 return inputFile

@@ -77,7 +77,7 @@ end
 --- Executes a Telegram Bot API method.
 --
 -- @param method (string) TG API method to execute
--- @param options (table) Method options
+-- @param fields (table) Method fields
 -- @param opts (table) Options
 -- @param[optchain] opts.request_param (table) { multipart_post = true }
 --
@@ -89,14 +89,14 @@ end
 --
 -- @return (table) Response from the Telegram Bot API
 -- @return (table) Error object
-function bot.call(method, options, opts)
+function bot.call(method, fields, opts)
   if method == nil then
-    error('bot.call method is nil.')
+    error('bot.call method is nil')
   end
 
   local params = {
     method = method,
-    options = options,
+    fields = fields,
   }
 
   if opts and opts.multipart_post then
