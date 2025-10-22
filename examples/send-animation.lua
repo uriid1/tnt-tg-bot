@@ -3,9 +3,8 @@
 local log = require('log')
 local bot = require('bot')
 local parse_mode = require('bot.enums.parse_mode')
-local methods = require('bot.enums.methods')
 local processCommand = require('bot.processes.processCommand')
-local InputFile = require('bot.types.InputFile')
+local inputFile = require('bot.libs.inputFile')
 
 bot:cfg({
   token = os.getenv('BOT_TOKEN'),
@@ -15,8 +14,8 @@ bot:cfg({
 -- Command: get_animation
 bot.commands['/get_animation'] = function(ctx)
   -- @see https://core.telegram.org/bots/api#sendanimation
-  local _, err = bot.call(methods.sendAnimation, {
-    animation = InputFile('examples/img/animation.gif'),
+  local _, err = bot:sendAnimation({
+    animation = inputFile('examples/img/animation.gif'),
     caption = 'Animation from disk',
     chat_id = ctx:getChatId(),
   }, { multipart_post = true })

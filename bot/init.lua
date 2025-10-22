@@ -16,7 +16,7 @@ local fiber = require('fiber')
 local switch = require('bot.middlewares.switch')
 local request = require('bot.middlewares.request')
 local parse_mode = require('bot.enums.parse_mode')
-local InputFile = require('bot.types.InputFile')
+local inputFile = require('bot.libs.inputFile')
 local methods = require('bot.enums.methods')
 local colors = require('bot.ext.colors')
 
@@ -121,7 +121,7 @@ end
 -- @param data.url URL to image
 function bot.sendImage(data)
   if data.filepath then
-    data.photo = InputFile(data.filepath)
+    data.photo = inputFile(data.filepath)
     data.filepath = nil
   elseif data.url then
     data.photo = data.url

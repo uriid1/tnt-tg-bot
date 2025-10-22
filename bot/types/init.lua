@@ -4,7 +4,6 @@ return {
   ForceReply = require('bot.types.ForceReply'),
   InlineKeyboardButton = require('bot.types.InlineKeyboardButton'),
   InlineKeyboardMarkup = require('bot.types.InlineKeyboardMarkup'),
-  InputFile = require('bot.types.InputFile'),
   InputMediaAnimation = require('bot.types.InputMediaAnimation'),
   InputMediaAudio = require('bot.types.InputMediaAudio'),
   InputMediaDocument = require('bot.types.InputMediaDocument'),

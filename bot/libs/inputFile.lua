@@ -1,5 +1,5 @@
 --- Input file
--- @module bot.types.inputFile
+-- @module bot.libs.inputFile
 local fio = require('fio')
 local log = require('log')
 
@@ -19,7 +19,10 @@ local function inputFile(filename)
   local data = fd:read()
   fd:close()
 
-  return data
+  return {
+    data = data,
+    filename = filename
+  }
 end
 
 return inputFile

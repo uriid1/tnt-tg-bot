@@ -3,9 +3,8 @@
 local log = require('log')
 local bot = require('bot')
 local parse_mode = require('bot.enums.parse_mode')
-local methods = require('bot.enums.methods')
 local processCommand = require('bot.processes.processCommand')
-local InputFile = require('bot.types.InputFile')
+local inputFile = require('bot.libs.inputFile')
 
 bot:cfg({
   token = os.getenv('BOT_TOKEN'),
@@ -15,8 +14,8 @@ bot:cfg({
 -- Command: get_document
 bot.commands['/get_document'] = function(ctx)
   --@see https://core.telegram.org/bots/api#senddocument
-  local _, err = bot.call(methods.sendDocument, {
-    document = InputFile('examples/img/image.jpg'),
+  local _, err = bot:sendDocument({
+    document = inputFile('examples/img/image.jpg'),
     caption = 'Ducument from disk',
     chat_id = ctx:getChatId()
   }, { multipart_post = true })
