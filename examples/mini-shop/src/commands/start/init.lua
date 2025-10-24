@@ -18,19 +18,19 @@ local keyboard = inlineKeyboard({
   -- Row 1
   {
     text = '🔫 Шутеры',
-    callback = 'cb_category shooters'
+    callback = 'cb_category shooters 1'
   },
 
   -- Row 2
   {
     text = '🏎 Гонки',
-    callback = 'cb_category racing'
+    callback = 'cb_category racing 1'
   },
 
   -- Row 3
   {
     text = '🫅🏻 Стратегии',
-    callback = 'cb_category strategy'
+    callback = 'cb_category strategy 1'
   }
 })
 

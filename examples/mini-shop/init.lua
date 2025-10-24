@@ -28,8 +28,8 @@ box.cfg {
 _G.bot = bot
 
 -- Загрузка событий
-bot.events.onCallbackQuery = require('src.events.onCallbackQuery')
 bot.events.onGetUpdate = require('src.events.onGetUpdate')
+bot.events.onCallbackQuery = require('src.events.onCallbackQuery')
 bot.events.onGetEntities = require('src.events.onGetEntities')
 
 -- Загрузка команд

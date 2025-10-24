@@ -1,5 +1,6 @@
 --- Wrapper for execute sql
 -- @module bot.ext.sql
+local log = require('bot.libs.logger')
 local uuid = require('uuid')
 
 --- Example
@@ -46,6 +47,8 @@ function sql(sql_query, values)
 
     query = string.gsub(sql_query, "%${([%w_]+)}", castValues)
   end
+
+  log.verbose('[SQL] %s', '\n'..query:gsub('(\n+)', '\n'))
 
   local result = box.execute(query or sql_query)
   if result == nil then

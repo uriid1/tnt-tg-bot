@@ -1,75 +1,54 @@
------------------------------------
---- Tarantool Telegram Bot API
---- By uriid1
---- Licence MIT
------------------------------------
+-- ----------------------------- --
+-- Tarantool Telegram Bot API    --
+-- By uriid1                     --
+-- Licence MIT                   --
+-- ----------------------------- --
 --- @module bot
 local bot = { _version = '1.0.15' }
 
 package.path = package.path .. ';.rocks/share/lua/5.1/?.lua'
 package.cpath = package.cpath .. ';.rocks/lib/lua/5.1/?.so'
 
-local log = require('log')
 local fio = require('fio')
 local json = require('json')
 local fiber = require('fiber')
 local switch = require('bot.middlewares.switch')
 local request = require('bot.middlewares.request')
 local parse_mode = require('bot.enums.parse_mode')
+local log = require('bot.libs.logger')
 local inputFile = require('bot.libs.inputFile')
 local methods = require('bot.enums.methods')
-local colors = require('bot.ext.colors')
 
-local c_pref = {}
-
-c_pref.time = function ()
-  return os.date('[%X]')
-end
-
-c_pref.green = function (text)
-  if colors.xterm256color == false then
-    return text
-  end
-  return colors.brightGreen .. text .. colors.reset
-end
-
-c_pref.red = function (text)
-  if colors.xterm256color == false then
-    return text
-  end
-  return colors.brightRed .. text .. colors.reset
-end
-
-c_pref.command = function (text)
-  if colors.xterm256color == false then
-    return text
-  end
-  return colors.brightBlue .. text .. colors.reset
-end
-
---- Initializes the bot with options
+--- Initializes the bot with opts
 --
--- @param options (table) Options
-  -- @param[opt] options.token (string) Bot token
-  -- @param[opt] options.parse_mode (string) Parse mode. HTML by default
-  -- @param[opt] options.api_url (string)
+-- @param opts (table) opts
+  -- @param[opt] opts.token (string) Bot token
+  -- @param[opt] opts.parse_mode (string) Parse mode. HTML by default
+  -- @param[opt] opts.api_url (string)
 -- @usage
 -- bot:cfg {
---  token = '1234567:AABBccDDFF',
---  parse_mode = 'HTML'
+--  token = '1234567:AABBccDDFF...',
+--  parse_mode = 'HTML' -- Default: 'HTML'
 -- }
 --
 -- @return bot object
-function bot:cfg(options)
-  self.token = options.token
-  self.commands = {}
-  self.events = {}
-  self.api_url = options.api_url or 'https://api.telegram.org/bot'
-  self.parse_mode = options.parse_mode or parse_mode.HTML
-  self.username = options.username
+function bot:cfg(opts)
+  self.token = opts.token
+  self.api_url = opts.api_url or 'https://api.telegram.org/bot'
+  self.parse_mode = opts.parse_mode or parse_mode.HTML
+  self.username = opts.username
   self.methods = methods
+  self.logger = opts.logger or log
+  self.commands = {}
 
-  _G.bot = bot
+  -- Log calls to undefined events
+  self.events = setmetatable({}, {
+    __index = function(_, key)
+      return function ()
+        log.warn(string.format('[Event] "%s" is not defined', key))
+      end
+    end
+  })
 
   return self
 end
@@ -109,14 +88,14 @@ end
 --- Wrap mehods
 --
 for method,_ in pairs(methods) do
-  bot[method] = function (_, options, opts)
-    return bot.call(method, options, opts)
+  bot[method] = function (_, fields, opts)
+    return bot.call(method, fields, opts)
   end
 end
 
 --- A simplified version of the sendPhoto method
 --
--- @param data (table) Method options
+-- @param data (table) Method fields
 -- @param data.filepath Path to image
 -- @param data.url URL to image
 function bot.sendImage(data)
@@ -151,11 +130,7 @@ function bot.Command(ctx)
 
   ctx.__command = command
 
-  log.info(table.concat({
-    c_pref.time(),
-    c_pref.command('[Command]'),
-    command
-  }, ' '))
+  log.verbose('[Command]', command)
 
   return bot.commands[command], username
 end
@@ -173,88 +148,76 @@ function bot.CallbackCommand(ctx)
 
   ctx.__command = command
 
-  log.info(table.concat({
-    c_pref.time(),
-    c_pref.command('[Callback]'),
-    command
-  }, ' '))
+  log.info('[Callback] %s', command)
 
   return bot.commands[command]
 end
 
 --- Sends a certificate for webhook setup
 --
--- @param options (table) Options table
-  -- @param options.url (string) URL for the webhook
-  -- @param options.certificate (string) Path to the certificate file
-  -- @param options.drop_pending_updates (boolean) Whether to drop pending updates (false by default)
-  -- @param options.allowed_updates (table) List of allowed updates (nil by default)
+-- @param opts (table) Options table
+  -- @param opts.url (string) URL for the webhook
+  -- @param opts.certificate (string) Path to the certificate file
+  -- @param opts.drop_pending_updates (boolean) Whether to drop pending updates (false by default)
+  -- @param opts.allowed_updates (table) List of allowed updates (nil by default)
 --
 -- @return (table) Response data
-function bot.send_certificate(options)
-  if type(options) ~= 'table' or
-    type(options.bot_url) ~= 'string'
+function bot.send_certificate(opts)
+  if type(opts) ~= 'table' or
+    type(opts.bot_url) ~= 'string'
   then
-    log.error(table.concat({
-      c_pref.time(),
-      c_pref.red('[WebHook]'),
-      'Invalid options'
-    }, ' '))
+    log.error('[WebHook] %s', 'Invalid opts')
 
     return
   end
 
   -- Read certificate
   local data
-  if options.certificate then
-    if not fio.path.exists(options.certificate) then
-      log.error(table.concat({
-        c_pref.time(),
-        c_pref.red('[WebHook]'),
-        'Certificate not found: '..options.certificate
-      }, ' '))
+  if opts.certificate then
+    if not fio.path.exists(opts.certificate) then
+      log.error('[WebHook] %s', 'Certificate not found: '..opts.certificate)
 
       return
     end
 
-    local cert = fio.open(options.certificate, 'O_RDONLY')
+    local cert = fio.open(opts.certificate, 'O_RDONLY')
 
     data = {
-      filename = options.certificate:match('[^/]*.$'),
+      filename = opts.certificate:match('[^/]*.$'),
       data = cert:read()
     }
 
     cert:close()
   end
 
-  if type(options.allowed_updates) == 'table' then
-    options.allowed_updates = json.encode(options.allowed_updates)
+  if type(opts.allowed_updates) == 'table' then
+    opts.allowed_updates = json.encode(opts.allowed_updates)
   end
 
   -- Set webhook
   return bot.call('setWebhook', {
-    url = options.bot_url,
+    url = opts.bot_url,
     certificate = data,
-    drop_pending_updates = options.drop_pending_updates or false,
-    allowed_updates = options.allowed_updates
+    drop_pending_updates = opts.drop_pending_updates or false,
+    allowed_updates = opts.allowed_updates
   }, { multipart_post = true })
 end
 
 --- Debug routes while Long Polling is running
--- @param options (table) Options table
-  -- @param options.host (string) Host to bind to (default is '0.0.0.0')
-  -- @param options.port (number) Port to listen on (default is 9091)
-  -- @param options.routes (table) Routes table
-function bot:debugRoutes(options)
+-- @param opts (table) Options table
+  -- @param opts.host (string) Host to bind to (default is '0.0.0.0')
+  -- @param opts.port (number) Port to listen on (default is 9091)
+  -- @param opts.routes (table) Routes table
+function bot:debugRoutes(opts)
   local http_server = require('http.server')
-  local host = options.host or '0.0.0.0'
-  local port = options.port or 9091
+  local host = opts.host or '0.0.0.0'
+  local port = opts.port or 9091
   local httpd = http_server.new(host, port)
 
   -- Declaration custom routes
-  if options.routes then
-    for i = 1, #options.routes do
-      local route = options.routes[i]
+  if opts.routes then
+    for i = 1, #opts.routes do
+      local route = opts.routes[i]
 
       httpd:route(
         {
@@ -277,30 +240,26 @@ function bot:debugRoutes(options)
     port = port
   }
 
-  log.info(table.concat({
-    c_pref.time(),
-    c_pref.green('[HTTP Server]'),
-    'listening', host..':'..port
-  }, ' '))
+  log.info('[HTTP Server] %s', 'listening', host..':'..port)
 end
 
 --- Start the webhook
 --
--- @param options (table) Options table
-  -- @param options.host (string) Host to bind to (default is '0.0.0.0')
-  -- @param options.port (number) Port to listen on (default is 9091)
-  -- @param options.path (string) Route path ('/' string by default)
-  -- @param options.routes (table) Routes table
-  -- @param options.maintenance_mode (string) Maintenance mode eq 'maint'
-  -- @param options.allowed_updates (array)
-function bot:startWebHook(options)
+-- @param opts (table) opts table
+  -- @param opts.host (string) Host to bind to (default is '0.0.0.0')
+  -- @param opts.port (number) Port to listen on (default is 9091)
+  -- @param opts.path (string) Route path ('/' string by default)
+  -- @param opts.routes (table) Routes table
+  -- @param opts.maintenance_mode (string) Maintenance mode eq 'maint'
+  -- @param opts.allowed_updates (array)
+function bot:startWebHook(opts)
   local http_server = require('http.server')
-  local host = options.host or '0.0.0.0'
-  local port = options.port or 9091
+  local host = opts.host or '0.0.0.0'
+  local port = opts.port or 9091
   local httpd = http_server.new(host, port)
 
   local route = {
-    path = options.path or '/',
+    path = opts.path or '/',
     method = 'POST',
   }
 
@@ -326,10 +285,10 @@ function bot:startWebHook(options)
   --
 
   -- Declaration custom routes
-  if options.routes then
-    for i = 1, #options.routes do
+  if opts.routes then
+    for i = 1, #opts.routes do
       -- luacheck: ignore route
-      local route = options.routes[i]
+      local route = opts.routes[i]
 
       httpd:route({ path = route.path, method = route.method }, route.callback)
     end
@@ -337,28 +296,21 @@ function bot:startWebHook(options)
 
   httpd:start()
 
-  log.info(table.concat({
-    c_pref.time(),
-    c_pref.green('[HTTP Server]'),
-    'listening', host..':'..port
-  }, ' '))
+  log.info('[HTTP Server] %s', 'listening', host..':'..port)
 
-  if options.maintenance_mode ~= 'maint' then
-    local res = bot.send_certificate(options)
+  if opts.maintenance_mode ~= 'maint' then
+    local res = bot.send_certificate(opts)
 
     if res and not res.ok then
-      log.error(table.concat({
-        c_pref.time(),
-        c_pref.red('[Long Polling]'),
-        'Code', res.error_code,
-        'Description', res.description
-      }, ' '))
+      log.error('[Long Polling] %s | %s',
+        'Code: ' .. res.error_code,
+        'Description: ' .. res.description)
 
       os.exit(1)
     end
   end
 
-  self.maintenance = options.maintenance_mode == 'maint'
+  self.maintenance = opts.maintenance_mode == 'maint'
 end
 
 local getUpdates
@@ -393,21 +345,14 @@ getUpdates = function(opts)
   -- First start
   if not first_start then
     if not body.ok then
-      log.error(table.concat({
-        c_pref.time(),
-        c_pref.red('[Long Polling]'),
-        'Code', body.error_code,
-        'Description', body.description
-      }, ' '))
+      log.error('[Long Polling] %s | %s',
+        'Code: ' .. body.error_code,
+        'Description: ' .. body.description)
 
       return
     end
 
-    log.info(table.concat({
-      c_pref.time(),
-      c_pref.green('[Long Polling]'),
-      'Received updates'
-    }, ' '))
+    log.verbose('[Long Polling] %s', 'Received updates')
   end
 
   if body.ok and body.result then
@@ -422,9 +367,7 @@ getUpdates = function(opts)
     end
   else
     -- Debug
-    log.error({
-      err = body.error
-    })
+    log.error(json.encode{ err = body.error })
   end
 
   -- Get new updates
@@ -440,34 +383,30 @@ end
 
 --- Start long polling
 --
--- @param[opt] options (table) Options table
-  -- @param[opt] options.offset (number) Update offset (default is -1)
-  -- @param[opt] options.timeout (number) Polling timeout in seconds (default is 60)
-  -- @param[opt] options.max_connections (number) (default is 1)
-  -- @param[opt] options.allowed_updates (array)
-  -- @param[opt] options.api_url (string)
-function bot:startLongPolling(options)
-  options = options or {}
+-- @param[opt] opts (table) opts table
+  -- @param[opt] opts.offset (number) Update offset (default is -1)
+  -- @param[opt] opts.timeout (number) Polling timeout in seconds (default is 60)
+  -- @param[opt] opts.max_connections (number) (default is 1)
+  -- @param[opt] opts.allowed_updates (array)
+  -- @param[opt] opts.api_url (string)
+function bot:startLongPolling(opts)
+  opts = opts or {}
 
   local http = require('http.client')
   local client = http.new({
-    max_connections = options and options.max_connections or 1
+    max_connections = opts and opts.max_connections or 1
   })
 
-  -- Set options
+  -- Set opts
   local offset = -1
   local polling_timeout = 60
 
-  if options then
-    offset = options.offset or -1
-    polling_timeout = options.timeout or 60
+  if opts then
+    offset = opts.offset or -1
+    polling_timeout = opts.timeout or 60
   end
 
-  log.info(table.concat({
-      c_pref.time(),
-      c_pref.green('[Long Polling]'),
-      'Running'
-    }, ' '))
+  log.info('[Long Polling] %s', 'Running')
 
   getUpdates({
     fisrt_start = false,
@@ -475,7 +414,7 @@ function bot:startLongPolling(options)
     timeout = polling_timeout,
     token = self.token,
     client = client,
-    allowed_updates = options.allowed_updates,
+    allowed_updates = opts.allowed_updates,
     api_url = self.api_url
   })
 end

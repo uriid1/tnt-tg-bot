@@ -23,7 +23,11 @@ local formatSpace = {
   {
     name = 'url',
     type = 'string'
-  }
+  },
+  {
+    name = 'created',
+    type = 'number'
+  },
 }
 
 --- Индексы спейса

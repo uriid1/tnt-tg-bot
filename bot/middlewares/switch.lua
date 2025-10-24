@@ -7,10 +7,8 @@ local switch = {}
 -- Call events
 -- luacheck: ignore bot
 function switch.call(ctx)
-  local result = processMessage(ctx)
-
   if bot.events.onGetUpdate then
-    bot.events.onGetUpdate(result)
+    bot.events.onGetUpdate(processMessage(ctx))
   end
 end
 

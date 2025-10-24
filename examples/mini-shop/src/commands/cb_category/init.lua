@@ -1,9 +1,10 @@
 --- Команда покупки по заданным категориям
 --
-local log = require('log')
+-- local log = require('log')
 local Command = require('src.classes.Command')
 local command_type = require('src.enums.command_type')
 local inlineKeyboard = require('bot.middlewares.inlineKeyboard')
+local sql = require('bot.ext.sql')
 local f = require('bot.ext.fstring')
 
 local command = Command:new {
@@ -15,46 +16,39 @@ local TEMPLATE = [[
 Ваша категория: ${category}
 ]]
 
+local LIMIT = 10
+
 function command.call(ctx)
   -- arguments[1] cb_category
   -- arguments[2] category
-  local arguments = ctx:getArguments { count = 2 }
+  -- arguments[3] page
+  local arguments = ctx:getArguments { count = 3 }
   local category = arguments[2]
+  local page = arguments[3] and tonumber(arguments[3]) or 1
 
-  -- Получаем счписок доступных товаров
+  if page < 0 then page = 1 end
+
+  -- Получение списка ключей к продаже
+  local rows = sql([[
+    SELECT *
+    FROM SEQSCAN keys
+    WHERE category = ${category}
+    ORDER BY created DESC
+    LIMIT ${limit}
+    OFFSET ${offset}
+  ]], {
+    category = category,
+    limit = LIMIT,
+    offset = (page - 1) * LIMIT
+  })
+
+  -- Объект кнопок
   local keyboard = {}
-
-  -- TODO: пагинация
-  local res, err = box.execute(
-    f([[
-      SELECT
-        id AS id,
-        name AS name,
-        url AS url
-      FROM SEQSCAN keys
-      WHERE category = '${category}'
-      LIMIT 10
-      OFFSET ${offset}
-    ]], {
-      category = category,
-      offset = 0
-    })
-  )
-
-  if err then
-    log.error(err)
-    return
-  end
-
-  -- Лучшей практикой будет переводить tuple в таблицу -
-  -- по формату спейса
-  local rows = res.rows
 
   for i = 1, #rows do
     local row  = rows[i]
-    local id   = tostring(row[1])
-    local name = tostring(row[2])
-    -- local url = row[3]
+    local id   = tostring(row.id)
+    local name = row.name
 
     table.insert(keyboard, {
       text = name,
@@ -62,8 +56,43 @@ function command.call(ctx)
     })
   end
 
+  -- Инициализация ряда для нижних кнопок
+  table.insert(keyboard, {})
+  -- Индекс ряда
+  local rowKeysIndex = #keyboard
+
+  if page > 1 then
+    table.insert(keyboard[rowKeysIndex], {
+      text = '⬅️ Назад',
+      callback = f('cb_category ${category} ${page}', {
+        category = category,
+        page = page - 1
+      })
+    })
+  end
+
+  -- Колличество товаров нужной категории
+  local countRow = sql([[
+    SELECT COUNT(*) AS count
+    FROM SEQSCAN keys
+    WHERE category = ${category}
+  ]], {
+    category = category,
+  })
+
+  local count = countRow[1] and tonumber(countRow[1].count) or 0
+  if count > (page * LIMIT) then
+    table.insert(keyboard[rowKeysIndex], {
+      text = '➡️ Далее',
+      callback = f('cb_category ${category} ${page}', {
+        category = category,
+        page = page + 1
+      })
+    })
+  end
+
   table.insert(keyboard, {
-    text = '⬅️ Назад',
+    text = '⬆️ Вернуть в категории',
     callback = '/categories reopen'
   })
 
