@@ -13,6 +13,8 @@ end
 
 local logger = {}
 
+-- luacheck: ignore unpack
+-- luacheck: ignore table
 local unpack = table.unpack or unpack
 local function wrapArgs(...)
   local t = {}
