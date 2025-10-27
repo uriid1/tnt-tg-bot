@@ -7,7 +7,7 @@ bot:cfg {
 }
 
 -- Добавление ссылки бота в глобальное окружение
--- (опционально) можно грузить везде где нужно require
+-- (опционально) можно грузить везде где нужно через require
 _G.bot = bot
 
 -- Загрузка событий
@@ -29,4 +29,12 @@ eventsSubject:subscribe(obsChatMember.member_unbanned)
 eventsSubject:subscribe(obsChatMember.admin_left)
 eventsSubject:subscribe(obsChatMember.owner_left)
 
-bot:startLongPolling()
+bot:startLongPolling {
+  allowed_updates = {
+    'message',
+    'chat_member',
+    'my_chat_member',
+    'callback_query',
+    'pre_checkout_query'
+  }
+}

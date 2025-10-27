@@ -12,12 +12,18 @@ package.cpath = package.cpath .. ';.rocks/lib/lua/5.1/?.so'
 local fio = require('fio')
 local json = require('json')
 local fiber = require('fiber')
-local switch = require('bot.middlewares.switch')
+local config = require('bot.config')
 local request = require('bot.middlewares.request')
-local parse_mode = require('bot.enums.parse_mode')
+local processMessage = require('bot.middlewares.processMessage')
 local log = require('bot.libs.logger')
 local inputFile = require('bot.libs.inputFile')
 local methods = require('bot.enums.methods')
+
+local switch = function (ctx)
+  if bot.events.onGetUpdate then
+    bot.events.onGetUpdate(processMessage(ctx))
+  end
+end
 
 --- Initializes the bot with opts
 --
@@ -34,12 +40,17 @@ local methods = require('bot.enums.methods')
 -- @return bot object
 function bot:cfg(opts)
   self.token = opts.token
-  self.api_url = opts.api_url or 'https://api.telegram.org/bot'
-  self.parse_mode = opts.parse_mode or parse_mode.HTML
+  self.api_url = opts.api_url or config.api_url
+  self.parse_mode = opts.parse_mode or config.parse_mode
   self.username = opts.username
   self.methods = methods
   self.logger = opts.logger or log
   self.commands = {}
+
+  config.token = opts.token
+  config.api_url = opts.api_url or config.api_url
+  config.parse_mode = opts.parse_mode or config.parse_mode
+  config.username = opts.username
 
   -- Log calls to undefined events
   self.events = setmetatable({}, {
@@ -269,7 +280,7 @@ function bot:startWebHook(opts)
     fiber.create(function ()
       local data = req:json()
 
-      switch.call(data)
+      switch(data)
     end)
 
     return {
@@ -360,7 +371,7 @@ getUpdates = function(opts)
       local data = body.result[i]
 
       fiber.create(function ()
-        switch.call(data)
+        switch(data)
       end)
 
       offset = data.update_id + 1
@@ -416,7 +427,7 @@ function bot:startLongPolling(opts)
 
   local allowed_updates = opts.allowed_updates or DEFAULT_ALLOWED_UPDATES
 
-  log.info('[Long Polling] %s', 'Running | Updates '..json.encode(allowed_updates))
+  log.info('[Long Polling] %s', 'Running | Updates: '..table.concat(allowed_updates, ', '))
 
   getUpdates({
     fisrt_start = false,
