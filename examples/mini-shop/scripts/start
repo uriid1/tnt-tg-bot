@@ -3,4 +3,4 @@
 mkdir -p storage/xlog
 mkdir -p storage/snap
 
-tarantool init.lua
+tarantool init.lua $@

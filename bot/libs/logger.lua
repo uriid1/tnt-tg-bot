@@ -26,7 +26,7 @@ end
 
 function logger.info(text, ...)
   local isTable = type(text) == 'table'
-  log.info(colorize(colors.brightWhite, isTable and json.encode(text) or text), wrapArgs(...))
+  log.info(colorize(colors.brightGreen, isTable and json.encode(text) or text), wrapArgs(...))
 end
 
 function logger.verbose(text, ...)

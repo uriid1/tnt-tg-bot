@@ -381,6 +381,14 @@ getUpdates = function(opts)
   })
 end
 
+local DEFAULT_ALLOWED_UPDATES = {
+  'message',
+  'chat_member',
+  'my_chat_member',
+  'callback_query',
+  'pre_checkout_query'
+}
+
 --- Start long polling
 --
 -- @param[opt] opts (table) opts table
@@ -406,7 +414,9 @@ function bot:startLongPolling(opts)
     polling_timeout = opts.timeout or 60
   end
 
-  log.info('[Long Polling] %s', 'Running')
+  local allowed_updates = opts.allowed_updates or DEFAULT_ALLOWED_UPDATES
+
+  log.info('[Long Polling] %s', 'Running | Updates '..json.encode(allowed_updates))
 
   getUpdates({
     fisrt_start = false,
@@ -414,7 +424,7 @@ function bot:startLongPolling(opts)
     timeout = polling_timeout,
     token = self.token,
     client = client,
-    allowed_updates = opts.allowed_updates,
+    allowed_updates = opts.allowed_updates or DEFAULT_ALLOWED_UPDATES,
     api_url = self.api_url
   })
 end
