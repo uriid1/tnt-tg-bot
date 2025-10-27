@@ -1,5 +1,6 @@
 --- Module for making HTTP requests to the Telegram Bot API.
 -- @module bot.middlewares.request
+local config = require('bot.config')
 local request = {}
 
 local json = require('json')
@@ -17,7 +18,7 @@ function request.send(params)
     -- Set parse mode
     if params.fields.text or params.fields.caption then
       if not params.fields.parse_mode then
-        params.fields.parse_mode = bot.parse_mode
+        params.fields.parse_mode = config.parse_mode
       end
     end
 
@@ -39,8 +40,8 @@ function request.send(params)
   end
 
   -- Request
-  local urlFmt = bot.api_url..'%s/%s'
-  local data = http.post(urlFmt:format(bot.token, params.method), body, opts)
+  local urlFmt = config.api_url..'%s/%s'
+  local data = http.post(urlFmt:format(config.token, params.method), body, opts)
 
   -- Handle error
   if data.body == nil then

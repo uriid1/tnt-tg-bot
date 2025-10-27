@@ -60,7 +60,8 @@ bash tnt-tg-bot.pre-build.sh
     luarocks install --local --tree=$PWD/.rocks --lua-version 5.1 luaossl
     ```
 ## Примеры
-  +  [Mini Shop](examples/mini-shop) - Пример минимального проекта, показано как лучше всего структурировать проект
+  + [Observer pattern](examples/pattern-observer) - Пример показывает реализацию паттерна наблюдателя, по факту - диспетчеризация событий. Так же пример хорошо структурирован, подходит что бы взять за основу
+  + [Mini Shop](examples/mini-shop) - Пример минимального "магазина", показано как можно структурировать проект
   + [Star payments](examples/stars-payment) - Пример обработки платежей в звездах (покупка, возврат)
   + `examples/echo-bot-webhook.lua` - Эхо-бот через WebHook
   + `examples/echo-bot.lua` - Эхо-бот (старый API)
