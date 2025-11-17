@@ -4,6 +4,7 @@ max_line_length = 130
 globals = {
   -- Module bot
   'bot',
+  '_TARANTOOL',
 }
 
 read_globals = {
