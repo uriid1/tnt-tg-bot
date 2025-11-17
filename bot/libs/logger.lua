@@ -11,7 +11,9 @@ local function colorize(color, text)
   return color .. text .. colors.reset
 end
 
-local logger = {}
+local logger = {
+  cfg = log.cfg
+}
 
 -- luacheck: ignore unpack
 -- luacheck: ignore table

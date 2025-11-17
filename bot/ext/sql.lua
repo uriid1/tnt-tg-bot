@@ -1,7 +1,14 @@
---- Wrapper for execute sql
+--- Wrapper for execute sql (tarantool > 3.x only)
 -- @module bot.ext.sql
 local log = require('bot.libs.logger')
 local uuid = require('uuid')
+
+if _TARANTOOL then
+  local ver = tonumber(_TARANTOOL:match('(%d)%.'))
+  if ver and ver < 3 then
+    error('Module SQL support tarantool > 3.x only')
+  end
+end
 
 --- Example
 --[=[
@@ -26,11 +33,14 @@ local function cast(value, field_type)
   return value
 end
 
-local sql
+local sql = {}
+
 --- Execute sql query
 -- @param sql_query (string) SQL string
 -- @param values (table) Table of values
-function sql(sql_query, values)
+-- @return[1] result
+-- @return[1] error
+function sql.execute(sql_query, values)
   local query
   if values then
     local castValues = {}
@@ -48,13 +58,16 @@ function sql(sql_query, values)
     query = string.gsub(sql_query, "%${([%w_]+)}", castValues)
   end
 
-  log.verbose('[SQL] %s', '\n'..query:gsub('(\n+)', '\n'))
+  log.verbose('[SQL] %s', '\n'..(query or sql_query):gsub('(\n+)', '\n'))
 
-  local result = box.execute(query or sql_query)
+  local result, err = box.execute(query or sql_query)
+  if err then
+    return nil, err
+  end
   if result == nil then
-    return nil
+    return nil, err
   elseif result.rows and next(result.rows) == nil then
-    return nil
+    return nil, err
   end
 
   -- Mapping result
@@ -72,7 +85,105 @@ function sql(sql_query, values)
     end
   end
 
-  return rows
+  return rows, nil
 end
+
+--- Create record
+-- @param space (string) space
+-- @param fields (table)
+-- @return[1] result
+-- @return[1] error
+function sql.create(space, fields)
+  if box.space[space] == nil then
+    error(('Space: %s not found'):format(space), 1)
+  end
+  if fields == nil then
+    error('fields == nil', 1)
+  end
+
+  local query = {
+    [[INSERT INTO ]],
+    space,
+    [[ VALUES (]]
+  }
+  local data = {}
+  local values = {}
+  local spaceFormat = box.space[space]:format()
+
+  for i = 1, #spaceFormat do
+    local format = spaceFormat[i]
+    local fieldName = format.name
+    local fieldValue = fields[fieldName]
+
+    if fieldValue == box.NULL then
+      if not format.is_nullable then
+        error(('Field %s not required'):format(fieldName), 1)
+      end
+    end
+
+    local part = ':'..fieldName
+    table.insert(values, part)
+    table.insert(data, { [part] = fieldValue })
+  end
+
+  table.insert(query, table.concat(values, ', '))
+  table.insert(query, ');')
+
+  local sqlQuery = table.concat(query)
+  log.verbose('[SQL] %s', '\n'..sqlQuery:gsub('(\n+)', '\n'))
+
+  return box.execute(sqlQuery, data)
+end
+
+--- Update record(s)
+-- @param space (string) space name
+-- @param fields (table) columns to update
+-- @param where (table) where condition(s)
+-- @return[1] result
+-- @return[2] error
+function sql.update(space, fields, where)
+  if box.space[space] == nil then
+    error(('Space: %s not found'):format(space), 1)
+  end
+  if fields == nil then
+    error('fields == nil', 1)
+  end
+  if where == nil then
+    error('where == nil', 1)
+  end
+
+  local data = {}
+  local setParts = {}
+
+  for key, value in pairs(fields) do
+    local part = ':'..key
+    table.insert(setParts, ('%s = %s'):format(key, part))
+    table.insert(data, { [part] = value })
+  end
+
+  local whereParts = {}
+  for key, value in pairs(where) do
+    table.insert(whereParts, ('%s = %s'):format(key, cast(value)))
+  end
+
+  local query = {
+    [[UPDATE ]] .. space .. [[ SET ]],
+    table.concat(setParts, ', '),
+    [[ WHERE ]],
+    table.concat(whereParts, ' AND '),
+    [[;]]
+  }
+
+  local sqlQuery = table.concat(query)
+  log.verbose('[SQL] %s', '\n'..sqlQuery:gsub('(\n+)', '\n'))
+
+  return box.execute(sqlQuery, data)
+end
+
+setmetatable(sql, {
+  __call = function(_, ...)
+    return sql.execute(...)
+  end
+})
 
 return sql

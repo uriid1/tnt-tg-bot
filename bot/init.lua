@@ -4,7 +4,7 @@
 -- Licence MIT                   --
 -- ----------------------------- --
 --- @module bot
-local bot = { _version = '1.1.0' }
+local bot = { _version = '1.0.15' }
 
 package.path = package.path .. ';.rocks/share/lua/5.1/?.lua'
 package.cpath = package.cpath .. ';.rocks/lib/lua/5.1/?.so'
@@ -13,10 +13,10 @@ local fio = require('fio')
 local json = require('json')
 local fiber = require('fiber')
 local config = require('bot.config')
-local log = require('bot.libs.logger')
-local inputFile = require('bot.libs.inputFile')
 local request = require('bot.middlewares.request')
 local processMessage = require('bot.middlewares.processMessage')
+local log = require('bot.libs.logger')
+local inputFile = require('bot.libs.inputFile')
 local methods = require('bot.enums.methods')
 
 local switch = function (ctx)

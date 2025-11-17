@@ -75,7 +75,7 @@ end
 -- @return The old chat member information
 function myChatMember:getOldChatMember()
   if self.my_chat_member and self.my_chat_member.old_chat_member then
-    return self.my_chat_member.old_chat_member.user
+    return self.my_chat_member.old_chat_member
   end
 end
 
@@ -83,7 +83,7 @@ end
 -- @return The new chat member information
 function myChatMember:getNewChatMember()
   if self.my_chat_member and self.my_chat_member.new_chat_member then
-    return self.my_chat_member.new_chat_member.user
+    return self.my_chat_member.new_chat_member
   end
 end
 
