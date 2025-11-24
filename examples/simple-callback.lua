@@ -1,12 +1,9 @@
--- Example simple callback button
+-- Example simple callback button 2
 --
 local bot = require('bot')
 local parse_mode = require('bot.enums.parse_mode')
-local entity_type = require('bot.enums.entity_type')
-local methods = require('bot.enums.methods')
-
-local InlineKeyboardMarkup = require('bot.types.InlineKeyboardMarkup')
-local InlineKeyboardButton = require('bot.types.InlineKeyboardButton')
+local processCommand = require('bot.processes.processCommand')
+local inlineKeyboard = require('bot.middlewares.inlineKeyboard')
 
 bot:cfg({
   token = os.getenv('BOT_TOKEN'),
@@ -14,58 +11,66 @@ bot:cfg({
 })
 
 local function makeKeyboard()
-  local keyboard = InlineKeyboardMarkup()
-
-  InlineKeyboardButton(keyboard, {
-    text = 'Click Me!',
-    callback_data = 'cb_button_press' -- bot callback command
+  local keyboard = inlineKeyboard({
+    -- Row
+    { text = 'Get Apple', callback = 'cb_get_fruit apple' },
+    { text = 'Get Banana', callback = 'cb_get_fruit banana' },
+    -- Column
+    {
+      { text = 'Get Orange', callback = 'cb_get_fruit orange' },
+      { text = 'Get lemon', callback = 'cb_get_fruit lemon' },
+      { text = 'Get Melon', callback = 'cb_get_fruit melon' }
+    }
   })
 
   return keyboard
 end
 
+bot.commands['cb_get_fruit'] = function(ctx)
+  -- arguments[1] - Command cb_get_fruit
+  -- arguments[2] - Fruit type
+  local arguments = ctx:getArguments({ count = 2 })
+  local fruit = arguments[2]
+
+  local emoji = nil
+  if fruit == 'apple' then
+    emoji = '🍎'
+  elseif fruit == 'banana' then
+    emoji = '🍌'
+  elseif fruit == 'orange' then
+    emoji = '🍊'
+  elseif fruit == 'lemon' then
+    emoji = '🍋'
+  elseif fruit == 'melon' then
+    emoji = '🍉'
+  end
+
+  local callbackId = ctx:getQueryId()
+
+  bot:answerCallbackQuery {
+    text = emoji,
+    callback_query_id = callbackId
+  }
+end
+
 -- Command: send_callback
 bot.commands['/send_callback'] = function(ctx)
-  bot.call(methods.sendMessage, {
+  bot:sendMessage {
     text = 'Test Callback Button',
     chat_id = ctx:getChatId(),
     reply_markup = makeKeyboard()
-  })
-end
-
-bot.commands['cb_button_press'] = function(ctx)
-  local callbackId = ctx:getQueryId()
-
-  bot.call(methods.answerCallbackQuery, {
-    text = 'Hello!',
-    callback_query_id = callbackId
-  })
+  }
 end
 
 function bot.events.onGetUpdate(ctx)
-  if ctx.is_callback_query then
-    local command = bot.CallbackCommand(ctx)
-
-    if command then
-      command(ctx)
-    end
-
+  local isCallCommand = processCommand(ctx)
+  if isCallCommand then
     return
   end
 
-  local entities = ctx:getEntities()
-
-  if entities[1].type == entity_type.BOT_COMMAND then
-    local command, botUserName = bot.Command(ctx)
-
-    if botUserName ~= '@myUserNameBot' then
-      -- return
-    end
-
-    if command then
-      command(ctx)
-    end
-  end
+  -- Another events
+  -- if ctx.edited_message then
+  -- bot.events.onEditedMesasage(ctx)
 end
 
 bot:startLongPolling()

@@ -1,7 +1,7 @@
 -- Example of send document
 --
-local log = require('log')
 local bot = require('bot')
+local log = require('bot.libs.logger')
 local parse_mode = require('bot.enums.parse_mode')
 local processCommand = require('bot.processes.processCommand')
 local inputFile = require('bot.libs.inputFile')

@@ -1,10 +1,9 @@
--- Example of send image
+-- Example of send image 2
 --
-local log = require('log')
 local bot = require('bot')
+local log = require('bot.libs.logger')
 local parse_mode = require('bot.enums.parse_mode')
 local processCommand = require('bot.processes.processCommand')
-local inputFile = require('bot.libs.inputFile')
 
 bot:cfg({
   token = os.getenv('BOT_TOKEN'),
@@ -13,12 +12,11 @@ bot:cfg({
 
 -- Command: get_image
 bot.commands['/get_image'] = function(ctx)
-  -- @see https://core.telegram.org/bots/api#sendphoto
-  local _, err = bot:sendPhoto({
-    photo = inputFile('examples/img/image.jpg'),
-    caption = 'Image from disk TEST-1!',
+  local _, err = bot.sendImage({
+    filepath = 'examples/img/animation.gif',
+    caption = 'Image from disk!',
     chat_id = ctx:getChatId()
-  }, { multipart_post = true })
+  })
 
   if err then
     log.error(err)

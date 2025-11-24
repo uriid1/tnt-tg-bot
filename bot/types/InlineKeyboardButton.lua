@@ -2,7 +2,7 @@
   -- https://core.telegram.org/bots/api#inlinekeyboardbutton
   --
 -- @module bot.types.inlineKeyboardButton
-local log = require('log')
+local log = require('bot.libs.logger')
 
 local function inlineKeyboardButton(keyboard, data)
   if type(data) ~= 'table' then

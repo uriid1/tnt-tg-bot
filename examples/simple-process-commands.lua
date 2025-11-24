@@ -48,6 +48,10 @@ bot.commands['cb_send_apple'] = function(ctx)
     text = '🍎',
     chat_id = chatId
   }
+
+  bot:answerCallbackQuery {
+    callback_query_id = ctx:getQueryId()
+  }
 end
 
 -- Text commad - hello

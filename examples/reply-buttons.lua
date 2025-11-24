@@ -1,7 +1,7 @@
 -- Example of reply buttons
 --
-local log = require('log')
 local bot = require('bot')
+local log = require('bot.libs.logger')
 local parse_mode = require('bot.enums.parse_mode')
 local methods = require('bot.enums.methods')
 local ReplyKeyboardMarkup = require('bot.types.ReplyKeyboardMarkup')

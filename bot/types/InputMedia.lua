@@ -1,6 +1,6 @@
 --- Input media
 -- @module bot.types.InputMedia
-local json = require('json')
+local json = require('bot.libs.json')
 
 local function InputMedia(data)
   if not data then

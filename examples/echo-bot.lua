@@ -1,28 +1,23 @@
 -- Example of echo bot
 --
-local log = require('log')
 local bot = require('bot')
-local parse_mode = require('bot.enums.parse_mode')
-local methods = require('bot.enums.methods')
+local log = require('bot.libs.logger')
 
 bot:cfg({
-  token = os.getenv('BOT_TOKEN'),
-  parse_mode = parse_mode.HTML
+  token = os.getenv('BOT_TOKEN')
 })
 
 function bot.events.onGetUpdate(ctx)
   local text = ctx:getText()
   local chatId = ctx:getChatId()
 
-  local _, err = bot.call(methods.sendMessage, {
+  local _, err = bot:sendMessage {
     text = text,
     chat_id = chatId
-  })
+  }
 
   if err then
-    log.error({
-      error = err
-    })
+    log.error(err)
   end
 end
 

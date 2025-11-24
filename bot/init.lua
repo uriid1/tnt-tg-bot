@@ -9,9 +9,9 @@ local bot = { _version = '1.1.3' }
 package.path = package.path .. ';.rocks/share/lua/5.1/?.lua'
 package.cpath = package.cpath .. ';.rocks/lib/lua/5.1/?.so'
 
-local fio = require('fio')
-local json = require('json')
-local fiber = require('fiber')
+string.split = require('bot.libs.split')
+
+local json = require('bot.libs.json')
 local config = require('bot.config')
 local request = require('bot.middlewares.request')
 local processMessage = require('bot.middlewares.processMessage')
@@ -141,7 +141,7 @@ function bot.Command(ctx)
 
   ctx.__command = command
 
-  log.verbose('[Command]', command)
+  log.verbose('[Command] %s', command)
 
   return bot.commands[command], username
 end
@@ -164,164 +164,30 @@ function bot.CallbackCommand(ctx)
   return bot.commands[command]
 end
 
---- Sends a certificate for webhook setup
---
--- @param opts (table) Options table
-  -- @param opts.url (string) URL for the webhook
-  -- @param opts.certificate (string) Path to the certificate file
-  -- @param opts.drop_pending_updates (boolean) Whether to drop pending updates (false by default)
-  -- @param opts.allowed_updates (table) List of allowed updates (nil by default)
---
--- @return (table) Response data
-function bot.send_certificate(opts)
-  if type(opts) ~= 'table' or
-    type(opts.bot_url) ~= 'string'
-  then
-    log.error('[WebHook] %s', 'Invalid opts')
 
-    return
-  end
+---
+--- Выполнение GET запроса
+---
+local ltn12 = require('ltn12')
+local https = require('ssl.https')
+local request = https.request
 
-  -- Read certificate
-  local data
-  if opts.certificate then
-    if not fio.path.exists(opts.certificate) then
-      log.error('[WebHook] %s', 'Certificate not found: '..opts.certificate)
+local function GET(url)
+  local response = {}
 
-      return
-    end
-
-    local cert = fio.open(opts.certificate, 'O_RDONLY')
-
-    data = {
-      filename = opts.certificate:match('[^/]*.$'),
-      data = cert:read()
-    }
-
-    cert:close()
-  end
-
-  if type(opts.allowed_updates) == 'table' then
-    opts.allowed_updates = json.encode(opts.allowed_updates)
-  end
-
-  -- Set webhook
-  return bot.call('setWebhook', {
-    url = opts.bot_url,
-    certificate = data,
-    drop_pending_updates = opts.drop_pending_updates or false,
-    allowed_updates = opts.allowed_updates
-  }, { multipart_post = true })
-end
-
---- Debug routes while Long Polling is running
--- @param opts (table) Options table
-  -- @param opts.host (string) Host to bind to (default is '0.0.0.0')
-  -- @param opts.port (number) Port to listen on (default is 9091)
-  -- @param opts.routes (table) Routes table
-function bot:debugRoutes(opts)
-  local http_server = require('http.server')
-  local host = opts.host or '0.0.0.0'
-  local port = opts.port or 9091
-  local httpd = http_server.new(host, port)
-
-  -- Declaration custom routes
-  if opts.routes then
-    for i = 1, #opts.routes do
-      local route = opts.routes[i]
-
-      httpd:route(
-        {
-          path = route.path,
-          method = route.method
-        },
-        route.callback
-      )
-    end
-  end
-
-  httpd:start()
-
-  if not self.debug then
-    self.debug =  {}
-  end
-
-  self.debug = {
-    host = host,
-    port = port
+  local success, code, headers, status = request {
+    url = url,
+    method = 'GET',
+    sink = ltn12.sink.table(response),
   }
 
-  log.info('[HTTP Server] %s', 'listening', host..':'..port)
-end
-
---- Start the webhook
---
--- @param opts (table) opts table
-  -- @param opts.host (string) Host to bind to (default is '0.0.0.0')
-  -- @param opts.port (number) Port to listen on (default is 9091)
-  -- @param opts.path (string) Route path ('/' string by default)
-  -- @param opts.routes (table) Routes table
-  -- @param opts.maintenance_mode (string) Maintenance mode eq 'maint'
-  -- @param opts.allowed_updates (array)
-function bot:startWebHook(opts)
-  local http_server = require('http.server')
-  local host = opts.host or '0.0.0.0'
-  local port = opts.port or 9091
-  local httpd = http_server.new(host, port)
-
-  local route = {
-    path = opts.path or '/',
-    method = 'POST',
+  return {
+    success = success or false;
+    code    = code    or 0;
+    status  = status  or 0;
+    headers = table.concat(headers  or { 'no headers' });
+    body    = table.concat(response or { 'no response' });
   }
-
-  -- Bot route setup
-  --
-  local function default_callback(req)
-    fiber.create(function ()
-      local data = req:json()
-
-      switch(data)
-    end)
-
-    return {
-      status = 200,
-      headers = {
-        ['content-type'] = 'text/plain'
-      },
-      body = [[OK]]
-    }
-  end
-
-  httpd:route(route, default_callback)
-  --
-
-  -- Declaration custom routes
-  if opts.routes then
-    for i = 1, #opts.routes do
-      -- luacheck: ignore route
-      local route = opts.routes[i]
-
-      httpd:route({ path = route.path, method = route.method }, route.callback)
-    end
-  end
-
-  httpd:start()
-
-  log.info('[HTTP Server] %s', 'listening', host..':'..port)
-
-  if opts.maintenance_mode ~= 'maint' then
-    local res = bot.send_certificate(opts)
-
-    if res and not res.ok then
-      log.error('[Long Polling] %s | %s',
-        'Code: ' .. res.error_code,
-        'Description: ' .. res.description)
-
-      os.exit(1)
-    end
-  end
-
-  self.maintenance = opts.maintenance_mode == 'maint'
 end
 
 local getUpdates
@@ -350,7 +216,7 @@ getUpdates = function(opts)
       timeout)
   end
 
-  local res = client:request('GET', url)
+  local res = GET(url)
   local body = json.decode(res.body)
 
   -- First start
@@ -369,10 +235,7 @@ getUpdates = function(opts)
   if body.ok and body.result then
     for i = 1, #body.result do
       local data = body.result[i]
-
-      fiber.create(function ()
-        switch(data)
-      end)
+      switch(data)
 
       offset = data.update_id + 1
     end
@@ -411,11 +274,6 @@ local DEFAULT_ALLOWED_UPDATES = {
 function bot:startLongPolling(opts)
   opts = opts or {}
 
-  local http = require('http.client')
-  local client = http.new({
-    max_connections = opts and opts.max_connections or 1
-  })
-
   -- Set opts
   local offset = -1
   local polling_timeout = 60
@@ -434,7 +292,6 @@ function bot:startLongPolling(opts)
     offset = offset,
     timeout = polling_timeout,
     token = self.token,
-    client = client,
     allowed_updates = opts.allowed_updates or DEFAULT_ALLOWED_UPDATES,
     api_url = self.api_url
   })

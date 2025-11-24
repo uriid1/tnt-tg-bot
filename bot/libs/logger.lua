@@ -1,7 +1,6 @@
 --- Default tnt bot logger
 --
-local json = require('json')
-local log = require('log')
+local json = require('bot.libs.json')
 local colors = require('bot.ext.colors')
 
 local function colorize(color, text)
@@ -11,9 +10,7 @@ local function colorize(color, text)
   return color .. text .. colors.reset
 end
 
-local logger = {
-  cfg = log.cfg
-}
+local logger = {}
 
 -- luacheck: ignore unpack
 -- luacheck: ignore table
@@ -28,22 +25,46 @@ end
 
 function logger.info(text, ...)
   local isTable = type(text) == 'table'
-  log.info(colorize(colors.brightGreen, isTable and json.encode(text) or text), wrapArgs(...))
+
+  if ... then
+    print(
+      (colorize(colors.brightGreen, isTable and json.encode(text) or text)):format(wrapArgs(...)))
+  else
+    print(colorize(colors.brightGreen, isTable and json.encode(text) or text))
+  end
 end
 
 function logger.verbose(text, ...)
   local isTable = type(text) == 'table'
-  log.verbose(colorize(colors.brightBlue, isTable and json.encode(text) or text), wrapArgs(...))
+
+  if ... then
+    print(
+      (colorize(colors.brightBlue, isTable and json.encode(text) or text)):format(wrapArgs(...)))
+  else
+    print(colorize(colors.brightBlue, isTable and json.encode(text) or text))
+  end
 end
 
 function logger.warn(text, ...)
   local isTable = type(text) == 'table'
-  log.warn(colorize(colors.brightOrange, isTable and json.encode(text) or text), wrapArgs(...))
+
+  if ... then
+    print(
+      (colorize(colors.brightOrange, isTable and json.encode(text) or text)):format(wrapArgs(...)))
+  else
+    print(colorize(colors.brightOrange, isTable and json.encode(text) or text))
+  end
 end
 
 function logger.error(text, ...)
   local isTable = type(text) == 'table'
-  log.error(colorize(colors.brightRed, isTable and json.encode(text) or text), wrapArgs(...))
+
+  if ... then
+    print(
+      (colorize(colors.brightRed, isTable and json.encode(text) or text)):format(wrapArgs(...)))
+  else
+    print(colorize(colors.brightRed, isTable and json.encode(text) or text))
+  end
 end
 
 -- Test

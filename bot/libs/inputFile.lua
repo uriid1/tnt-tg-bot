@@ -1,14 +1,13 @@
 --- Input file
 -- @module bot.libs.inputFile
-local fio = require('fio')
-local log = require('log')
+local log = require('bot.libs.logger')
 
 local function inputFile(filename)
   if type(filename) ~= 'string' then
     return nil
   end
 
-  local fd = fio.open(filename, 'O_RDONLY')
+  local fd = io.open(filename, 'r')
 
   if fd == nil then
     log.error('Cannot open file: ' .. filename)

@@ -1,7 +1,7 @@
 -- Example of ping command
 --
-local log = require('log')
 local bot = require('bot')
+local log = require('bot.libs.logger')
 local parse_mode = require('bot.enums.parse_mode')
 local entity_type = require('bot.enums.entity_type')
 local methods = require('bot.enums.methods')

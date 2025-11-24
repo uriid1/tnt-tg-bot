@@ -3,15 +3,40 @@
 local config = require('bot.config')
 local request = {}
 
-local json = require('json')
-local http = require('http.client')
-local mpEncode = require('multipart-post')
+local json = require('bot.libs.json')
+local mpEncode = require('bot.libs.multipart-post')
+
+---
+--- Выполнение POST запроса
+---
+local ltn12 = require('ltn12')
+local https = require('ssl.https')
+
+local function POST(url, headers, body)
+  local response = {}
+
+  local success, code, headers, status = https.request {
+    url = url,
+    method = 'POST',
+    headers = headers,
+    source = ltn12.source.string(body),
+    sink = ltn12.sink.table(response)
+  }
+
+  return  {
+    success = success,
+    code = code,
+    status = status,
+    headers = table.concat(headers  or {"no headers"});
+    body = table.concat(response or {"no response"});
+  }
+end
 
 --- Send an HTTP request to the Telegram Bot API.
 -- @param params The request parameters.
 -- @return The response from the API, or nil if there was an error.
 function request.send(params)
-  local opts = {}
+  local headers
   local body
 
   if params.fields then
@@ -27,30 +52,35 @@ function request.send(params)
       local boundary
       body, boundary = mpEncode(params.fields)
 
-      opts.headers = {
+      headers = {
         ['Content-Type'] = 'multipart/form-data; boundary=' .. boundary,
+        ['Content-Length'] = #body
       }
     else
       body = json.encode(params.fields)
 
-      opts.headers = {
-        ['Content-Type'] = 'application/json'
+      headers = {
+        ['Content-Type'] = 'application/json',
+        ['Content-Length'] = #body
       }
     end
   end
 
   -- Request
   local urlFmt = config.api_url..'%s/%s'
-  local data = http.post(urlFmt:format(config.token, params.method), body, opts)
+
+  -- Options
+  local response = POST(urlFmt:format(config.token, params.method), headers, body)
 
   -- Handle error
-  if data.body == nil then
-    local err
-    if data and data.ok == false then
-      err = data
-      err.__method = params.method
+  if response.body == nil then
+    local err = {}
+    err.__method = params.method
+
+    if response and response.success == 1 then
+      err.status = response.status
     else
-      err = 'Empty data received'
+      err.status = 'Empty data received'
     end
 
     return nil, err
@@ -58,7 +88,7 @@ function request.send(params)
 
   -- Decode JSON response
   -- luacheck: ignore data
-  local data = json.decode(data.body)
+  local data = json.decode(response.body)
 
   -- Handle error
   if data.ok == false then
