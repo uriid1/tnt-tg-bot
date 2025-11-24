@@ -1,5 +1,9 @@
 -- Example simple process command
 --
+
+-- Исправление для ванильной lua: bot.init -> bot
+package.path = package.path .. ';?/init.lua'
+
 local bot = require('bot')
 local entity_type = require('bot.enums.entity_type')
 local inlineKeyboard = require('bot.middlewares.inlineKeyboard')

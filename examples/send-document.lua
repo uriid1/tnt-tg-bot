@@ -1,5 +1,9 @@
 -- Example of send document
 --
+
+-- Исправление для ванильной lua: bot.init -> bot
+package.path = package.path .. ';?/init.lua'
+
 local bot = require('bot')
 local log = require('bot.libs.logger')
 local parse_mode = require('bot.enums.parse_mode')

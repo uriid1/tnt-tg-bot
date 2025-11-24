@@ -1,5 +1,9 @@
 -- Example simple callback button 2
 --
+
+-- Исправление для ванильной lua: bot.init -> bot
+package.path = package.path .. ';?/init.lua'
+
 local bot = require('bot')
 local parse_mode = require('bot.enums.parse_mode')
 local processCommand = require('bot.processes.processCommand')

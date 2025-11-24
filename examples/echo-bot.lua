@@ -1,5 +1,8 @@
 -- Example of echo bot
 --
+-- Исправление для ванильной lua: bot.init -> bot
+package.path = package.path .. ';?/init.lua'
+
 local bot = require('bot')
 local log = require('bot.libs.logger')
 
