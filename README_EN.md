@@ -112,5 +112,10 @@ BOT_TOKEN="1348551682:AAFK3iZwBqEHwSrPKyi-hKyAtRgUwXrTiWW" tarantool examples/ec
 
 For argument details, see LDoc — `doc/index.html`.
 
+## Library documentation generate
+```bash
+bash scripts/ldoc
+```
+
 ## Contributing
 Contributions via repository fork and Pull Requests are welcome.
