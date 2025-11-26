@@ -11,17 +11,17 @@
 
 ## Запуск
   1. Необходимо установить зависимости библиотеки
-    ```bash
-    bash tnt-tg-bot.pre-build.sh
-    ```
+```bash
+bash tnt-tg-bot.pre-build.sh
+```
   2. Устновить зависимости примера
-    ```bash
-    bash app.pre-build.sh
-    ```
+```bash
+bash app.pre-build.sh
+```
   3. Выполнить запуск
-  ```bash
-  BOT_TOKEN="BOT TOKEN HERE" ./scripts/start --verbose
-  ```
+```bash
+BOT_TOKEN="BOT TOKEN HERE" ./scripts/start --verbose
+```
 
 В текущем примере реализовано две приватных команды:
   - /start
