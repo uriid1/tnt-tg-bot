@@ -1,5 +1,6 @@
 --- Команда покупки ключа
 --
+local bot = require('bot')
 local Command = require('src.classes.Command')
 local command_type = require('src.enums.command_type')
 

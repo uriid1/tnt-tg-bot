@@ -8,7 +8,7 @@ local on_bot_permissions_changed = require('src.observers.events.my_chat_member.
 local on_bot_admin_demoted = require('src.observers.events.my_chat_member.on_bot_admin_demoted')
 local on_bot_admin_promoted = require('src.observers.events.my_chat_member.on_bot_admin_promoted')
 
-local event = require('src.enums.event_my_chat_member')
+local event = require('src.enums.events.event_my_chat_member')
 local observer = require('bot.interfaces.Observer')
 
 local bot_blocked = observer:new()

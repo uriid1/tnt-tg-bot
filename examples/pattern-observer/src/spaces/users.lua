@@ -1,11 +1,11 @@
 --- Пользователи
 --
 
---- Схема спейса
 local formatSpace = {
+  -- https://core.telegram.org/bots/api#user
   {
     name = 'id',
-    type = 'uuid'
+    type = 'number'
   },
   {
     name = 'first_name',
@@ -18,6 +18,7 @@ local formatSpace = {
   {
     name = 'username',
     type ='string',
+    is_nullable = true
   },
   {
     name = 'language_code',
@@ -27,7 +28,7 @@ local formatSpace = {
   -- Игровая схема
   {
     name = 'status',
-    tpye = 'string'
+    type = 'string'
   },
   {
     name = 'energy',
@@ -38,7 +39,11 @@ local formatSpace = {
     type = 'number'
   },
   {
-    name = 'money',
+    name = 'balance',
+    type = 'number'
+  },
+  {
+    name = 'reserved_balance',
     type = 'number'
   },
   {
@@ -51,7 +56,7 @@ local formatSpace = {
   },
   {
     name = 'hooliganism',
-    tpye = 'number'
+    type = 'number'
   },
 
   {
@@ -80,5 +85,5 @@ local index = {
 
 return {
   format_space = formatSpace,
-  index = index,
+  index = index
 }

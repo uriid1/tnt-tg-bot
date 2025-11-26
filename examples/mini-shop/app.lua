@@ -23,10 +23,6 @@ box.cfg {
   wal_dir = 'storage/xlog',
 }
 
--- Добавление ссылки бота в глобальное окружение
--- (опционально) можно грузить везде где нужно require
-_G.bot = bot
-
 -- Загрузка событий
 bot.events.onGetUpdate = require('src.events.onGetUpdate')
 bot.events.onCallbackQuery = require('src.events.onCallbackQuery')

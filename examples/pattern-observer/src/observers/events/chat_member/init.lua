@@ -10,7 +10,7 @@ local on_member_unbanned = require('src.observers.events.chat_member.on_member_u
 local on_admin_left = require('src.observers.events.chat_member.on_admin_left')
 local on_owner_left = require('src.observers.events.chat_member.on_owner_left')
 
-local event_chat_member = require('src.enums.event_chat_member')
+local event_chat_member = require('src.enums.events.event_chat_member')
 local observer = require('bot.interfaces.Observer')
 
 local restricted_return = observer:new()

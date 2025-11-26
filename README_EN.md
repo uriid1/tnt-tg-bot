@@ -63,16 +63,16 @@ bash tnt-tg-bot.pre-build.sh
 + [Mini Shop](examples/mini-shop) — minimal example showing recommended project structure  
 + [Star payments](examples/stars-payment) — example of handling Telegram Stars payments (purchase, refund)  
 + `examples/echo-bot-webhook.lua` — Echo bot using WebHook  
-+ `examples/echo-bot.lua` — Echo bot (legacy API)  
-+ `examples/echo-bot-2.lua` — Echo bot (new API)  
++ `examples/echo-bot-old.lua` — Echo bot (legacy API)  
++ `examples/echo-bot.lua` — Echo bot (new API)  
 + `examples/ping-pong.lua` — `/ping` command handler  
 + `examples/send-animation.lua` — Send GIF via `/get_animation` command  
 + `examples/send-document.lua` — Send document via `/get_document` command  
 + `examples/send-image.lua` — Send image via `/get_image` command  
 + `examples/send-image-2.lua` — Simplified image sending example using `bot.sendImage`  
 + `examples/send-media-group.lua` — Send media group  
-+ `examples/simple-callback.lua` — Basic callback handling (legacy API)  
-+ `examples/simple-callback-2.lua` — Simplified callback command handler (new API)  
++ `examples/simple-callback-old.lua` — Basic callback handling (legacy API)  
++ `examples/simple-callback.lua` — Simplified callback command handler (new API)  
 + `examples/simple-process-commands.lua` — Simple command processing example  
 + `examples/routes-example/init.lua` — Example of route handling in the bot
 

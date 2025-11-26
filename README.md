@@ -64,16 +64,16 @@ bash tnt-tg-bot.pre-build.sh
   + [Mini Shop](examples/mini-shop) - Пример минимального "магазина", показано как можно структурировать проект
   + [Star payments](examples/stars-payment) - Пример обработки платежей в звездах (покупка, возврат)
   + `examples/echo-bot-webhook.lua` - Эхо-бот через WebHook
-  + `examples/echo-bot.lua` - Эхо-бот (старый API)
-  + `examples/echo-bot-2.lua` - Эхо-бот (новый API) 
+  + `examples/echo-bot-old.lua` - Эхо-бот (старый API)
+  + `examples/echo-bot.lua` - Эхо-бот (новый API) 
   + `examples/ping-pong.lua` - Реакция на команду /ping
   + `examples/send-animation.lua` - Отправка gif по команде /get_animation
   + `examples/send-document.lua` - Отправка документа по команде /get_document
   + `examples/send-image.lua` - Отправка изображения по команде /get_image
   + `examples/send-image-2.lua` - Упрощенный пример отправки изображения через `bot.sendImage`
   + `examples/send-media-group.lua` - Отправка группы медиа-файлов
-  + `examples/simple-callback.lua` - Пример обработки callback - /send_callback (старый API)
-  + `examples/simple-callback-2.lua` - Упрощенный пример обработки callback команд (новый API)
+  + `examples/simple-callback-old.lua` - Пример обработки callback - /send_callback (старый API)
+  + `examples/simple-callback.lua` - Упрощенный пример обработки callback команд (новый API)
   + `examples/simple-process-commands.lua` - Пример простого процессинга команд
   + `examples/routes-example/init.lua` - Пример работы ручек в боте
 

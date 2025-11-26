@@ -4,7 +4,7 @@ local log = require('bot.libs.logger')
 local chat_member_status = require('bot.enums.chat_member_status')
 local chat_type = require('bot.enums.chat_type')
 local subject = require('src.subjects.chat_member')
-local event_chat_member = require('src.enums.event_chat_member')
+local event_chat_member = require('src.enums.events.event_chat_member')
 
 local function onChatMember(ctx)
   local chatType = ctx:getChatType()

@@ -1,5 +1,6 @@
 --- Команда /start
 --
+local bot = require('bot')
 local Command = require('src.classes.Command')
 local command_type = require('src.enums.command_type')
 local inlineKeyboard = require('bot.middlewares.inlineKeyboard')

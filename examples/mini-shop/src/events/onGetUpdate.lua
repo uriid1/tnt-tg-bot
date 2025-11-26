@@ -1,5 +1,7 @@
 --- Событие получения обновление (сообщений) от телеграма
 --
+local bot = require('bot')
+
 local function onGetUpdate(ctx)
   if ctx.callback_query then
     return bot.events.onCallbackQuery(ctx)

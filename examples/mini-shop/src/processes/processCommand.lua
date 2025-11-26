@@ -1,5 +1,7 @@
 --- Обработчик команд
 --
+local bot = require('bot')
+
 local function processCommand(ctx)
   -- Нажали на callback кнопку
   if ctx.is_callback_query then

@@ -8,12 +8,13 @@ local f = require('bot.ext.fstring')
 
 local command = Command:new {
   commands = { '/start' },
-  type = command_type.CALLBACK
+  type = command_type.PRIVATE
 }
 
 local TEMPLATE = [[
-Привет! 🤪
-Я развлекательный бот, могу болтать и сделать тебя самым крутым на районе!
+Привет!
+
+* Тут какая-то информация *
 ]]
 
 local keyboard = inlineKeyboard({

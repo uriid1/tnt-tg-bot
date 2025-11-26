@@ -1,6 +1,6 @@
 --- Команда покупки по заданным категориям
 --
--- local log = require('log')
+local bot = require('bot')
 local Command = require('src.classes.Command')
 local command_type = require('src.enums.command_type')
 local inlineKeyboard = require('bot.middlewares.inlineKeyboard')

@@ -1,3 +1,6 @@
+---
+--- Заполнение БД пустышками
+---
 local log = require('bot.libs.logger')
 local uuid = require('uuid')
 
